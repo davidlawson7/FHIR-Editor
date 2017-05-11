@@ -1,5 +1,7 @@
 # FhirEditor
 
+![fhireditor](https://cloud.githubusercontent.com/assets/13531826/25928087/91515b4c-363d-11e7-8d52-a02978767bab.PNG)
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.2.
 
 ## Development server

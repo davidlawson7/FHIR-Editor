@@ -1,0 +1,32 @@
+<div *ngIf="person">
+  <h2>{{person.resourceType}}</h2>
+  <div class="row">
+      <div class="row">
+        <!-- Name row -->
+        <div class="input-field col s6">
+          <input [(ngModel)]="person.name[0].given[0]" id="first_name" type="text" class="validate">
+          <label for="first_name">First Name</label>
+        </div>
+        <div class="input-field col s6">
+          <input [(ngModel)]="person.name[0].family" id="last_name" type="text" class="validate">
+          <label for="last_name">Last Name</label>
+        </div>
+      </div>
+      <!-- id row -->
+      <div class="input-field col s12">
+        <input [(ngModel)]="person.id" id="id" type="text" class="validate">
+        <label for="id">Meta ID</label>
+      </div>
+      <!-- Active dates row -->
+      <div class="row">
+        <div class="input-field col s6">
+          <input [(ngModel)]="person.name[0].period.start" id="start" type="text" class="validate">
+          <label for="start">Start</label>
+        </div>
+        <div class="input-field col s6">
+          <input [(ngModel)]="person.name[0].period.end"id="end" type="text" class="validate">
+          <label for="end">End</label>
+        </div>
+      </div>
+  </div>
+</div>

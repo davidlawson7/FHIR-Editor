@@ -1,0 +1,10 @@
+/* Custom colours for the navigation and footer */
+.nav-wrapper, .page-footer {
+  background: #00ae7b;
+  background: linear-gradient(45deg,#00ae7b,#0081bf);
+}
+.search-wrapper input {
+  border: none;
+  padding: 0;
+  margin: 0;
+}

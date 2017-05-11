@@ -1,1 +1,29 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* Makes footer sticky */
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+/* Offsets site content for side navigation */
+header, main, footer {
+  padding-left: 300px;
+}
+
+@media only screen and (max-width : 992px) {
+  header, main, footer {
+    padding-left: 0;
+  }
+}
+
+@media only screen and (min-width : 992px) {
+  .button-collapse {
+    display: none;
+  }
+}

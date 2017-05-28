@@ -1,4 +1,5 @@
 import { Meta, Coding, Identifier, HumanName, ContactPoint, Address, Attachment, Reference, Link, Text } from './datatypes/common-datatypes';
+
 export class Person {
   resourceType: string;
   id: string; // Logical id of this artifact

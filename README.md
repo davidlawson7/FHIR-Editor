@@ -1,5 +1,9 @@
 # FhirEditor
 
+![fhireditor](https://cloud.githubusercontent.com/assets/13531826/25928087/91515b4c-363d-11e7-8d52-a02978767bab.PNG)
+
+Updates on the project can be found on my [thesis blog](http://davidscomp6803.blogspot.com.au/).
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.2.
 
 ## Development server

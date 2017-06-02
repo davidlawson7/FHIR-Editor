@@ -11,20 +11,29 @@ import { QuestionService } from './question.service';
   providers:  [QuestionService]
 })
 export class AppComponent {
+  // General variables
+  title = 'FHIR Editor';
+  version = 'Alpha';
+  versionNumber = '0.1';
+  connectedServer = 'None';       // default value
+  selectedResourceType = 'None';  // default value
+  selectedSearchField = 'None';   // default value
+  searchValue = '';
+
+  // Required values
+  servers = [
+    ['University Health Network - STU3', 'http://fhirtest.uhn.ca/baseDstu3'],
+    ['University Health Network - DSTU2', 'http://fhirtest.uhn.ca/baseDstu2'],
+    ['CSIRO ontoserver - STU3', 'http://ontoserver.csiro.au/stu3-latest']
+  ];
+  types = ['Patient', 'Person', 'Practitioner'];
+  fields = ['Name', 'Description', 'ID', 'URL', 'Identifier', 'Version'];
+
+  // Dynamic form variables
   questions: any[];
 
-  title = 'FHIR Editor';
-  resourceType = '';
-  resourceID = '';
-  server = '';
-  servers = ['http://fhirtest.uhn.ca/baseDstu3', 'http://fhirtest.uhn.ca/baseDstu2', 'http://ontoserver.csiro.au/stu3-latest'];
-  types = ['Patient', 'Person', 'Practitioner'];
-  searchby = ['Name', 'Description', 'ID', 'URL', 'Identifier', 'Version'];
-  fhirServerNames = ['University Health Network - STU3', 'University Health Network - DSTU2', 'CSIRO ontoserver - STU3'];
   constructor(private fhirService: FhirService, service: QuestionService) {
     this.questions = service.getQuestions();
   }
-  //constructor(service: QuestionService) {
-//    this.questions = service.getQuestions();
- // }
+
 }

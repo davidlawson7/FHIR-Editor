@@ -1,6 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { FormGroup }        from '@angular/forms';
+
 import { QuestionBase }     from '../question-base';
+
 @Component({
   selector: 'df-question',
   templateUrl: './form-question.component.html'

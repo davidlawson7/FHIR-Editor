@@ -21,30 +21,30 @@
           </div>
           <div class="row">
               <div class="input-field col s12">
-                  <select class="browser-default" id="fhir_server"
+                  <!--<select class="browser-default" id="fhir_server"
                           name="fhir_server"
                           [(ngModel)]="server" required
                           #fhir_server="ngModel">
                       <option value="" disabled selected>Choose your option</option>
                       <option *ngFor="let url of servers" [value]="url">{{url}}</option>
-                  </select>
+                  </select>-->
               </div>
           </div>
           <div class="row">
               <div class="input-field col s12">
-                  <input [(ngModel)]="resourceType" placeholder="Patient" id="resource_type" type="text" class="validate">
+                  <!--<input [(ngModel)]="resourceType" placeholder="Patient" id="resource_type" type="text" class="validate">-->
                   <label for="resource_type">Resource Type</label>
               </div>
           </div>
           <div class="row">
               <div class="input-field col s12">
-                  <input [(ngModel)]="resourceID" placeholder="87698" id="resource_id" type="text" class="validate">
+                  <!--<input [(ngModel)]="resourceID" placeholder="87698" id="resource_id" type="text" class="validate">-->
                   <label for="resource_id">Resource ID</label>
               </div>
           </div>
           <div class="row">
               <div class="input-field col s12">
-                  <a [routerLink]="['/query/', server, resourceType, resourceID]" class="waves-effect waves-light btn">Send</a>
+                  <!--<a [routerLink]="['/query/', server, resourceType, resourceID]" class="waves-effect waves-light btn">Send</a>-->
               </div>
           </div>
       </div>
@@ -59,7 +59,7 @@
 <main>
   <div class="container">
     <router-outlet></router-outlet>
-    <dynamic-form [questions]="questions"></dynamic-form>
+    <app-form [questions]="questions"></app-form>
   </div>
 </main>
 <!-- End! Editor Content -->

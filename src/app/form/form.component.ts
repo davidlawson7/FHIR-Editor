@@ -34,9 +34,9 @@ export class FormComponent implements OnInit {
   { }
 
   ngOnInit(): void {
-    this.route.params
-      .switchMap((params: Params) => this.fhirService.getResource(params['id'], params['resource'], params['server']))
-      .subscribe(person => this.person = person);
+    //this.route.params
+    //  .switchMap((params: Params) => this.fhirService.getResource(params['id'], params['resource'], params['server']))
+    //  .subscribe(person => this.person = person);
     this.form = this.qcs.toFormGroup(this.questions);
   }
 

@@ -18,6 +18,7 @@ export class FhirService {
 
   constructor(private http: Http) { }
 
+  /* Get a list of general resources */
   getResources(type: string): Promise<any> {
     if(type === "Patient") {
       return this.getPatients();
@@ -27,7 +28,7 @@ export class FhirService {
       return null;
     }
   }
-  /* Get a general resource option */
+  /* Get a specific general resource option */
   getResource(id: string, type: string, server: string): Promise<any> {
     if(type === "Patient") {
       return this.getPatient(id);

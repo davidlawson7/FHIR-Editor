@@ -18,11 +18,13 @@ export class AppComponent {
   resourceID = '';
   server = '';
   servers = ['http://fhirtest.uhn.ca/baseDstu3', 'http://fhirtest.uhn.ca/baseDstu2', 'http://ontoserver.csiro.au/stu3-latest'];
+  types = ['Patient', 'Person', 'Practitioner'];
+  searchby = ['Name', 'Description', 'ID', 'URL', 'Identifier', 'Version'];
   fhirServerNames = ['University Health Network - STU3', 'University Health Network - DSTU2', 'CSIRO ontoserver - STU3'];
-  //constructor(private fhirService: FhirService, service: QuestionService) {
-  //  this.questions = service.getQuestions();
-  //}
-  constructor(service: QuestionService) {
+  constructor(private fhirService: FhirService, service: QuestionService) {
     this.questions = service.getQuestions();
   }
+  //constructor(service: QuestionService) {
+//    this.questions = service.getQuestions();
+ // }
 }

@@ -19,37 +19,65 @@
           <div class="col s12 center">
               <h3 class="logo">API</h3>
           </div>
+          <!-- Server URL -->
           <div class="row">
               <div class="input-field col s12">
-                  <!--<select class="browser-default" id="fhir_server"
+                  <select class="" id="fhir_server"
                           name="fhir_server"
                           [(ngModel)]="server" required
                           #fhir_server="ngModel">
-                      <option value="" disabled selected>Choose your option</option>
+                      <option value="" disabled selected>Choose your Server</option>
                       <option *ngFor="let url of servers" [value]="url">{{url}}</option>
-                  </select>-->
+                  </select>
+                  <label for="fhir_server">Server</label>
               </div>
           </div>
+          <!-- The Resource being queried -->
           <div class="row">
               <div class="input-field col s12">
-                  <!--<input [(ngModel)]="resourceType" placeholder="Patient" id="resource_type" type="text" class="validate">-->
-                  <label for="resource_type">Resource Type</label>
+                  <select class="" id="resource_type"
+                          name="type"
+                          [(ngModel)]="type" required
+                          #fhir_server="ngModel">
+                      <option value="" disabled selected>Choose your Resource</option>
+                      <option *ngFor="let type of types" [value]="type">{{type}}</option>
+                  </select>
+                  <label for="resource_type">Type</label>
               </div>
           </div>
+          <!-- What to search by -->
           <div class="row">
               <div class="input-field col s12">
-                  <!--<input [(ngModel)]="resourceID" placeholder="87698" id="resource_id" type="text" class="validate">-->
-                  <label for="resource_id">Resource ID</label>
+                  <select class="" id="search_by"
+                          name="searchby"
+                          [(ngModel)]="type" required
+                          #fhir_server="ngModel">
+                      <option value="" disabled selected>Choose your Field</option>
+                      <option *ngFor="let field of searchby" [value]="field">{{field}}</option>
+                  </select>
+                  <label for="search_by">Search by</label>
               </div>
           </div>
+          <!-- Value to search for -->
           <div class="row">
               <div class="input-field col s12">
-                  <!--<a [routerLink]="['/query/', server, resourceType, resourceID]" class="waves-effect waves-light btn">Send</a>-->
+                  <input [(ngModel)]="resourceID" placeholder="John Doe" id="value" type="text" class="validate">
+                  <label for="value">Value</label>
+              </div>
+          </div>
+          <!-- Query submit button -->
+          <div class="row">
+              <div class="input-field col s12">
+                  <a [routerLink]="['/query/', server, resourceType, resourceID]" class="waves-effect waves-light btn">Send</a>
               </div>
           </div>
       </div>
       <!-- For search based requests -->
       <li class="search"></li>
+
+      <!-- Modal Trigger -->
+      <a class="modal-trigger waves-effect waves-light btn" href="#modal1">Modal</a>
+
   </ul>
 
 </header>
@@ -57,9 +85,34 @@
 
 <!-- Editor Content -->
 <main>
+    <div class="row">
+    <div class="col s12">
+      <ul class="tabs">
+        <li class="tab col s3"><a href="#test1">Test 1</a></li>
+        <li class="tab col s3"><a class="active" href="#test2">Test 2</a></li>
+        <li class="tab col s3 disabled"><a href="#test3">Disabled Tab</a></li>
+        <li class="tab col s3"><a href="#test4">Test 4</a></li>
+      </ul>
+    </div>
+    <div id="test1" class="col s12">Test 1</div>
+    <div id="test2" class="col s12">Test 2</div>
+    <div id="test3" class="col s12">Test 3</div>
+    <div id="test4" class="col s12">Test 4</div>
+  </div>
   <div class="container">
     <router-outlet></router-outlet>
     <app-form [questions]="questions"></app-form>
+  </div>
+
+  <!-- Resource selection box - Materializecss Modal -->
+  <div id="modal1" class="modal modal-fixed-footer">
+    <div class="modal-content">
+      <h4>Modal Header</h4>
+      <p>A bunch of text</p>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Agree</a>
+    </div>
   </div>
 </main>
 <!-- End! Editor Content -->

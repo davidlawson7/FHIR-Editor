@@ -5,11 +5,9 @@
         <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
         <a href="#!" class="brand-logo">{{title}}</a>
         <ul class="right hide-on-med-and-down">
-          <li>Search Value: <strong>{{searchValue}}</strong>_____</li>
-          <li>Selected Field: <strong>{{selectedSearchField}}</strong>_____</li>
-          <li>Selected Type: <strong>{{selectedResourceType}}</strong>_____</li>
-          <li>Connected to: <strong>{{connectedServer}}</strong>_____</li>
-          <li><a href="#server-selection-model" class="waves-effect waves-light btn">Settings</a></li>
+          <li>Connected to: <strong>{{connectedServer}}</strong></li>
+          <li><a href="#debug-modal" class="waves-effect waves-light btn">Debug Box</a></li>
+          <li><a href="#server-selection-modal" class="waves-effect waves-light btn">Settings</a></li>
         </ul>
     </div>
   </nav>
@@ -17,12 +15,12 @@
   <ul id="slide-out" class="side-nav fixed">
     <!-- For search based requests -->
     <div class="row">
-      <div class="col s12 center">
+      <div class="center">
           <h4 class="logo">Search</h4>
       </div>
 
       <!-- The Resource being queried -->
-      <div class="row">
+      <div class="row col s12">
         <label for="resource_type">Type</label>
           <select class="browser-default" id="resource_type"
                   name="type"
@@ -33,7 +31,7 @@
           </select>
       </div>
       <!-- What to search by -->
-      <div class="row">
+      <div class="row col s12">
         <label for="search_by">Search by</label>
           <select class="browser-default" id="search_by"
                   name="searchby"
@@ -53,9 +51,9 @@
       <!-- Query submit button -->
       <div class="row">
           <div class="input-field col s12">
-              <a [routerLink]="['/query/', server, resourceType, resourceID]" class="waves-effect waves-light btn">Send</a>
+              <a [routerLink]="['/query/', connectedServer, selectedResourceType, searchValue]" class="waves-effect waves-light btn">Send</a>
           </div>
-          <a class="modal-trigger waves-effect waves-light btn" href="#modal1">Modal</a>
+          <a class="modal-trigger waves-effect waves-light btn" href="#search-modal">Modal</a>
       </div>
     </div>
     <div class="divider"></div>
@@ -65,7 +63,7 @@
           <h4 class="logo">Saved</h4>
       </div>
     </div>
-
+    <li *ngFor="let saved of savedResources"><a [routerLink]="['/query/', connectedServer, saved[1], saved[2]]" href="#!">{{saved[0]}}</a></li>
 
   </ul>
 
@@ -75,23 +73,24 @@
 <!-- Editor Content -->
 <main>
     <div class="row">
+      <!-- Page tabs -->
       <div class="">
         <ul class="tabs">
-          <li class="tab col s3"><a href="#test1">Test 1</a></li>
+          <li class="tab col s3"><a href="#test1">untitled</a></li>
         </ul>
       </div>
-      <a class="btn-floating btn-large halfway-fab waves-effect waves-light teal">
-        <i class="material-icons">add</i>
-      </a>
-      <div id="test1" class="col s12">Test 1</div>
+      <!-- Page output zone -->
+      <div id="page1" class="col s12">
+        <!--<app-form [questions]="questions"></app-form>-->
+        <router-outlet></router-outlet>
+      </div>
     </div>
   <div class="container">
-    <router-outlet></router-outlet>
-    <app-form [questions]="questions"></app-form>
+
   </div>
 
   <!-- Resource selection box - Materializecss Modal -->
-  <div id="modal1" class="modal modal-fixed-footer">
+  <div id="search-modal" class="modal modal-fixed-footer">
     <div class="modal-content">
       <div class="row">
         <h4>Search Results</h4>
@@ -114,9 +113,9 @@
       <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Select Resource</a>
     </div>
   </div>
-
+  <!-- End! Resource selection box - Materializecss Modal -->
   <!-- Server selection box - Materializecss Modal -->
-  <div id="server-selection-model" class="modal modal-fixed-footer">
+  <div id="server-selection-modal" class="modal modal-fixed-footer">
     <div class="modal-content">
       <!-- Settings header -->
       <div class="section">
@@ -163,9 +162,59 @@
     </div>
   </div>
   <!-- End! Server selection box - Materializecss Modal -->
+
+  <!-- Debug box - Materializecss Modal -->
+  <div id="debug-modal" class="modal modal-fixed-footer">
+    <div class="modal-content">
+      <!-- Title row -->
+      <div class="row">
+        <h4>The Debug Box</h4>
+        <p>This box contains the output of typescript variables for debuggin purposes.</p>
+        <div class="divider"></div>
+      </div>
+      <!-- Debug output row -->
+      <div class="row">
+        <div class="section">
+          <h5>Typescript variables</h5>
+          <p>
+            Search Value: <strong>{{searchValue}}</strong><br>
+            Selected Field: <strong>{{selectedSearchField}}</strong><br>
+            Selected Type: <strong>{{selectedResourceType}}</strong><br>
+            Selected Server: <strong>{{connectedServer}}</strong>
+          </p>
+        </div>
+        <div class="section">
+          <h5>Saved Resources</h5>
+          <p *ngFor="let saved of savedResources">
+            Resource Name: <strong>{{saved[0]}}</strong>, Type: <strong>{{saved[1]}}</strong>, ID: <strong>{{saved[2]}}</strong><br>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Exit</a>
+    </div>
+  </div>
+  <!-- End! Debug box - Materializecss Modal -->
 </main>
 <!-- End! Editor Content -->
 
 <!-- Editor Footer -->
+<footer id="footer" class="page-footer white black-text">
+  <div class="container">
+    <div class="row">
+      <h6>Console Output</h6>
+      <div *ngFor="let log of consolelog; let i = index">
+        <p class="blue-text">{{i}}: {{log}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="footer-copyright">
+    <div class="container">
+    © 2014 Copyright Text
+    <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+    </div>
+  </div>
+</footer>
 
 <!-- End! Editor Footer -->

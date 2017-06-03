@@ -1,13 +1,13 @@
 import 'rxjs/add/operator/switchMap';
-import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { Location }               from '@angular/common';
-import { FormGroup }                 from '@angular/forms';
+import { Component, Input, OnInit }   from '@angular/core';
+import { ActivatedRoute, Params }     from '@angular/router';
+import { Location }                   from '@angular/common';
+import { FormGroup }                  from '@angular/forms';
 
-import { FhirService } from '../fhir.service';
-import { Person } from '../person';
-import { QuestionBase }              from '../question-base';
-import { QuestionControlService }    from '../question-control.service';
+import { FhirService }                from '../fhir.service';
+import { Person }                     from '../person';
+import { QuestionBase }               from '../question-base';
+import { QuestionControlService }     from '../question-control.service';
 
 @Component({
   selector: 'app-form',
@@ -34,10 +34,10 @@ export class FormComponent implements OnInit {
   { }
 
   ngOnInit(): void {
-    //this.route.params
-    //  .switchMap((params: Params) => this.fhirService.getResource(params['id'], params['resource'], params['server']))
-    //  .subscribe(person => this.person = person);
-    this.form = this.qcs.toFormGroup(this.questions);
+    this.route.params
+      .switchMap((params: Params) => this.fhirService.getResource(params['id'], params['resource'], params['server']))
+      .subscribe(person => this.person = person);
+    //this.form = this.qcs.toFormGroup(this.questions);
   }
 
   goBack(): void {

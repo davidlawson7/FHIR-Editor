@@ -29,11 +29,18 @@ export class AppComponent {
   types = ['Patient', 'Person', 'Practitioner'];
   fields = ['Name', 'Description', 'ID', 'URL', 'Identifier', 'Version'];
 
+  // Saved resources
+  savedResources = [
+    ['Peter James Chalmers', 'Person', '35287'],
+    ['Alex mate', 'Person', '35287']
+  ];
+  consolelog = ['Successful Request'];
+
   // Dynamic form variables
   questions: any[];
 
   constructor(private fhirService: FhirService, service: QuestionService) {
-    this.questions = service.getQuestions();
+    //this.questions = service.getQuestions();
   }
 
 }

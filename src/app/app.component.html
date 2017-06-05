@@ -1,72 +1,7 @@
 <!-- Editor Navigation -->
 <header>
-  <nav>
-    <div class="nav-wrapper">
-        <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
-        <a href="#!" class="brand-logo">{{title}}</a>
-        <ul class="right hide-on-med-and-down">
-          <li>Connected to: <strong>{{connectedServer}}</strong></li>
-          <li><a href="#debug-modal" class="waves-effect waves-light btn">Debug Box</a></li>
-          <li><a href="#server-selection-modal" class="waves-effect waves-light btn">Settings</a></li>
-        </ul>
-    </div>
-  </nav>
-
-  <ul id="slide-out" class="side-nav fixed">
-    <!-- For search based requests -->
-    <div class="row">
-      <div class="center">
-          <h4 class="logo">Search</h4>
-      </div>
-
-      <!-- The Resource being queried -->
-      <div class="row col s12">
-        <label for="resource_type">Type</label>
-          <select class="browser-default" id="resource_type"
-                  name="type"
-                  [(ngModel)]="selectedResourceType" required
-                  #fhir_server="ngModel">
-              <option value="" disabled selected>Choose your Resource</option>
-              <option *ngFor="let type of types" [value]="type">{{type}}</option>
-          </select>
-      </div>
-      <!-- What to search by -->
-      <div class="row col s12">
-        <label for="search_by">Search by</label>
-          <select class="browser-default" id="search_by"
-                  name="searchby"
-                  [(ngModel)]="selectedSearchField" required
-                  #fhir_server="ngModel">
-              <option value="" disabled selected>Choose your Field</option>
-              <option *ngFor="let field of fields" [value]="field">{{field}}</option>
-          </select>
-      </div>
-      <!-- Value to search for -->
-      <div class="row">
-          <div class="input-field col s12">
-              <input [(ngModel)]="searchValue" placeholder="i.e. John Doe" id="value" type="text" class="validate">
-              <label for="value">Value</label>
-          </div>
-      </div>
-      <!-- Query submit button -->
-      <div class="row">
-          <div class="input-field col s12">
-              <a [routerLink]="['/query/', connectedServer, selectedResourceType, searchValue]" class="waves-effect waves-light btn">Send</a>
-          </div>
-          <a class="modal-trigger waves-effect waves-light btn" href="#search-modal">Modal</a>
-      </div>
-    </div>
-    <div class="divider"></div>
-    <!-- For saved resource -->
-    <div class="row">
-      <div class="col s12 center">
-          <h4 class="logo">Saved</h4>
-      </div>
-    </div>
-    <li *ngFor="let saved of savedResources"><a [routerLink]="['/query/', connectedServer, saved[1], saved[2]]" href="#!">{{saved[0]}}</a></li>
-
-  </ul>
-
+  <app-top-nav [title]="title" [activeSession]="activeSession"></app-top-nav>
+  <app-side-nav [activeSession]="activeSession" [savedResources]="savedResources"></app-side-nav>
 </header>
 <!-- End! Editor Navigation -->
 
@@ -76,7 +11,7 @@
       <!-- Page tabs -->
       <div class="">
         <ul class="tabs">
-          <li class="tab col s3"><a href="#test1">untitled</a></li>
+          <li class="tab col s3"><a href="#test1">{{activeSession.name}}</a></li>
         </ul>
       </div>
       <!-- Page output zone -->
@@ -88,114 +23,6 @@
   <div class="container">
 
   </div>
-
-  <!-- Resource selection box - Materializecss Modal -->
-  <div id="search-modal" class="modal modal-fixed-footer">
-    <div class="modal-content">
-      <div class="row">
-        <h4>Search Results</h4>
-        <div class="divider"></div>
-        <p>Please select a Resource from the list click 'Select Resource'.</p>
-      </div>
-      <div class="row">
-        <ul class="pagination">
-         <li class="disabled"><a href="#!"></a></li>
-         <li class="active"><a href="#!">1</a></li>
-         <li class="waves-effect"><a href="#!">2</a></li>
-         <li class="waves-effect"><a href="#!">3</a></li>
-         <li class="waves-effect"><a href="#!">4</a></li>
-         <li class="waves-effect"><a href="#!">5</a></li>
-         <li class="waves-effect"><a href="#!"></a></li>
-       </ul>
-     </div>
-    </div>
-    <div class="modal-footer">
-      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Select Resource</a>
-    </div>
-  </div>
-  <!-- End! Resource selection box - Materializecss Modal -->
-  <!-- Server selection box - Materializecss Modal -->
-  <div id="server-selection-modal" class="modal modal-fixed-footer">
-    <div class="modal-content">
-      <!-- Settings header -->
-      <div class="section">
-        <h4>Settings</h4>
-        <div class="divider"></div>
-      </div>
-      <!-- FHIR Endpoint -->
-      <div class="section">
-        <h5>Select FHIR Endpoint</h5>
-
-        <div class="row">
-          <!-- FHIR Endpoint dropdown -->
-            <label for="fhir_server">Choose a FHIR Server:</label>
-            <select class="browser-default" id="fhir_server"
-                    name="fhir_server"
-                    [(ngModel)]="connectedServer" required
-                    #fhir_server="ngModel">
-              <option value="" disabled selected>Choose your option</option>
-              <option *ngFor="let server of servers" [value]="server[1]">{{server[0]}}</option>
-            </select>
-
-            <!-- FHIR Endpoint output -->
-            <ul class="collapsible" data-collapsible="accordion">
-              <li>
-                <div class="collapsible-header">Connection Details</div>
-                <div class="collapsible-body">
-                  <span>
-                    Server: Connected<br>
-                    <strong>FHIR Version</strong><br>1.4.0
-                    <strong>Software</strong><br>Ontoserver 4.1.14
-                    <strong>Publisher</strong><br>The Australian e-Health Research Centre, CSIRO
-                    <strong>Security</strong><br>none
-                    <strong>Description</strong><br>Ontoserver, The Australian e-Health Research Centre, CSIRO
-                  </span>
-                </div>
-              </li>
-            </ul>
-        </div>
-      </div>
-      <!-- End! FHIR Endpoint -->
-    </div>
-    <div class="modal-footer">
-      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Exit Settings</a>
-    </div>
-  </div>
-  <!-- End! Server selection box - Materializecss Modal -->
-
-  <!-- Debug box - Materializecss Modal -->
-  <div id="debug-modal" class="modal modal-fixed-footer">
-    <div class="modal-content">
-      <!-- Title row -->
-      <div class="row">
-        <h4>The Debug Box</h4>
-        <p>This box contains the output of typescript variables for debuggin purposes.</p>
-        <div class="divider"></div>
-      </div>
-      <!-- Debug output row -->
-      <div class="row">
-        <div class="section">
-          <h5>Typescript variables</h5>
-          <p>
-            Search Value: <strong>{{searchValue}}</strong><br>
-            Selected Field: <strong>{{selectedSearchField}}</strong><br>
-            Selected Type: <strong>{{selectedResourceType}}</strong><br>
-            Selected Server: <strong>{{connectedServer}}</strong>
-          </p>
-        </div>
-        <div class="section">
-          <h5>Saved Resources</h5>
-          <p *ngFor="let saved of savedResources">
-            Resource Name: <strong>{{saved[0]}}</strong>, Type: <strong>{{saved[1]}}</strong>, ID: <strong>{{saved[2]}}</strong><br>
-          </p>
-        </div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Exit</a>
-    </div>
-  </div>
-  <!-- End! Debug box - Materializecss Modal -->
 </main>
 <!-- End! Editor Content -->
 
@@ -216,5 +43,197 @@
     </div>
   </div>
 </footer>
-
 <!-- End! Editor Footer -->
+
+<!-- Begining of popup models -------------------------------------->
+
+<!-- Resource selection box - Materializecss Modal -->
+<div id="search-modal" class="modal modal-fixed-footer">
+  <div class="modal-content">
+    <div class="row">
+      <h4>Search Results</h4>
+      <div class="divider"></div>
+      <p>Please select a Resource from the list click 'Select Resource'.</p>
+    </div>
+    <div class="row">
+      <ul class="pagination">
+       <li class="disabled"><a href="#!"></a></li>
+       <li class="active"><a href="#!">1</a></li>
+       <li class="waves-effect"><a href="#!">2</a></li>
+       <li class="waves-effect"><a href="#!">3</a></li>
+       <li class="waves-effect"><a href="#!">4</a></li>
+       <li class="waves-effect"><a href="#!">5</a></li>
+       <li class="waves-effect"><a href="#!"></a></li>
+     </ul>
+   </div>
+  </div>
+  <div class="modal-footer">
+    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Select Resource</a>
+  </div>
+</div>
+<!-- End! Resource selection box - Materializecss Modal -->
+
+<!-- Settings box - Materializecss Modal -->
+<div id="server-selection-modal" class="modal modal-fixed-footer">
+  <div class="modal-content">
+    <!-- Settings header -->
+    <div class="section">
+      <h4>Settings</h4>
+      <div class="divider"></div>
+    </div>
+    <!-- FHIR Endpoint -->
+    <div class="section">
+      <h5>Select FHIR Endpoint</h5>
+
+      <div class="row">
+        <!-- FHIR Endpoint dropdown -->
+          <label for="fhir_server">Choose a FHIR Server:</label>
+          <select class="browser-default" (ngModelChange)="updateSessionCapabilityStatement($event)"
+                  name="fhir_server"
+                  [(ngModel)]="activeSession.connectedServer" required
+                  #fhir_server="ngModel">
+            <option value="" disabled selected>Choose your option</option>
+            <option *ngFor="let endpoint of availableEndpoints" [value]="endpoint.url">{{endpoint.name}}</option>
+          </select>
+
+          <!-- FHIR Endpoint output -->
+          <ul class="collapsible" data-collapsible="accordion">
+            <!-- Server connection tab -->
+            <li>
+              <div class="collapsible-header">Connection Details</div>
+              <div *ngIf="activeSession.capabilityStatement != null" class="collapsible-body">
+                <span>
+                  Server: Connected<br>
+                  <strong>FHIR Version</strong>: {{activeSession.capabilityStatement.fhirVersion}}<br>
+                  <strong>Software</strong>: {{activeSession.capabilityStatement.software.name}}<br>
+                  <strong>Publisher</strong>: {{activeSession.capabilityStatement.publisher}}<br>
+                  <strong>Security</strong>: <br>
+                  <strong>Description</strong>: {{activeSession.capabilityStatement.implementation.description}}<br>
+                </span>
+              </div>
+            </li>
+            <!-- Server Structures tab -->
+            <li>
+              <div class="collapsible-header">Endpoint Resource Availablity</div>
+              <div class="collapsible-body">
+                <!-- Server available resource types & their structures -->
+                <label for="resource_type">Resource Types</label>
+                <select class="browser-default" id="resource_type"
+                        name="type"
+                        [(ngModel)]="activeSession.settingsResourceType" required
+                        #fhir_server="ngModel">
+                    <option value="" disabled selected>Choose your Resource</option>
+                    <option *ngFor="let type of activeSession.availableTypes" [value]="type">{{type}}</option>
+                </select>
+                <a class="btn btn-success" (click)="getStructureDefinition(activeSession.settingsResourceType, activeSession.connectedServer)">Check</a>
+                <div *ngIf="activeSession.settingsResourceStructure != null">
+                  <h6>The Resource</h6>
+                  <div class="row" *ngIf="activeSession.settingsResourceStructure.hasOwnProperty('resourceType')">
+                    <p>
+                      <span>Type: {{activeSession.settingsResourceStructure.resourceType}}, For: {{activeSession.settingsResourceStructure.id}}<br></span>
+                      <span *ngFor="let element of activeSession.settingsResourceStructure.snapshot.element">
+                        <div *ngIf="element.hasOwnProperty('type')">
+                          {{element.id}} : {{element.type[0].code}}<br>
+                        </div>
+                      </span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+      </div>
+    </div>
+    <!-- End! FHIR Endpoint -->
+  </div>
+  <div class="modal-footer">
+    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Exit Settings</a>
+  </div>
+</div>
+<!-- End! Settings box - Materializecss Modal -->
+
+<!-- Debug box - Materializecss Modal -->
+<div id="debug-modal" class="modal modal-fixed-footer">
+  <div class="modal-content">
+    <!-- Title row -->
+    <div class="row">
+      <h4>The Debug Box</h4>
+      <p>This box contains the output of typescript variables for debuggin purposes.</p>
+      <div class="divider"></div>
+    </div>
+    <!-- Debug output row -->
+    <div class="row">
+      <div class="section">
+        <h5>Current Sessions Variables</h5>
+        <p>
+          Tab ID: <strong>{{activeSession.id}}</strong><br>
+          Tab Name: <strong>{{activeSession.name}}</strong><br>
+          Search Value: <strong>{{activeSession.searchValue}}</strong><br>
+          Selected Field: <strong>{{activeSession.selectedSearchField}}</strong><br>
+          Selected Type: <strong>{{activeSession.selectedResourceType}}</strong><br>
+          Selected Server: <strong>{{activeSession.connectedServer}}</strong>
+        </p>
+      </div>
+      <div class="section">
+        <h5>Selected FHIR Endpoint Availablity Details</h5>
+        <p>
+          Available Types: <strong *ngFor="let type of activeSession.availableTypes">{{type}},</strong>
+        </p>
+        <p>
+          Available Search Fields: <strong *ngFor="let field of activeSession.availablefields">{{field}},</strong>
+        </p>
+      </div>
+      <div class="section">
+        <h5>Saved Resources</h5>
+        <p *ngFor="let saved of savedResources">
+          Resource Name: <strong>{{saved.name}}</strong>, Type: <strong>{{saved.type}}</strong>, ID: <strong>{{saved.id}}</strong>, Endpoint: <strong>{{saved.server}}</strong><br>
+        </p>
+      </div>
+      <div class="section">
+        <h5>Editor Settings</h5>
+        <p>
+          Editor Title: <strong>{{title}}</strong><br>
+          Version: <strong>{{version}}</strong> - {{versionNumber}}<br>
+        </p>
+        <p>
+          <strong>Available Endpoints:</strong><br>
+          <span *ngFor="let endpoint of availableEndpoints">Name: {{endpoint.name}}, URL: {{endpoint.url}}<br></span>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Exit</a>
+  </div>
+</div>
+<!-- End! Debug box - Materializecss Modal -->
+
+<!-- Resource selection box - Materializecss Modal -->
+<div id="create-modal" class="modal modal-fixed-footer">
+  <div class="modal-content">
+    <div class="row">
+      <h4>Create Resource</h4>
+      <div class="divider"></div>
+      <p>Please select a server before creating a Resource. If no server appears below, please go into settings and select one.</p>
+      <p>Server: {{activeSession.connectedServer}}</p>
+    </div>
+    <div class="row">
+      <form>
+        <label for="resource_type">Type</label>
+        <select class="browser-default" id="resource_type"
+                name="type"
+                [(ngModel)]="activeSession.createResourceType" required
+                #fhir_server="ngModel">
+          <option value="" disabled selected>Choose your Resource</option>
+          <option *ngFor="let type of activeSession.availableTypes" [value]="type">{{type}}</option>
+        </select>
+
+        <button type="submit" class="btn btn-success">Create</button>
+      </form>
+   </div>
+  </div>
+  <div class="modal-footer">
+    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Close</a>
+  </div>
+</div>
+<!-- End! Resource selection box - Materializecss Modal -->

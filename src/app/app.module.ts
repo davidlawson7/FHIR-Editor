@@ -11,6 +11,8 @@ import { FormQuestionComponent } from './form-question/form-question.component';
 import { FhirService } from './fhir.service';
 
 import { AppRoutingModule }     from './app-routing/app-routing.module';
+import { SideNavComponent } from './side-nav/side-nav.component';
+import { TopNavComponent } from './top-nav/top-nav.component';
 
 // Imports for loading & configuring the in-memory web api
 //import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
@@ -20,7 +22,9 @@ import { AppRoutingModule }     from './app-routing/app-routing.module';
   declarations: [
     AppComponent,
     FormComponent,
-    FormQuestionComponent
+    FormQuestionComponent,
+    SideNavComponent,
+    TopNavComponent
   ],
   imports: [
     BrowserModule,

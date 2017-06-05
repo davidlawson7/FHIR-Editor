@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
 
 import { FhirService } from './fhir.service';
-import { Person } from './person';
 import { QuestionService } from './question.service';
-import { Session } from './session';
-import { SavedResource } from './saved-resource';
-import { FhirEndpoint } from './fhir-endpoint';
+import { Session } from './editor-objects/session';
+import { SavedResource } from './editor-objects/saved-resource';
+import { FhirEndpoint } from './editor-objects/fhir-endpoint';
 
 @Component({
   selector: 'app-root',
@@ -23,7 +22,7 @@ export class AppComponent {
   sessions: Session[];
   savedResources: SavedResource[];
   availableEndpoints: FhirEndpoint[];
-  log: string[];
+  log: any[];
 
   // Dynamic form variables
   questions: any[];
@@ -36,7 +35,8 @@ export class AppComponent {
     this.versionNumber = '0.0.1';
     // The list of sessions. Always must have one session
     this.sessions = [new Session()];
-    this.activeSession = this.sessions[0]
+    this.sessions[0].name = 'untitled';
+    this.activeSession = this.sessions[0];
     // All the saved resources on this editor
     this.savedResources = [
       new SavedResource('35287','Person','http://fhirtest.uhn.ca/baseDstu3','Peter James Chalmers')
@@ -49,6 +49,33 @@ export class AppComponent {
     ];
     // A log to keep track of things
     this.log = [];
+  }
+
+  updateSessionCapabilityStatement(endpoint: string) {
+    this.fhirService.getCapabilityStatement(endpoint)
+                    .subscribe(
+                      any => {
+                        // Store capability statement in session
+                        this.activeSession.capabilityStatement = any;
+                        // Log it
+                        console.log(this.activeSession.capabilityStatement);
+                        this.log.push("Successfully updated Capability Statement");
+                      },
+                      error => this.log.push(<any>error));
+
+  }
+
+  getStructureDefinition(resourceType: string, endpoint: string) {
+    this.fhirService.getStructureDefinition(resourceType, endpoint)
+                    .subscribe(
+                      any => {
+                        // Store data in the session
+                        this.activeSession.settingsResourceStructure = any;
+                        // log it in the browser and app consoles
+                        console.log(this.activeSession.settingsResourceStructure);
+                        this.log.push("Successfully pulled ${resourceType} StructureDefinition")
+                      },
+                      error => this.log.push(<any>error));
   }
 
   /**

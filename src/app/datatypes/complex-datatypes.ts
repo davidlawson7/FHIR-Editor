@@ -28,6 +28,19 @@ export class CodeableConcept {
   test: string; // Plain text representation of the concept
 }
 
+export class Quantity {
+  value: number;
+  comparator: string;
+  unit: string;
+  system: string;
+  code: string;
+}
+
+export class Range {
+  low: Quantity;
+  high: Quantity;
+}
+
 export class Period {
   start: Date; // C? Starting time with inclusive boundary
   end: Date; // C? End time with inclusive boundary, if not ongoing

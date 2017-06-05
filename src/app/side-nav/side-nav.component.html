@@ -1,0 +1,53 @@
+<ul id="slide-out" class="side-nav fixed">
+  <!-- For search based requests -->
+  <div class="row">
+    <div class="center">
+        <h4 class="logo">Search</h4>
+    </div>
+
+    <!-- The Resource being queried -->
+    <div class="row col s12">
+      <label for="resource_type">Type</label>
+      <select class="browser-default" id="resource_type"
+              name="type"
+              [(ngModel)]="activeSession.selectedResourceType" required
+              #fhir_server="ngModel">
+          <option value="" disabled selected>Choose your Resource</option>
+          <option *ngFor="let type of activeSession.availableTypes" [value]="type">{{type}}</option>
+      </select>
+    </div>
+    <!-- What to search by -->
+    <div class="row col s12">
+      <label for="search_by">Search by</label>
+        <select class="browser-default" id="search_by"
+                name="searchby"
+                [(ngModel)]="activeSession.selectedSearchField" required
+                #fhir_server="ngModel">
+            <option value="" disabled selected>Choose your Field</option>
+            <option *ngFor="let field of activeSession.availablefields" [value]="field">{{field}}</option>
+        </select>
+    </div>
+    <!-- Value to search for -->
+    <div class="row">
+        <div class="input-field col s12">
+            <input [(ngModel)]="activeSession.searchValue" placeholder="i.e. John Doe" id="value" type="text" class="validate">
+            <label for="value">Value</label>
+        </div>
+    </div>
+    <!-- Query submit button -->
+    <div class="row">
+        <div class="input-field col s12">
+            <a [routerLink]="['/query/', activeSession.connectedServer, activeSession.selectedResourceType, activeSession.searchValue]" class="waves-effect waves-light btn">Send</a>
+        </div>
+        <a class="modal-trigger waves-effect waves-light btn" href="#search-modal">Modal</a>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <!-- For saved resource -->
+  <div class="row">
+    <div class="col s12 center">
+        <h4 class="logo">Saved</h4>
+    </div>
+  </div>
+  <li *ngFor="let saved of savedResources"><a [routerLink]="['/query/', saved.server, saved.type, saved.id]" href="#!">{{saved.name}}</a></li>
+</ul>

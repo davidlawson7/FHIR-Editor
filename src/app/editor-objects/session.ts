@@ -5,6 +5,7 @@
  */
 export class Session {
   capabilityStatement: any;
+  log: any[];
   // Search criteria variables
   id: number;
   name: string;
@@ -20,4 +21,6 @@ export class Session {
 
   availableTypes = ['Patient', 'Person', 'Practitioner'];
   availablefields = ['Name', 'Description', 'ID', 'URL', 'Identifier', 'Version'];
+
+  constructor() { this.log = [] }
 }

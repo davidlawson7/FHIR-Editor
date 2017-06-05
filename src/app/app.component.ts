@@ -22,7 +22,7 @@ export class AppComponent {
   sessions: Session[];
   savedResources: SavedResource[];
   availableEndpoints: FhirEndpoint[];
-  log: any[];
+
 
   // Dynamic form variables
   questions: any[];
@@ -47,8 +47,6 @@ export class AppComponent {
       new FhirEndpoint('University Health Network - DSTU2', 'http://fhirtest.uhn.ca/baseDstu2'),
       new FhirEndpoint('CSIRO ontoserver - STU3', 'http://ontoserver.csiro.au/stu3-latest')
     ];
-    // A log to keep track of things
-    this.log = [];
   }
 
   updateSessionCapabilityStatement(endpoint: string) {
@@ -59,9 +57,9 @@ export class AppComponent {
                         this.activeSession.capabilityStatement = any;
                         // Log it
                         console.log(this.activeSession.capabilityStatement);
-                        this.log.push("Successfully updated Capability Statement");
+                        this.activeSession.log.push("Successfully updated Capability Statement");
                       },
-                      error => this.log.push(<any>error));
+                      error => this.activeSession.log.push(<any>error));
 
   }
 
@@ -73,9 +71,9 @@ export class AppComponent {
                         this.activeSession.settingsResourceStructure = any;
                         // log it in the browser and app consoles
                         console.log(this.activeSession.settingsResourceStructure);
-                        this.log.push("Successfully pulled ${resourceType} StructureDefinition")
+                        this.activeSession.log.push("Successfully pulled ${resourceType} StructureDefinition")
                       },
-                      error => this.log.push(<any>error));
+                      error => this.activeSession.log.push(<any>error));
   }
 
   /**

@@ -13,6 +13,7 @@ import { FhirService } from './fhir.service';
 import { AppRoutingModule }     from './app-routing/app-routing.module';
 import { SideNavComponent } from './side-nav/side-nav.component';
 import { TopNavComponent } from './top-nav/top-nav.component';
+import { FooterComponent } from './footer/footer.component';
 
 // Imports for loading & configuring the in-memory web api
 //import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
@@ -24,7 +25,8 @@ import { TopNavComponent } from './top-nav/top-nav.component';
     FormComponent,
     FormQuestionComponent,
     SideNavComponent,
-    TopNavComponent
+    TopNavComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

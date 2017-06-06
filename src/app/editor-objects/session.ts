@@ -1,3 +1,5 @@
+import { Log } from './log';
+
 /**
  * Represents a session/tab in the application. Holds all required information
  * to operate the editor with that information. Doesn't require to be initiated
@@ -5,10 +7,12 @@
  */
 export class Session {
   capabilityStatement: any;
-  log: any[];
+  log: Log;
+  availableTypes: Array<any>;
+  availablefields: string[];
   // Search criteria variables
   id: number;
-  name: string;
+  //name: string;
   connectedServer: string;
   selectedResourceType: string;
   selectedSearchField: string;
@@ -19,8 +23,17 @@ export class Session {
   settingsResourceType: string;
   settingsResourceStructure: any;
 
-  availableTypes = ['Patient', 'Person', 'Practitioner'];
-  availablefields = ['Name', 'Description', 'ID', 'URL', 'Identifier', 'Version'];
 
-  constructor() { this.log = [] }
+  constructor(public name?: string) {
+    // Default value for tab name
+    if (typeof this.name === "undefined") {
+      this.name = "untitled";
+    }
+
+    this.log = new Log;
+    this.availableTypes = [];
+    this.availablefields = ['Name', 'Description', 'ID', 'URL', 'Identifier', 'Version'];
+  }
+
+
 }

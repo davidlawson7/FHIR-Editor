@@ -13,8 +13,22 @@
               [(ngModel)]="activeSession.selectedResourceType" required
               #fhir_server="ngModel">
           <option value="" disabled selected>Choose your Resource</option>
-          <option *ngFor="let type of activeSession.availableTypes" [value]="type">{{type}}</option>
+          <option *ngFor="let type of activeSession.availableTypes" [value]="type.value">{{type.label}}</option>
       </select>
+      <form [formGroup]="form">
+        <ng-select
+      		  [options]="data"
+      		  [multiple]="multiple0"
+      		  placeholder="Select one"
+            formControlName="selectSingle"
+      		  [allowClear]="true"
+            (opened)="onSingleOpened()"
+            (closed)="onSingleClosed()"
+            (selected)="onSingleSelected($event)"
+            (deselected)="onSingleDeselected($event)">
+            <option *ngFor="let type of activeSession.availableTypes" [value]="type.value">{{type.label}}</option>
+      	</ng-select>
+      </form>
     </div>
     <!-- What to search by -->
     <div class="row col s12">
@@ -39,7 +53,7 @@
         <div class="input-field col s12">
             <a [routerLink]="['/query/', activeSession.connectedServer, activeSession.selectedResourceType, activeSession.searchValue]" class="waves-effect waves-light btn">Send</a>
         </div>
-        <a class="modal-trigger waves-effect waves-light btn" href="#search-modal">Modal</a>
+        <a (click)="update()" class="modal-trigger waves-effect waves-light btn" href="#search-modal">Modal</a>
     </div>
   </div>
   <div class="divider"></div>

@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule }          from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {SelectModule} from 'ng-select';
 
 import { AppComponent } from './app.component';
 import { FormComponent } from './form/form.component';
@@ -14,6 +15,7 @@ import { AppRoutingModule }     from './app-routing/app-routing.module';
 import { SideNavComponent } from './side-nav/side-nav.component';
 import { TopNavComponent } from './top-nav/top-nav.component';
 import { FooterComponent } from './footer/footer.component';
+import { FontColorDirective } from './font-color.directive';
 
 // Imports for loading & configuring the in-memory web api
 //import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
@@ -26,7 +28,8 @@ import { FooterComponent } from './footer/footer.component';
     FormQuestionComponent,
     SideNavComponent,
     TopNavComponent,
-    FooterComponent
+    FooterComponent,
+    FontColorDirective,
   ],
   imports: [
     BrowserModule,
@@ -35,7 +38,8 @@ import { FooterComponent } from './footer/footer.component';
     HttpModule,
     //InMemoryWebApiModule.forRoot(InMemoryDataService),
     BrowserAnimationsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    SelectModule
   ],
   providers: [ FhirService ],
   bootstrap: [ AppComponent ]

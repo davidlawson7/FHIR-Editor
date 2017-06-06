@@ -11,7 +11,7 @@
       <!-- Page tabs -->
       <div class="">
         <ul class="tabs">
-          <li class="tab col s3"><a href="#test1">{{activeSession.name}}</a></li>
+          <li *ngFor="let sesh of sessions" class="tab col"><a href="">{{sesh.name}}</a></li>
         </ul>
       </div>
       <!-- Page output zone -->
@@ -75,7 +75,7 @@
       <div class="row">
         <!-- FHIR Endpoint dropdown -->
           <label for="fhir_server">Choose a FHIR Server:</label>
-          <select class="browser-default" (ngModelChange)="updateSessionCapabilityStatement($event)"
+          <select class="browser-default" (ngModelChange)="updateEndpoint($event)"
                   name="fhir_server"
                   [(ngModel)]="activeSession.connectedServer" required
                   #fhir_server="ngModel">
@@ -174,12 +174,6 @@
         <h5>Saved Resources</h5>
         <p *ngFor="let saved of savedResources">
           Resource Name: <strong>{{saved.name}}</strong>, Type: <strong>{{saved.type}}</strong>, ID: <strong>{{saved.id}}</strong>, Endpoint: <strong>{{saved.server}}</strong><br>
-        </p>
-      </div>
-      <div class="section">
-        <h5>Internal Log</h5>
-        <p *ngFor="let log of activeSession.log">
-          Test: {{log}}
         </p>
       </div>
       <div class="section">

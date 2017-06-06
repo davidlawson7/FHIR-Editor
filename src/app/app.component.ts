@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
+import {SelectModule} from 'ng-select';
 
 import { FhirService } from './fhir.service';
 import { QuestionService } from './question.service';
 import { Session } from './editor-objects/session';
+import { Log } from './editor-objects/log';
+
 import { SavedResource } from './editor-objects/saved-resource';
 import { FhirEndpoint } from './editor-objects/fhir-endpoint';
 
@@ -34,8 +37,7 @@ export class AppComponent {
     this.version = 'Alpha';
     this.versionNumber = '0.0.1';
     // The list of sessions. Always must have one session
-    this.sessions = [new Session()];
-    this.sessions[0].name = 'untitled';
+    this.sessions = [new Session(), new Session('testname')];
     this.activeSession = this.sessions[0];
     // All the saved resources on this editor
     this.savedResources = [
@@ -49,18 +51,44 @@ export class AppComponent {
     ];
   }
 
+  public updateEndpoint(newEndpoint: string) {
+    // Grab new capabilityStatement
+    this.updateSessionCapabilityStatement(newEndpoint);
+  }
+
   updateSessionCapabilityStatement(endpoint: string) {
     this.fhirService.getCapabilityStatement(endpoint)
                     .subscribe(
                       any => {
                         // Store capability statement in session
                         this.activeSession.capabilityStatement = any;
-                        // Log it
                         console.log(this.activeSession.capabilityStatement);
-                        this.activeSession.log.push("Successfully updated Capability Statement");
-                      },
-                      error => this.activeSession.log.push(<any>error));
+                        this.activeSession.log.info("Successfully updated Capability Statement.");
 
+                        // Update sessions available resources
+                        this.updateSessionAvailableResources();
+                      },
+                      error => this.activeSession.log.error("Something went wrong with Capability Statement") );
+  }
+
+  updateSessionAvailableResources() {
+    // Empty the old array
+    let t = this.activeSession.availableTypes;
+    t.length = 0;
+
+    // Rest object is a array, so go through each one
+    for (let rest of this.activeSession.capabilityStatement.rest) {
+      // Resource object is a array, so go through each one
+      for (let resource of rest.resource) {
+        let obj = {
+          value: resource.type.toString(),
+          label: resource.type.toString()
+        }
+        t.push(obj);
+      }
+    }
+    console.log(t);
+    this.activeSession.log.info("Successfully updated Resource Type list.");
   }
 
   getStructureDefinition(resourceType: string, endpoint: string) {
@@ -71,9 +99,9 @@ export class AppComponent {
                         this.activeSession.settingsResourceStructure = any;
                         // log it in the browser and app consoles
                         console.log(this.activeSession.settingsResourceStructure);
-                        this.activeSession.log.push("Successfully pulled ${resourceType} StructureDefinition")
+                        this.activeSession.log.info(`Successfully pulled ${resourceType} StructureDefinition`)
                       },
-                      error => this.activeSession.log.push(<any>error));
+                      error => this.activeSession.log.error("Something went wrong with Structure Definition"));
   }
 
   /**
@@ -97,7 +125,7 @@ export class AppComponent {
   openSession(resource: SavedResource): Session {
     let s = new Session();
     s.name = resource.name;
-    s.selectedResourceType = resource.type;
+    //s.selectedResourceType = resource.type;
     s.connectedServer = resource.server;
     this.sessions.push(s);
     // TODO: the sessions resource object should be obtained from the

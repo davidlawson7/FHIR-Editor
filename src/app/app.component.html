@@ -17,7 +17,8 @@
       <!-- Page output zone -->
       <div id="page1" class="col s12">
         <!--<app-form [questions]="questions"></app-form>-->
-        <router-outlet></router-outlet>
+        <!--<router-outlet></router-outlet>-->
+        <!--<app-form [activeSession]="activeSession"></app-form>-->
       </div>
     </div>
   <div class="container">
@@ -73,7 +74,7 @@
 
   </div>
   <div class="modal-footer">
-    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Select Resource</a>
+    <a href="#!" class="modal-action modal-close waves-effect waves-green btn ">Select Resource</a>
   </div>
 </div>
 <!-- End! Resource selection box - Materializecss Modal -->
@@ -112,8 +113,6 @@
                   <strong>FHIR Version</strong>: {{activeSession.capabilityStatement.fhirVersion}}<br>
                   <strong>Software</strong>: {{activeSession.capabilityStatement.software.name}}<br>
                   <strong>Publisher</strong>: {{activeSession.capabilityStatement.publisher}}<br>
-                  <strong>Security</strong>: <br>
-                  <strong>Description</strong>: {{activeSession.capabilityStatement.implementation.description}}<br>
                 </span>
               </div>
             </li>
@@ -251,7 +250,7 @@
   </div>
   <div class="modal-footer">
     <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
-    <a href="#!" class="modal-action waves-effect waves-green btn-flat">Create</a>
+    <a (click)="createNewResource()" href="#!" class="modal-action waves-effect waves-green btn-flat">Create</a>
   </div>
 </div>
 <!-- End! Resource creation box - Materializecss Modal -->

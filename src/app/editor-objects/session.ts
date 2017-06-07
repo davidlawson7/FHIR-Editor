@@ -24,6 +24,8 @@ export class Session {
   settingsResourceType: string;
   settingsResourceStructure: any;
 
+  activeObject: any;
+
 
   constructor(public name?: string) {
     // Default value for tab name
@@ -42,6 +44,7 @@ export class Session {
     }
   ];
     this.searchResult = [];
+    this.activeObject = null;
   }
 
 }

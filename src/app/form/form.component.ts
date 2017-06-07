@@ -3,6 +3,7 @@ import { Component, Input, OnInit }   from '@angular/core';
 import { ActivatedRoute, Params }     from '@angular/router';
 import { Location }                   from '@angular/common';
 import { FormGroup }                  from '@angular/forms';
+import { Session } from '../editor-objects/session';
 
 import { FhirService }                from '../fhir.service';
 import { QuestionBase }               from '../question-base';
@@ -16,7 +17,8 @@ import { QuestionControlService }     from '../question-control.service';
 })
 export class FormComponent implements OnInit {
 
-  /* The person we are editing */
+  @Input() activeSession: Session;
+  
 
   /* Dynamic form */
   @Input() questions: QuestionBase<any>[] = [];
@@ -32,7 +34,7 @@ export class FormComponent implements OnInit {
   { }
 
   ngOnInit(): void {
-    
+
     //this.form = this.qcs.toFormGroup(this.questions);
   }
 

@@ -9,6 +9,18 @@ import { Log } from './editor-objects/log';
 import { SavedResource } from './editor-objects/saved-resource';
 import { FhirEndpoint } from './editor-objects/fhir-endpoint';
 
+import {
+  FhirBoolean, FhirInteger, FhirString, FhirDecimal, FhirUri,
+  FhirBase64Binary, FhirInstant, FhirDate, FhirDateTime, FhirTime, FhirCode,
+  FhirOid, FhirId, FhirMarkdown, FhirUnsignedInt, FhirPositiveInt
+} from './datatypes/primitive-datatypes'; // ALL primitive datatypes
+
+import {
+  Attachment, Coding, CodeableConcept, Quantity, Range, Ratio, Period,
+  SampledData, Identifier, HumanName, Address, ContactPoint, Timing, Signature,
+  Annotation, Meta, Reference, Link, Text
+} from './datatypes/complex-datatypes'; // ALL complex datatypes
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -47,8 +59,218 @@ export class AppComponent {
     this.availableEndpoints = [
       new FhirEndpoint('University Health Network - STU3', 'http://fhirtest.uhn.ca/baseDstu3'),
       new FhirEndpoint('University Health Network - DSTU2', 'http://fhirtest.uhn.ca/baseDstu2'),
-      new FhirEndpoint('CSIRO ontoserver - STU3', 'http://ontoserver.csiro.au/stu3-latest')
+      new FhirEndpoint('CSIRO ontoserver - STU3', 'http://ontoserver.csiro.au/stu3-latest'),
+      new FhirEndpoint('Furore Spark - DSTU2/1?', 'http://spark.furore.com/fhir'),
+      new FhirEndpoint('Furore Vonk - STU3', 'http://vonk.furore.com')
     ];
+  }
+
+  public createNewResource() {
+    let obj: any;  // The object we are creating based on the structure def
+    let structure = this.activeSession.settingsResourceStructure;
+
+    // For each field in the resource, skipping first ofcourse
+    for (let element of structure.snapshot.element) {
+      if (!element.hasOwnProperty('type')) {
+        // Skip the iteration as it doesn't contain a field
+        console.log("SKIPPING FIELD: SHOULD ONLY HAPPEN ONCE PER GENERATION.")
+        continue;
+      }
+      // Generate the computed property name
+      let fieldName = element.id.split(".", 2)[1]; // i.e. 'Patient.id'
+      // Determine the type and build
+      this.transformType(obj, fieldName, element.type[0].code);
+    }
+    // Setting the active object to be what we just built
+    this.activeSession.activeObject = obj;
+    console.log(this.activeSession.activeObject);
+  }
+
+  /**
+   * Given a fieldName and type code, this method determines what class should
+   * be used to store the field. It then creates that field in the object
+   * given.
+   */
+  private transformType(obj: any, fieldName: string, code: string) {
+    switch (code) {
+      // Primitive Types
+      case "boolean": {
+        console.log("Primitive Type: boolean");
+        obj[fieldName] = new FhirBoolean;
+        break;
+      }
+      case "integer": {
+        console.log("Primitive Type: integer");
+        obj[fieldName] = new FhirInteger;
+        break;
+      }
+      case "string": {
+        console.log("Primitive Type: string");
+        obj[fieldName] = new FhirString;
+        break;
+      }
+      case "decimal": {
+        console.log("Primitive Type: decimal");
+        obj[fieldName] = new FhirDecimal;
+        break;
+      }
+      case "uri": {
+        console.log("Primitive Type: uri");
+        obj[fieldName] = new FhirUri;
+        break;
+      }
+      case "base64Binary": {
+        console.log("Primitive Type: base64Binary");
+        obj[fieldName] = new FhirBase64Binary;
+        break;
+      }
+      case "instant": {
+        console.log("Primitive Type: instant");
+        obj[fieldName] = new FhirInstant;
+        break;
+      }
+      case "date": {
+        console.log("Primitive Type: date");
+        obj[fieldName] = new FhirDate;
+        break;
+      }
+      case "dateTime": {
+        console.log("Primitive Type: dateTime");
+        obj[fieldName] = new FhirDateTime;
+        break;
+      }
+      case "time": {
+        console.log("Primitive Type: time");
+        obj[fieldName] = new FhirTime;
+        break;
+      }
+      case "code": {
+        console.log("Primitive Type: code");
+        obj[fieldName] = new FhirCode;
+        break;
+      }
+      case "oid": {
+        console.log("Primitive Type: oid");
+        obj[fieldName] = new FhirOid;
+        break;
+      }
+      case "id": {
+        console.log("Primitive Type: id");
+        obj[fieldName] = new FhirId;
+        break;
+      }
+      case "markdown": {
+        console.log("Primitive Type: markdown");
+        obj[fieldName] = new FhirMarkdown;
+        break;
+      }
+      case "unsignedInt": {
+        console.log("Primitive Type: unsignedInt");
+        obj[fieldName] = new FhirUnsignedInt;
+        break;
+      }
+      case "positiveInt": {
+        console.log("Primitive Type: positiveInt");
+        obj[fieldName] = new FhirPositiveInt;
+        break;
+      }
+      // Complex Types
+      case "Attachment": {
+        console.log("Complex Type: Attachment");
+        obj[fieldName] = new Attachment;
+        break;
+      }
+      case "Coding": {
+        console.log("Complex Type: Coding");
+        obj[fieldName] = new Coding;
+        break;
+      }
+      case "CodeableConcept": {
+        console.log("Complex Type: CodeableConcept");
+        obj[fieldName] = new Attachment;
+        break;
+      }
+      case "Quantity": {
+        console.log("Complex Type: Quantity");
+        obj[fieldName] = new Attachment;
+        break;
+      }
+      case "Range": {
+        console.log("Complex Type: Range");
+        obj[fieldName] = new Range;
+        break;
+      }
+      case "Ratio": {
+        console.log("Complex Type: Ratio");
+        obj[fieldName] = new Ratio;
+        break;
+      }
+      case "Period": {
+        console.log("Complex Type: Period");
+        obj[fieldName] = new Period;
+        break;
+      }
+      case "SampledData": {
+        console.log("Complex Type: SampledData");
+        obj[fieldName] = new SampledData;
+        break;
+      }
+      case "Identifier": {
+        console.log("Complex Type: Identifier");
+        obj[fieldName] = new Identifier;
+        break;
+      }
+      case "HumanName": {
+        console.log("Complex Type: HumanName");
+        obj[fieldName] = new HumanName;
+        break;
+      }
+      case "Address": {
+        console.log("Complex Type: Address");
+        obj[fieldName] = new Address;
+        break;
+      }
+      case "ContactPoint": {
+        console.log("Complex Type: ContactPoint");
+        obj[fieldName] = new ContactPoint;
+        break;
+      }
+      case "Timing": {
+        console.log("Complex Type: Timing");
+        obj[fieldName] = new Timing;
+        break;
+      }
+      case "Signature": {
+        console.log("Complex Type: Signature");
+        obj[fieldName] = new Signature;
+        break;
+      }
+      case "Annotation": {
+        console.log("Complex Type: Annotation");
+        obj[fieldName] = new Annotation;
+        break;
+      }
+      case "Meta": {
+        console.log("Complex Type: Meta");
+        obj[fieldName] = new Meta;
+        break;
+      }
+      case "Reference": {
+        console.log("Complex Type: Reference");
+        obj[fieldName] = new Reference;
+        break;
+      }
+      case "Link": {
+        console.log("Complex Type: Link");
+        obj[fieldName] = new Link;
+        break;
+      }
+      case "Text": {
+        console.log("Complex Type: Text");
+        obj[fieldName] = new Text;
+        break;
+      }
+    }
   }
 
   /* used */

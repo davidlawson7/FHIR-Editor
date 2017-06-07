@@ -9,7 +9,7 @@ export class Session {
   capabilityStatement: any;
   log: Log;
   availableTypes: Array<any>;
-  availablefields: string[];
+  availablefields: Array<any>;
   // Search criteria variables
   id: number;
   //name: string;
@@ -17,6 +17,7 @@ export class Session {
   selectedResourceType: string;
   selectedSearchField: string;
   searchValue: string;
+  searchResult: Array<any>;
   // Create section variables
   createResourceType: string;
   // Settings variables
@@ -32,8 +33,15 @@ export class Session {
 
     this.log = new Log;
     this.availableTypes = [];
-    this.availablefields = ['Name', 'Description', 'ID', 'URL', 'Identifier', 'Version'];
+    this.availablefields = [{
+      label: "Name",
+      value: "name"
+    }, {
+      label: "ID",
+      value: "id"
+    }
+  ];
+    this.searchResult = [];
   }
-
 
 }

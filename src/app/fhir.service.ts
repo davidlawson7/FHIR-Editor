@@ -16,6 +16,15 @@ export class FhirService {
 
   constructor(private http: Http) { }
 
+  search(endpoint: string, type: string, searchby: string, value: string): Observable<any> {
+    // Construct the search URL
+    const url = `${endpoint}/${type}?${searchby}:contains=${value}`;
+    // Perform the search
+    return this.http.get(url, {headers: this.headers})
+              .map(this.extractData)
+              .catch(this.handleError);
+  }
+
   getCapabilityStatement(endpoint: string): Observable<any> {
     const url = `${endpoint}/metadata`;
     return this.http.get(url, {headers: this.headers})

@@ -51,11 +51,12 @@ export class AppComponent {
     ];
   }
 
+  /* used */
   public updateEndpoint(newEndpoint: string) {
     // Grab new capabilityStatement
     this.updateSessionCapabilityStatement(newEndpoint);
   }
-
+  /* used */
   updateSessionCapabilityStatement(endpoint: string) {
     this.fhirService.getCapabilityStatement(endpoint)
                     .subscribe(
@@ -70,7 +71,7 @@ export class AppComponent {
                       },
                       error => this.activeSession.log.error("Something went wrong with Capability Statement") );
   }
-
+  /* used */
   updateSessionAvailableResources() {
     // Empty the old array
     let t = this.activeSession.availableTypes;
@@ -83,15 +84,17 @@ export class AppComponent {
         let obj = {
           value: resource.type.toString(),
           label: resource.type.toString()
-        }
+        };
         t.push(obj);
       }
     }
     console.log(t);
     this.activeSession.log.info("Successfully updated Resource Type list.");
   }
-
+  /* used */
   getStructureDefinition(resourceType: string, endpoint: string) {
+    // Destroy the old structure definition
+    this.activeSession.settingsResourceStructure = null;
     this.fhirService.getStructureDefinition(resourceType, endpoint)
                     .subscribe(
                       any => {
@@ -101,7 +104,45 @@ export class AppComponent {
                         console.log(this.activeSession.settingsResourceStructure);
                         this.activeSession.log.info(`Successfully pulled ${resourceType} StructureDefinition`)
                       },
-                      error => this.activeSession.log.error("Something went wrong with Structure Definition"));
+                      error => {
+                        this.activeSession.log.error("Something went wrong with Structure Definition")
+                        this.activeSession.settingsResourceStructure = "error";
+                      }
+                    );
+  }
+
+  public searchForResource() {
+    // Destroy the old search result
+    this.activeSession.searchResult.length = 0;
+    this.fhirService.search(this.activeSession.connectedServer,
+                            this.activeSession.selectedResourceType,
+                            this.activeSession.selectedSearchField,
+                            this.activeSession.searchValue)
+                    .subscribe(
+                      any => {
+                        // When we get back a an object
+                        this.updateSearchResults(any);
+                        console.log(this.activeSession.searchResult);
+                        this.activeSession.log.info(`Successfully searched the server.`)
+                      },
+                      error => {
+                        // When we hit a error
+                        this.activeSession.log.error("Search failed.")
+                      }
+                    );
+  }
+
+  private updateSearchResults(any: any) {
+    //if(typeof any. === "undefined")
+    // For each search result
+    for(let entry of any.entry) {
+      // An object to hold a search result
+      let obj = {
+        resource: entry.resource,
+        name: entry.name
+      };
+      this.activeSession.searchResult.push(obj);
+    }
   }
 
   /**

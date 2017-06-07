@@ -7,7 +7,6 @@ body {
   flex-direction: column;
   background-color: #e8e8e8;
 }
-
 main {
   flex: 1 0 auto;
 }
@@ -16,15 +15,20 @@ main {
 header, main, footer {
   padding-left: 300px;
 }
-
 @media only screen and (max-width : 992px) {
   header, main, footer {
     padding-left: 0;
   }
 }
-
 @media only screen and (min-width : 992px) {
   .button-collapse {
     display: none;
   }
+}
+.tabs .indicator {
+  background-color: #26a69a;
+}
+/* Alert styling */
+.alert {
+
 }

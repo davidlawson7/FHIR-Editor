@@ -1,13 +1,19 @@
-<div *ngIf="activeSession.activeObject != null">
+<!--<div *ngIf="activeSession.activeObject != null">
   <form (ngSubmit)="onSubmit()" [formGroup]="form">
+
     <div *ngFor="let question of questions" class="form-row">
       <df-question [question]="question" [form]="form"></df-question>
     </div>
+
     <div class="form-row">
       <button class="waves-effect waves-green btn" type="submit" [disabled]="!form.valid">Save</button>
     </div>
   </form>
+
   <div *ngIf="payLoad" class="form-row">
     <strong>Saved the following values</strong><br>{{payLoad}}
   </div>
+</div>-->
+<div>
+  {{activeSession.activeObject}}
 </div>

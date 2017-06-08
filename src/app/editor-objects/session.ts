@@ -1,3 +1,5 @@
+import { FormGroup }                  from '@angular/forms';
+
 import { Log } from './log';
 
 /**
@@ -25,7 +27,8 @@ export class Session {
   settingsResourceStructure: any;
 
   activeObject: any;
-
+  form: FormGroup;
+  payLoad = '';
 
   constructor(public name?: string) {
     // Default value for tab name

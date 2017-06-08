@@ -6,6 +6,7 @@ import { FormGroup }                  from '@angular/forms';
 import { Session } from '../editor-objects/session';
 
 import { FhirService }                from '../fhir.service';
+import { FhirPrimitiveType }          from '../datatypes/primitive-datatypes'
 import { QuestionBase }               from '../question-base';
 import { QuestionControlService }     from '../question-control.service';
 
@@ -18,12 +19,11 @@ import { QuestionControlService }     from '../question-control.service';
 export class FormComponent implements OnInit {
 
   @Input() activeSession: Session;
-  
+  form: FormGroup;
+  payLoad = '';
 
   /* Dynamic form */
   @Input() questions: QuestionBase<any>[] = [];
-  form: FormGroup;
-  payLoad = '';
 
   constructor(
     private fhirService: FhirService,

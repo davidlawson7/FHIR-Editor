@@ -18,7 +18,8 @@
       <div id="page1" class="col s12">
         <!--<app-form [questions]="questions"></app-form>-->
         <!--<router-outlet></router-outlet>-->
-        <!--<app-form [activeSession]="activeSession"></app-form>-->
+        <a (click)="logActiveObject()" class="btn"></a>
+        <app-form [activeSession]="activeSession"></app-form>
       </div>
     </div>
   <div class="container">
@@ -188,6 +189,12 @@
         </p>
       </div>
       <div class="section">
+        <h5>Active Object</h5>
+        <p *ngFor="let obj of activeSession.activeObject">
+          Field: {{obj}}<br>
+        </p>
+      </div>
+      <div class="section">
         <h5>Saved Resources</h5>
         <p *ngFor="let saved of savedResources">
           Resource Name: <strong>{{saved.name}}</strong>, Type: <strong>{{saved.type}}</strong>, ID: <strong>{{saved.id}}</strong>, Endpoint: <strong>{{saved.server}}</strong><br>
@@ -250,7 +257,7 @@
   </div>
   <div class="modal-footer">
     <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
-    <a (click)="createNewResource()" href="#!" class="modal-action waves-effect waves-green btn-flat">Create</a>
+    <a (click)="createNewResource2()" href="#!" class="modal-action waves-effect waves-green btn-flat">Create</a>
   </div>
 </div>
 <!-- End! Resource creation box - Materializecss Modal -->

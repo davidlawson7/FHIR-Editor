@@ -143,6 +143,43 @@ export class Address {
 
   constructor() {
     this.resourceType = "Address";
+    this.use = new FhirCode({
+      key: 'code',
+      label: 'use',
+      order: 11
+    });
+    this.type = new FhirCode({
+      key: 'code',
+      label: 'type',
+      order: 11
+    });
+    this.text = new FhirString({
+      key: 'string',
+      label: 'text',
+      order: 11
+    });
+    this.line = [];
+    this.city = new FhirString({
+      key: 'string',
+      label: 'city',
+      order: 11
+    });
+    this.district = new FhirString({
+      key: 'string',
+      label: 'district',
+      order: 11
+    });
+    this.postalCode = new FhirString({
+      key: 'string',
+      label: 'postalCode',
+      order: 11
+    });
+    this.country = new FhirString({
+      key: 'string',
+      label: 'country',
+      order: 11
+    });
+    this.period = new Period();
   }
 }
 /**

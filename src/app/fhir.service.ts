@@ -54,7 +54,7 @@ export class FhirService {
               .catch(this.handleError);
   }
 
-  public toFormGroup(questions: QuestionBase<any>[] ) {
+  public toFormGroup(questions: FhirPrimitiveType<any>[] ) {
     let group: any = {};
 
     questions.forEach(question => {

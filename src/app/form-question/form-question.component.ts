@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild, TemplateRef } from '@angular/core';
 import { FormGroup }        from '@angular/forms';
 
 import { QuestionBase }     from '../question-base';
@@ -8,7 +8,10 @@ import { QuestionBase }     from '../question-base';
   templateUrl: './form-question.component.html'
 })
 export class FormQuestionComponent {
-  @Input() question: QuestionBase<any>;
+  @Input() question: any;
   @Input() form: FormGroup;
   get isValid() { return this.form.controls[this.question.key].valid; }
+
+  @ViewChild('secondaryBlock')
+  secondaryBlock: TemplateRef<any>|null = null;
 }

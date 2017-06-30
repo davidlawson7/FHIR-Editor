@@ -14,6 +14,21 @@
     <strong>Saved the following values</strong><br>{{payLoad}}
   </div>
 </div>-->
-<div>
-  {{activeSession.activeObject}}
+<div *ngIf="activeSession.built">
+    <form (ngSubmit)="onSubmit()" [formGroup]="form">
+
+        <div *ngFor="let field of activeSession.activeObjectArray" class="form-row">
+            <div *ngIf="field.hasOwnProperty('label')">
+                <!-- The field holds a primitive, display it -->
+                <df-question [question]="field" [form]="form"></df-question>
+            </div>
+            <div *ngIf="!field.hasOwnProperty('label')">
+
+            </div>
+        </div>
+
+        <div class="form-row">
+            <button class="waves-effect waves-green btn" type="submit" [disabled]="!form.valid">Save</button>
+        </div>
+    </form>
 </div>

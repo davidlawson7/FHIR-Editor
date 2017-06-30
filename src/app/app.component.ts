@@ -49,7 +49,7 @@ export class AppComponent {
     this.version = 'Alpha';
     this.versionNumber = '0.0.1';
     // The list of sessions. Always must have one session
-    this.sessions = [new Session(), new Session('testname')];
+    this.sessions = [new Session('Test')];
     this.activeSession = this.sessions[0];
     // All the saved resources on this editor
     this.savedResources = [
@@ -65,25 +65,60 @@ export class AppComponent {
     ];
   }
 
-  public createNewResourceyyyy() {
-    let obj: any = {};  // The object we are creating based on the structure def
-    let structure = this.activeSession.settingsResourceStructure;
+  /* used */
+  updateSessionCapabilityStatement(endpoint: string) {
+      let complexTypes: string[] = [
+        'Attachment', 'Coding', 'CodeableConcept', 'Quantity', 'Range', 'Ratio',
+        'Period', 'SampledData', 'Identifier', 'HumanName', 'Address',
+        'ContactPoint', 'Timing', 'Signature', 'Annotation', 'Meta', 'Narrative',
+        'BackboneElement'
+      ];
+    this.fhirService.getCapabilityStatement(endpoint)
+                    .subscribe(
+                      any => {
+                        // Store capability statement in session
+                        this.activeSession.capabilityStatement = any;
+                        this.activeSession.general.capabilityStatement = any;
+                        console.log(this.activeSession.capabilityStatement);
+                        this.activeSession.log.info("Successfully updated Capability Statement.");
 
-    // For each field in the resource, skipping first ofcourse
-    for (let element of structure.snapshot.element) {
-      if (!element.hasOwnProperty('type')) {
-        // Skip the iteration as it doesn't contain a field
-        console.log("SKIPPING FIELD: SHOULD ONLY HAPPEN ONCE PER GENERATION.")
-        continue;
-      }
-      // Generate the computed property name
-      let fieldName = element.id.split(".", 2)[1]; // i.e. 'Patient.id'
-      // Determine the type and build
-      this.transformType(obj, fieldName, element.type[0].code);
-    }
-    // Setting the active object to be what we just built
-    this.activeSession.activeObject = obj;
-    console.log(this.activeSession.activeObject);
+                        // Update sessions available resources
+                        this.updateSessionAvailableResources(this.activeSession);
+                        // For each resource, grab its structure definition
+                        for(let resourceType of this.activeSession.general.availableTypes) {
+                            this.fhirService.getStructureDefinition(resourceType.value, endpoint)
+                                            .subscribe(
+                                              any => {
+                                                // Store data in the session
+                                                let length: number = this.activeSession.general.resourceDefinitions.push(any);
+                                                // log it in the browser and app consoles
+                                                console.log(this.activeSession.general.resourceDefinitions[length - 1]);
+                                                this.activeSession.log.info(`Successfully pulled ${resourceType} StructureDefinition`)
+                                              },
+                                              error => {
+                                                this.activeSession.log.error("Something went wrong with Structure Definition")
+                                                this.activeSession.settingsResourceStructure = "error";
+                                              }
+                                            );
+                        }
+                        // For each complex datatype, go grab it
+                        for (let datatype of complexTypes) {
+                            this.fhirService.getStructureDefinition(datatype, endpoint)
+                                    .subscribe(
+                                        any => {
+                                            // Store the datatype in the session
+                                            this.activeSession.general.complexDatatypeDefinitions.push(any);
+                                            // Log it
+                                            console.log(`Grabbed the complex type ${datatype}`);
+                                        },
+                                        error => {
+                                            console.log(`Couldnt grab the datatype ${datatype}`);
+                                        }
+                                    );
+                        }
+
+                      },
+                      error => this.activeSession.log.error("Something went wrong with Capability Statement") );
   }
 
   logActiveObject() {
@@ -109,16 +144,17 @@ export class AppComponent {
     let bugSet: string[] = [
       'Extension', 'Reference'
     ]
+
     let object = this.activeSession.activeObject;
     object = {};
-    let resourceStructure;
 
-    this.fhirService.getStructureDefinition(type, endpoint)
-        .subscribe(
-          any => {
-            // Store data in the session
-            resourceStructure = any;
-            console.log(`ResourceType: ${resourceStructure.id}`);
+    let resourceStructure;
+    for (let definition of this.activeSession.general.resourceDefinitions) {
+        if (definition.id == type) {
+            // This is the object def we want to build
+            resourceStructure = definition;
+            console.log("Found the definition in our definition list");
+
             // Iterate through each element
             for (let element of resourceStructure.snapshot.element) {
               if (!element.hasOwnProperty('type')) {
@@ -126,7 +162,7 @@ export class AppComponent {
                 console.log(`ResourceType: ${element.id}`);
                 continue;
               } // Skip any field with no type i.e. the First
-              
+
               // Get the current field name & its coded value
               let fieldName = element.id.split(".", 2)[1]; // i.e. the 'id' in 'Patient.id'
               let code = element.type[0].code;
@@ -154,12 +190,16 @@ export class AppComponent {
               }
             }
             this.activeSession.activeObject = object;
-          },
-          error => {
-            resourceStructure = error;
-            //object = error;
-          }
-        );
+            break;
+        }
+    }
+    console.log('Finished building the object, now convert object to array');
+    for (let key in this.activeSession.activeObject) {
+        if(this.activeSession.activeObject.hasOwnProperty(key)) {
+            this.activeSession.activeObjectArray.push(this.activeSession.activeObject[key])
+        }
+    }
+    this.activeSession.built = true;
   }
 
   buildComplexTypeObject(endpoint: string, type: string, object: any) {
@@ -178,11 +218,11 @@ export class AppComponent {
       'Extension', 'Reference'
     ]
     let resourceStructure;
-    this.fhirService.getStructureDefinition(type, endpoint)
-        .subscribe(
-          any => {
+    for (let definition of this.activeSession.general.complexDatatypeDefinitions) {
+        if (definition.id == type) {
+            console.log("Found the datatype in our definition list");
             // Store data in the session
-            resourceStructure = any;
+            resourceStructure = definition;
             console.log(`ComplexType: ${resourceStructure.id}`);
             // Iterate through each element
             for (let element of resourceStructure.snapshot.element) {
@@ -218,66 +258,25 @@ export class AppComponent {
                 console.log(`ResourceBuilder:: UNKNOWN: ${fieldName}:${code}`);
               }
             }
-
-          },
-          error => {
-            resourceStructure = error;
-            object = error;
-          }
-        );
+            break;
+        }
+    }
   }
-
-  private getStructDef(endpoint: string, type: string, obj: any) {
-    let structDef;
-    // Get the structure definition
-    this.fhirService.getStructureDefinition(type, endpoint)
-                    .subscribe(
-                      any => {
-                        // Store data in the session
-                        structDef = any;
-                        console.log('the any');
-                        console.log(any);
-
-                      },
-                      error => {
-                        structDef = error;
-                      }
-                    );
-    return structDef;
-  }
-
-
-
-
 
   /* used */
   public updateEndpoint(newEndpoint: string) {
     // Grab new capabilityStatement
     this.updateSessionCapabilityStatement(newEndpoint);
   }
-  /* used */
-  updateSessionCapabilityStatement(endpoint: string) {
-    this.fhirService.getCapabilityStatement(endpoint)
-                    .subscribe(
-                      any => {
-                        // Store capability statement in session
-                        this.activeSession.capabilityStatement = any;
-                        console.log(this.activeSession.capabilityStatement);
-                        this.activeSession.log.info("Successfully updated Capability Statement.");
 
-                        // Update sessions available resources
-                        this.updateSessionAvailableResources();
-                      },
-                      error => this.activeSession.log.error("Something went wrong with Capability Statement") );
-  }
   /* used */
-  updateSessionAvailableResources() {
+  updateSessionAvailableResources(session: any) {
     // Empty the old array
-    let t = this.activeSession.availableTypes;
+    let t = session.general.availableTypes;
     t.length = 0;
 
     // Rest object is a array, so go through each one
-    for (let rest of this.activeSession.capabilityStatement.rest) {
+    for (let rest of session.general.capabilityStatement.rest) {
       // Resource object is a array, so go through each one
       for (let resource of rest.resource) {
         let obj = {
@@ -290,24 +289,17 @@ export class AppComponent {
     console.log(t);
     this.activeSession.log.info("Successfully updated Resource Type list.");
   }
+
   /* used */
   public getStructureDefinition(resourceType: string, endpoint: string) {
     // Destroy the old structure definition
-    this.activeSession.settingsResourceStructure = null;
-    this.fhirService.getStructureDefinition(resourceType, endpoint)
-                    .subscribe(
-                      any => {
-                        // Store data in the session
-                        this.activeSession.settingsResourceStructure = any;
-                        // log it in the browser and app consoles
-                        console.log(this.activeSession.settingsResourceStructure);
-                        this.activeSession.log.info(`Successfully pulled ${resourceType} StructureDefinition`)
-                      },
-                      error => {
-                        this.activeSession.log.error("Something went wrong with Structure Definition")
-                        this.activeSession.settingsResourceStructure = "error";
-                      }
-                    );
+    this.activeSession.canBuild = false;
+    for(let definition of this.activeSession.general.resourceDefinitions) {
+        if(resourceType == definition.id) {
+            this.activeSession.canBuild = true;
+            break;
+        }
+    }
   }
 
   public searchForResource() {

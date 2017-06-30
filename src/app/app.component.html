@@ -18,7 +18,7 @@
       <div id="page1" class="col s12">
         <!--<app-form [questions]="questions"></app-form>-->
         <!--<router-outlet></router-outlet>-->
-        <a (click)="logActiveObject()" class="btn"></a>
+        <!--<a (click)="logActiveObject()" class="btn"></a>-->
         <app-form [activeSession]="activeSession"></app-form>
       </div>
     </div>
@@ -185,14 +185,12 @@
           Available Types: <strong *ngFor="let type of activeSession.availableTypes">{{type.value}},</strong>
         </p>
         <p>
-          Available Search Fields: <strong *ngFor="let field of activeSession.availablefields">{{field}},</strong>
+          Available Search Fields: <strong *ngFor="let field of activeSession.availablefields">{{field.value}},</strong>
         </p>
       </div>
       <div class="section">
         <h5>Active Object</h5>
-        <p *ngFor="let obj of activeSession.activeObject">
-          Field: {{obj}}<br>
-        </p>
+
       </div>
       <div class="section">
         <h5>Saved Resources</h5>
@@ -244,7 +242,7 @@
                 [(ngModel)]="activeSession.createResourceType" required
                 #fhir_server="ngModel">
           <option value="" disabled selected>Choose your Resource</option>
-          <option *ngFor="let type of activeSession.availableTypes" [value]="type.value">{{type.label}}</option>
+          <option *ngFor="let type of activeSession.general.availableTypes" [value]="type.value">{{type.label}}</option>
         </select>
       <!--</form>-->
    </div>

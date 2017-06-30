@@ -13,7 +13,7 @@
               [(ngModel)]="activeSession.selectedResourceType" required
               #fhir_server="ngModel">
           <option value="" disabled selected>Choose your Resource</option>
-          <option *ngFor="let type of activeSession.availableTypes" [value]="type.value">{{type.label}}</option>
+          <option *ngFor="let type of activeSession.general.availableTypes" [value]="type.value">{{type.label}}</option>
       </select>
     </div>
     <!-- What to search by -->

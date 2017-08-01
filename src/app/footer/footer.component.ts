@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-import { FhirService }                from '../fhir.service';
+import { FhirService }                from '../services/fhir.service';
 import { Session } from '../editor-objects/session';
 
 @Component({

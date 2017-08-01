@@ -8,7 +8,7 @@
 
     <div class="section output-box" *ngIf="activeSession.log != null">
       <ul>
-        <li *ngFor="let entry of activeSession.log.getLog(); let i = index" [myFontColor]="entry.color">{{ entry.time | date:'shortTime' }}: {{entry.message}}</li>
+        <li *ngFor="let entry of activeSession.log.getLog(); let i = index"></li>
       </ul>
     </div>
 

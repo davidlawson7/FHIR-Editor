@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import {SelectModule} from 'ng-select';
 
-import { FhirService }                from '../fhir.service';
+import { FhirService }                from '../services/fhir.service';
 import { Session } from '../editor-objects/session';
 import { SavedResource } from '../editor-objects/saved-resource';
 
@@ -59,7 +58,7 @@ export class SideNavComponent {
       // Get this names last name
       let last = obj.family.toString();
       let n = new String();
-      // Get this names list of first names 
+      // Get this names list of first names
       for(let f of obj.given) {
         n.concat( f.toString() );
         n.concat( ' ' );

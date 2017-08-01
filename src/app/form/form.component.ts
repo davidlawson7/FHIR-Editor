@@ -5,16 +5,13 @@ import { Location }                   from '@angular/common';
 import { FormGroup }                  from '@angular/forms';
 import { Session } from '../editor-objects/session';
 
-import { FhirService }                from '../fhir.service';
+import { FhirService }                from '../services/fhir.service';
 import { FhirPrimitiveType }          from '../datatypes/primitive-datatypes'
-import { QuestionBase }               from '../question-base';
-import { QuestionControlService }     from '../question-control.service';
 
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',
-  styleUrls: ['./form.component.css'],
-  providers: [ QuestionControlService ]
+  styleUrls: ['./form.component.css']
 })
 export class FormComponent implements OnInit {
 
@@ -23,13 +20,12 @@ export class FormComponent implements OnInit {
   payLoad = '';
 
   /* Dynamic form */
-  @Input() questions: QuestionBase<any>[] = [];
+
 
   constructor(
     private fhirService: FhirService,
     private route: ActivatedRoute,
-    private location: Location,
-    private qcs: QuestionControlService
+    private location: Location
   )
   { }
 

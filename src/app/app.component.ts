@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { FhirService } from './fhir.service';
+import { FhirService } from './services/fhir.service';
 import { Session } from './editor-objects/session';
 import { Log } from './editor-objects/log';
 
@@ -39,7 +39,7 @@ export class AppComponent {
   // Dynamic form variables
   questions: any[];
 
-  constructor(private fhirService: FhirService, service: QuestionService) {
+  constructor(private fhirService: FhirService) {
     //this.questions = service.getQuestions();
     // General variables
     this.title = 'FHIR Editor';
@@ -126,7 +126,7 @@ export class AppComponent {
     this.buildResourceObject(this.activeSession.connectedServer, this.activeSession.createResourceType);
   }
 
-  private buildResourceObject(endpoint: string, type: string) {
+  public buildResourceObject(endpoint: string, type: string) {
     let primitiveTypes: string[] = [
       'boolean', 'integer', 'string', 'decimal', 'uri', 'base64Binary', 'instant',
       'date', 'dateTime', 'time', 'code', 'oid', 'id', 'markdown', 'unsignedInt',
@@ -466,6 +466,10 @@ export class AppComponent {
     // The endpoint name must not exist, shouldn't happen
     return 1;
   }
+
+  /////////////////////////////////////////////////////
+  // IGNORE: Potentially in use
+  /////////////////////////////////////////////////////
 
   private transformPrimitiveType(primitiveObject: any, fieldName: string, code: string) {
     //primitiveObject[fieldName] = {};

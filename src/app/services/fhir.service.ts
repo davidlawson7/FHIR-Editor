@@ -19,7 +19,7 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { FhirPrimitiveType } from './datatypes/primitive-datatypes'
+import { FhirPrimitiveType } from '../datatypes/primitive-datatypes'
 
 @Injectable()
 export class FhirService {

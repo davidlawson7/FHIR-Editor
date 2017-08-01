@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
-import {SelectModule} from 'ng-select';
 
 import { FhirService } from './fhir.service';
-import { QuestionService } from './question.service';
 import { Session } from './editor-objects/session';
 import { Log } from './editor-objects/log';
 
@@ -24,8 +22,7 @@ import {
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
-  providers:  [QuestionService]
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent {
   // Variables

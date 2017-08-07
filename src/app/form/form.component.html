@@ -1,21 +1,13 @@
-<!--<div *ngIf="activeSession.activeObject != null">
-  <form (ngSubmit)="onSubmit()" [formGroup]="form">
-
-    <div *ngFor="let question of questions" class="form-row">
-      <df-question [question]="question" [form]="form"></df-question>
-    </div>
-
-    <div class="form-row">
-      <button class="waves-effect waves-green btn" type="submit" [disabled]="!form.valid">Save</button>
-    </div>
-  </form>
-
-  <div *ngIf="payLoad" class="form-row">
-    <strong>Saved the following values</strong><br>{{payLoad}}
-  </div>
-</div>-->
 <div *ngIf="activeSession.built">
     <form (ngSubmit)="onSubmit()" [formGroup]="form">
+
+        <div *ngFor="let question of questions" class="form-row">
+          <df-question [question]="question" [form]="form"></df-question>
+        </div>
+     
+        <div class="form-row">
+          <button type="submit" [disabled]="!form.valid">Save</button>
+        </div>
 
         <div *ngFor="let field of activeSession.activeObjectArray" class="form-row">
             <div *ngIf="field.hasOwnProperty('label')">
@@ -27,8 +19,10 @@
             </div>
         </div>
 
-        <div class="form-row">
-            <button class="waves-effect waves-green btn" type="submit" [disabled]="!form.valid">Save</button>
-        </div>
     </form>
+
+    <div *ngIf="payLoad" class="form-row">
+        <strong>Saved the following values</strong><br>{{payLoad}}
+    </div>
+
 </div>

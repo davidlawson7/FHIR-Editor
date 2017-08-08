@@ -7,7 +7,7 @@ import { Session } from '../editor-objects/session';
 
 import { FhirService }                from '../services/fhir.service';
 import { QuestionControlService }    from '../services/question-control.service';
-import { FhirPrimitiveType }          from '../datatypes/primitive-datatypes'
+import { FhirPrimitiveType }          from '../datatypes/primitive-datatypes';
 
 @Component({
   selector: 'app-form',

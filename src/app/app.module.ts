@@ -15,6 +15,7 @@ import { SideNavComponent }                 from './nav/side-nav.component';
 import { TopNavComponent }                  from './nav/top-nav.component';
 import { FooterComponent }                  from './footer/footer.component';
 import { FormGroupComponent }               from './form/form-group.component';
+import { FormComplexDatatypeComponent } from './form/form-complex-datatype.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { FormGroupComponent }               from './form/form-group.component';
     TopNavComponent,
     FooterComponent,
     FormGroupComponent,
+    FormComplexDatatypeComponent,
   ],
   imports: [
     BrowserModule,

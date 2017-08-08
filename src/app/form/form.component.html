@@ -2,7 +2,10 @@
     <form (ngSubmit)="onSubmit()" [formGroup]="form">
 
         <div *ngFor="let question of questions" class="form-row">
-          <df-question [question]="question" [form]="form"></df-question>
+
+          <df-question *ngIf="question.key" [question]="question" [form]="form"></df-question>
+          <df-complex [complexdatatype]="question" [form]="form"></df-complex>
+
         </div>
      
         <div class="form-row">

@@ -86,7 +86,7 @@ export class AppComponent {
         // Store capability statement in session
         this.activeSession.capabilityStatement = any;
         this.activeSession.general.capabilityStatement = any;
-        console.log(this.activeSession.capabilityStatement);
+        //console.log(this.activeSession.capabilityStatement);
         this.activeSession.log.info("Successfully updated Capability Statement.");
 
         // Update sessions available resources
@@ -99,7 +99,7 @@ export class AppComponent {
               // Store data in the session
               let length: number = this.activeSession.general.resourceDefinitions.push(any);
               // log it in the browser and app consoles
-              console.log(this.activeSession.general.resourceDefinitions[length - 1]);
+              //console.log(this.activeSession.general.resourceDefinitions[length - 1]);
               this.activeSession.log.info(`Successfully pulled ${resourceType} StructureDefinition`)
             },
             error => {
@@ -116,7 +116,7 @@ export class AppComponent {
               // Store the datatype in the session
               this.activeSession.general.complexDatatypeDefinitions.push(any);
               // Log it
-              console.log(`Grabbed the complex type ${datatype}`);
+              //console.log(`Grabbed the complex type ${datatype}`);
             },
             error => {
               console.log(`Couldnt grab the datatype ${datatype}`);
@@ -161,7 +161,7 @@ export class AppComponent {
         t.push(obj);
       }
     }
-    console.log(t);
+    //console.log(t);
     this.activeSession.log.info("Successfully updated Resource Type list.");
   }
 

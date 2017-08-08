@@ -4,7 +4,7 @@
         <div *ngFor="let question of questions" class="form-row">
 
           <df-question *ngIf="question.key" [question]="question" [form]="form"></df-question>
-          <df-complex [complexdatatype]="question" [form]="form"></df-complex>
+          <df-complex *ngIf="question[0]" [complexdatatype]="question" [form]="form"></df-complex>
 
         </div>
      

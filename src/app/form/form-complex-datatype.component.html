@@ -1,3 +1,6 @@
-<p>
-  form-complex-datatype works!
-</p>
+<div *ngFor="let question of complexdatatype" class="form-row">
+
+  <df-question *ngIf="question.key" [question]="question" [form]="form"></df-question>
+  <df-complex [complexdatatype]="question" [form]="form"></df-complex>
+
+</div>

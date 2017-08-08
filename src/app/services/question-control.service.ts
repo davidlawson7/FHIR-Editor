@@ -10,15 +10,17 @@ export class QuestionControlService {
   public toFormGroup(questions: any[]) {
 
     let group: any = {};
-    questions.forEach(question => {
+    questions.forEach((question, index) => {
 
-      if (question instanceof Array) {
+        if(index == 0) {
+
+        } else if (question instanceof Array) {
         // Complex datatype, create new formgroup for it
-        //console.log(`Complex datatype: ${question[0]}`);
+        console.log(`Complex datatype: ${question[0]}`);
         this.complexDatatypeFormGroup(question, group);
       } else {
         // Primitive datatype, convert element to FormControl
-        //console.log(`Primitive datatype: ${question.label}`)
+        console.log(`${question.label}`)
         group[question.key] = question.required ? new FormControl(question.value || '', Validators.required)
           : new FormControl(question.value || '');
       }
@@ -30,11 +32,13 @@ export class QuestionControlService {
   private complexDatatypeFormGroup(complexDatatype: any[], parentGroup: any) {
 
     let group: any = {};
-    complexDatatype.forEach(question => {
+    complexDatatype.forEach((question, index) => {
 
-      if (question instanceof Array) {
+        if(index == 0) {
+
+        } else if (question instanceof Array) {
         // Complex datatype, create new formgroup for it
-        //console.log(`Complex datatype: ${question[0]}`);
+        console.log(`Complex datatype: ${question[0]}`);
         this.complexDatatypeFormGroup(question, group);
       } else {
         // Primitive datatype, convert element to FormControl

@@ -15,6 +15,7 @@ export class FormComplexDatatypeComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+      console.log(`Processinging: ${this.complexdatatype[0]}`)
   }
 
 }

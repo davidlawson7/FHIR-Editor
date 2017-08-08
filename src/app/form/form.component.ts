@@ -34,8 +34,10 @@ export class FormComponent implements OnInit {
   }
 
   ngOnChanges() {
-    this.form = this.qcs.toFormGroup(this.questions);
-    console.log(this.form);
+    if (this.questions != null) {
+      this.form = this.qcs.toFormGroup(this.questions);
+      console.log(this.form);
+    }
   }
 
   onSubmit() {

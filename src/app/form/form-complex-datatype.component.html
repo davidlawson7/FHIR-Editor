@@ -1,6 +1,7 @@
-<div *ngFor="let question of complexdatatype" class="form-row">
+<h3>{{complexdatatype[0]}}</h3>
+<div *ngFor="let question of complexdatatype | slice:1" class="form-row">
 
-  <df-question *ngIf="question.key" [question]="question" [form]="form"></df-question>
-  <df-complex [complexdatatype]="question" [form]="form"></df-complex>
+  <df-question *ngIf="question.hasOwnProperty('key')" [question]="question" [form]="form"></df-question>
+  <df-complex *ngIf="isArray(question)" [complexdatatype]="question" [form]="form.controls[question[0]]"></df-complex>
 
 </div>

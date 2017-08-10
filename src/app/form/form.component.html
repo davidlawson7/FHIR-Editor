@@ -1,25 +1,15 @@
 <div *ngIf="activeSession.built">
     <form (ngSubmit)="onSubmit()" [formGroup]="form">
+      <h1>{{questions[0]}}</h1>
+        <div *ngFor="let question of questions | slice:1" class="form-row">
 
-        <div *ngFor="let question of questions" class="form-row">
-
-          <df-question *ngIf="question.key" [question]="question" [form]="form"></df-question>
-          <df-complex *ngIf="question[0]" [complexdatatype]="question" [form]="form"></df-complex>
+          <df-question *ngIf="question.hasOwnProperty('key')" [question]="question" [form]="form"></df-question>
+          <df-complex *ngIf="isArray(question)" [complexdatatype]="question" [form]="form.controls[question[0]]"></df-complex>
 
         </div>
      
         <div class="form-row">
           <button type="submit" [disabled]="!form.valid">Save</button>
-        </div>
-
-        <div *ngFor="let field of activeSession.activeObjectArray" class="form-row">
-            <div *ngIf="field.hasOwnProperty('label')">
-                <!-- The field holds a primitive, display it -->
-                <df-question [question]="field" [form]="form"></df-question>
-            </div>
-            <div *ngIf="!field.hasOwnProperty('label')">
-
-            </div>
         </div>
 
     </form>

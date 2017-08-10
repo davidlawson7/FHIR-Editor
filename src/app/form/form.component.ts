@@ -18,7 +18,7 @@ import { FhirPrimitiveType }          from '../datatypes/primitive-datatypes';
 export class FormComponent implements OnInit {
 
   @Input() activeSession: Session;
-  @Input() questions: FhirPrimitiveType<any>[] = [];
+  @Input() questions: any[] = [];
   form: FormGroup;
   payLoad = '';
 
@@ -36,8 +36,15 @@ export class FormComponent implements OnInit {
   ngOnChanges() {
     if (this.questions != null) {
       this.form = this.qcs.toFormGroup(this.questions);
-      //console.log(this.form);
+      console.log(this.form);
+      for (let question of this.questions) {
+        console.log(question);
+      }
     }
+  }
+
+  isArray(obj: any) {
+    return Array.isArray(obj)
   }
 
   onSubmit() {

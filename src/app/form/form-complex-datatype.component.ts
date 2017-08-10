@@ -10,12 +10,15 @@ import { FormGroup }                  from '@angular/forms';
 })
 export class FormComplexDatatypeComponent implements OnInit {
 
-    @Input() complexdatatype: FhirPrimitiveType<any>[] = [];
-    @Input() form: FormGroup;
+  @Input() complexdatatype: any[] = [];
+  @Input() form: FormGroup;
   constructor() { }
 
   ngOnInit() {
-      console.log(`Processinging: ${this.complexdatatype[0]}`)
+    console.log(`Processinging complex: ${this.complexdatatype}`)
   }
 
+  isArray(obj: any) {
+    return Array.isArray(obj)
+  }
 }

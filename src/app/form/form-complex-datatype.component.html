@@ -1,7 +1,22 @@
 <h3>{{complexdatatype[0]}}</h3>
-<div *ngFor="let question of complexdatatype | slice:1" class="form-row">
 
-  <df-question *ngIf="question.hasOwnProperty('key')" [question]="question" [form]="form"></df-question>
-  <df-complex *ngIf="isArray(question)" [complexdatatype]="question" [form]="form.controls[question[0]]"></df-complex>
+<div class="row" *ngIf="complexdatatype[0]=='HumanName'">
 
+    <div class="input-field col s12" [formGroup]="form">
+      <input placeholder="Placeholder" id="{{complexdatatype[7].key}}" type="text" class="validate" 
+            [formControlName]="complexdatatype[7].key"
+            [id]="complexdatatype[7].key"
+            [type]="complexdatatype[7].type">
+      <label for="{{complexdatatype[7].key}}" [attr.for]="complexdatatype[7].key">{{complexdatatype[7].label}}</label>
+    </div>
+
+</div>
+
+<div *ngIf="complexdatatype[0]!='HumanName'">
+  <div *ngFor="let question of complexdatatype | slice:1" class="form-row">
+
+    <df-question *ngIf="question.hasOwnProperty('key')" [question]="question" [form]="form"></df-question>
+    <df-complex *ngIf="isArray(question)" [complexdatatype]="question" [form]="form.controls[question[0]]"></df-complex>
+
+  </div>
 </div>

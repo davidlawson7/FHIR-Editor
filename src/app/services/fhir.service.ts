@@ -133,7 +133,7 @@ export class FhirService {
         break;
       }
     }
-    return questions;
+    return questions.sort((a, b) => a.order - b.order);
   }
 
 
@@ -172,7 +172,7 @@ export class FhirService {
       }
     }
     // Add the complex type to the list of questions
-    object.push(questions);
+    object.push(questions.sort((a, b) => a.order - b.order));
   }
 
 

@@ -14,7 +14,6 @@ import { AppRoutingModule }                 from './app-routing/app-routing.modu
 import { SideNavComponent }                 from './nav/side-nav.component';
 import { TopNavComponent }                  from './nav/top-nav.component';
 import { FooterComponent }                  from './footer/footer.component';
-import { FormGroupComponent }               from './form/form-group.component';
 import { FormComplexDatatypeComponent } from './form/form-complex-datatype.component';
 
 @NgModule({
@@ -25,7 +24,6 @@ import { FormComplexDatatypeComponent } from './form/form-complex-datatype.compo
     SideNavComponent,
     TopNavComponent,
     FooterComponent,
-    FormGroupComponent,
     FormComplexDatatypeComponent,
   ],
   imports: [
@@ -36,7 +34,7 @@ import { FormComplexDatatypeComponent } from './form/form-complex-datatype.compo
     BrowserAnimationsModule,
     AppRoutingModule
   ],
-  providers: [ FhirService ],
-  bootstrap: [ AppComponent ]
+  providers: [FhirService],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

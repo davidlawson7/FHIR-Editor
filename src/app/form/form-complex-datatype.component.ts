@@ -18,7 +18,41 @@ export class FormComplexDatatypeComponent implements OnInit {
     console.log(`Processinging complex: ${this.complexdatatype}`)
   }
 
+  fieldExists(field: string): boolean {
+    for (let item of this.complexdatatype) {
+      if (item.key == field) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  complexFieldExists(field: string): boolean {
+    for (let item of this.complexdatatype) {
+      if (Array.isArray(item) && item[1] == field) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  getField(field: string): any {
+    for (let item of this.complexdatatype) {
+      if (item.key == field) {
+        return item;
+      }
+    }
+  }
+
+  getComplexField(field: string): any[] {
+    for (let item of this.complexdatatype) {
+      if (Array.isArray(item) && item[1] == field) {
+        return item;
+      }
+    }
+  }
+
   isArray(obj: any) {
-    return Array.isArray(obj)
+    return Array.isArray(obj);
   }
 }

@@ -1,22 +1,171 @@
-<h3>{{complexdatatype[0]}}</h3>
+<div *ngIf="complexdatatype[0]=='HumanName'">
+  <h3>{{complexdatatype[1]}}:{{complexdatatype[0]}}</h3>
 
-<div class="row" *ngIf="complexdatatype[0]=='HumanName'">
-
-    <div class="input-field col s12" [formGroup]="form">
-      <input placeholder="Placeholder" id="{{complexdatatype[7].key}}" type="text" class="validate" 
-            [formControlName]="complexdatatype[7].key"
-            [id]="complexdatatype[7].key"
-            [type]="complexdatatype[7].type">
-      <label for="{{complexdatatype[7].key}}" [attr.for]="complexdatatype[7].key">{{complexdatatype[7].label}}</label>
+  <!-- Use -->
+  <div class="row" *ngIf="fieldExists('use')">
+    <div class="input-field col s4">
+      <input id="humanname_use" type="text" class="validate">
+      <label>{{getField('use').label}}</label>
     </div>
+  </div>
+
+  <!-- Family and Given Names -->
+  <div class="row" *ngIf="fieldExists('family') || fieldExists('given')">
+    <div class="input-field col s12 m6" *ngIf="fieldExists('family')">
+      <input id="humanname_family" type="text" class="validate">
+      <label>{{getField('family').label}}</label>
+    </div>
+
+    <div class="input-field col s12 m6" *ngIf="fieldExists('given')">
+      <input id="humanname_given" type="text" class="validate">
+      <label>{{getField('given').label}}</label>
+    </div>
+  </div>
+
+  <!-- Text version of name -->
+  <div class="row" *ngIf="fieldExists('text')">
+    <div class="input-field col s12">
+      <input id="humanname_text" type="text" class="validate">
+      <label>{{getField('text').label}}</label>
+    </div>
+  </div>
+
+  <!-- Prefix and Suffix of name -->
+  <div class="row" *ngIf="fieldExists('prefix') || fieldExists('suffix')">
+    <div class="input-field col s12 m6" *ngIf="fieldExists('prefix')">
+      <input id="humanname_prefix" type="text" class="validate">
+      <label>{{getField('prefix').label}}</label>
+    </div>
+
+    <div class="input-field col s12 m6" *ngIf="fieldExists('suffix')">
+      <input id="humanname_suffix" type="text" class="validate">
+      <label>{{getField('suffix').label}}</label>
+    </div>
+  </div>
+
+  <!-- Handles Period Complex datatype -->
+  <df-complex *ngIf="complexFieldExists('period')" [complexdatatype]="getComplexField('period')" [form]="form.controls['period']"></df-complex>
 
 </div>
 
-<div *ngIf="complexdatatype[0]!='HumanName'">
-  <div *ngFor="let question of complexdatatype | slice:1" class="form-row">
+<div *ngIf="complexdatatype[0]=='Period'">
+  <h5>{{complexdatatype[1]}}:{{complexdatatype[0]}}</h5>
+
+  <!-- Start and End Names -->
+  <div class="row" *ngIf="fieldExists('start') || fieldExists('end')">
+    <div class="input-field col s12 m6" *ngIf="fieldExists('start')">
+      <input id="period_start" type="text" class="validate">
+      <label>{{getField('start').label}}</label>
+    </div>
+
+    <div class="input-field col s12 m6" *ngIf="fieldExists('end')">
+      <input id="period_given" type="text" class="validate">
+      <label>{{getField('end').label}}</label>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="complexdatatype[0]=='Identifier'">
+  <h3>{{complexdatatype[1]}}:{{complexdatatype[0]}}</h3>
+
+  <!-- use and system -->
+  <div class="row" *ngIf="fieldExists('use') || fieldExists('system')">
+    <div class="input-field col s12 m6" *ngIf="fieldExists('use')">
+      <input id="identifier_use" type="text" class="validate">
+      <label>{{getField('use').label}}</label>
+    </div>
+
+    <div class="input-field col s12 m6" *ngIf="fieldExists('system')">
+      <input id="identifier_system" type="text" class="validate">
+      <label>{{getField('system').label}}</label>
+    </div>
+  </div>
+
+  <!-- Value field -->
+  <div class="row" *ngIf="fieldExists('value')">
+    <div class="input-field col s12">
+      <input id="identifier_value" type="text" class="validate">
+      <label>{{getField('value').label}}</label>
+    </div>
+  </div>
+
+  <!-- Handles Period Complex datatype -->
+  <df-complex *ngIf="complexFieldExists('period')" [complexdatatype]="getComplexField('period')" [form]="form.controls['period']"></df-complex>
+
+  <!-- Handles CodeableConcept Complex datatype -->
+  <df-complex *ngIf="complexFieldExists('type')" [complexdatatype]="getComplexField('type')" [form]="form.controls['type']"></df-complex>
+
+</div>
+
+<div *ngIf="complexdatatype[0]=='CodeableConcept'">
+  <h5>{{complexdatatype[1]}}:{{complexdatatype[0]}}</h5>
+
+  <!-- Text field -->
+  <div class="row" *ngIf="fieldExists('text')">
+    <div class="input-field col s12">
+      <input id="codeableconcept_text" type="text" class="validate">
+      <label>{{getField('text').label}}</label>
+    </div>
+  </div>
+
+  <!-- Handles Coding Complex datatype -->
+  <df-complex *ngIf="complexFieldExists('coding')" [complexdatatype]="getComplexField('coding')" [form]="form.controls['coding']"></df-complex>
+
+</div>
+
+<div *ngIf="complexdatatype[0]=='Coding'">
+  <h5>{{complexdatatype[1]}}:{{complexdatatype[0]}}</h5>
+
+  <!-- version, system, and code -->
+  <div class="row" *ngIf="fieldExists('version') || fieldExists('system') || fieldExists('code')">
+    <div class="input-field col s12 m4" *ngIf="fieldExists('version')">
+      <input id="code_version" type="text" class="validate">
+      <label>{{getField('version').label}}</label>
+    </div>
+
+    <div class="input-field col s12 m4" *ngIf="fieldExists('system')">
+      <input id="code_system" type="text" class="validate">
+      <label>{{getField('system').label}}</label>
+    </div>
+
+    <div class="input-field col s12 m4" *ngIf="fieldExists('code')">
+      <input id="code_code" type="text" class="validate">
+      <label>{{getField('code').label}}</label>
+    </div>
+  </div>
+
+  <!-- display and userSelected -->
+  <div class="row" *ngIf="fieldExists('display') || fieldExists('userSelected')">
+    <div class="input-field col s12 m6" *ngIf="fieldExists('display')">
+      <input id="code_display" type="text" class="validate">
+      <label>{{getField('display').label}}</label>
+    </div>
+
+    <div class="input-field col s12 m6" *ngIf="fieldExists('userSelected')">
+      <div class="switch">
+        <label>
+          no
+          <input type="checkbox">
+          <span class="lever"></span>
+          yes
+        </label>
+      </div>
+      <label class="active">{{getField('userSelected').label}}</label>
+    </div>
+  </div>
+
+</div>
+
+<div *ngIf="complexdatatype[0]!='HumanName'
+            && complexdatatype[0]!='Period'
+            && complexdatatype[0]!='Identifier'
+            && complexdatatype[0]!='CodeableConcept'
+            && complexdatatype[0]!='Coding'">
+  <h3>{{complexdatatype[1]}}:{{complexdatatype[0]}}</h3>
+  <div *ngFor="let question of complexdatatype | slice:2" class="form-row">
 
     <df-question *ngIf="question.hasOwnProperty('key')" [question]="question" [form]="form"></df-question>
-    <df-complex *ngIf="isArray(question)" [complexdatatype]="question" [form]="form.controls[question[0]]"></df-complex>
+    <df-complex *ngIf="isArray(question)" [complexdatatype]="question" [form]="form.controls[question[1]]"></df-complex>
 
   </div>
 </div>

@@ -34,11 +34,11 @@ export class QuestionControlService {
     let group: any = {};
     complexDatatype.forEach((question, index) => {
 
-      if (index == 0) {
+      if (index == 0 || index == 1) {
 
       } else if (question instanceof Array) {
         // Complex datatype, create new formgroup for it
-        console.log(`Found Complex datatype: ${question[0]}`);
+        console.log(`Found a Complex datatype: ${question[0]}`);
         this.complexDatatypeFormGroup(question, group);
       } else {
         // Primitive datatype, convert element to FormControl
@@ -49,6 +49,6 @@ export class QuestionControlService {
 
     });
     // Create a new formgroup for the complex type and store it in the parent
-    parentGroup[complexDatatype[0]] = new FormGroup(group);
+    parentGroup[complexDatatype[1]] = new FormGroup(group);
   }
 }

@@ -16,6 +16,7 @@ export class FormQuestionComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(`Processinging primitive: ${this.question.label}`)
+    console.log(`Processinging primitive: ${this.question.label}`);
+    console.log(this.form);
   }
 }

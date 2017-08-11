@@ -6,7 +6,7 @@
           <div class="row" *ngFor="let question of questions | slice:1" class="form-row">
 
             <df-question *ngIf="question.hasOwnProperty('key')" [question]="question" [form]="form"></df-question>
-            <df-complex *ngIf="isArray(question)" [complexdatatype]="question" [form]="form.controls[question[0]]"></df-complex>
+            <df-complex *ngIf="isArray(question)" [complexdatatype]="question" [form]="form.controls[question[1]]"></df-complex>
 
           </div>
        

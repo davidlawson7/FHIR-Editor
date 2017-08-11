@@ -125,7 +125,7 @@ export class FhirService {
             this.transformPrimitiveType(questions, fieldName, code);
           } else if (this.complexTypeNames.indexOf(code) != -1) {
             // Field holds a complex type
-            this.buildComplexTypeObject(code, questions);
+            this.buildComplexTypeObject(code, questions, fieldName);
           } else {
             //console.log(`Unknown field type in base resource ${type}: ${fieldName}:${code}`);
           }
@@ -140,7 +140,7 @@ export class FhirService {
   /****************************************************************************
    *                             Helper Functions
    ****************************************************************************/
-  private buildComplexTypeObject(type: string, object: any[]) {
+  private buildComplexTypeObject(type: string, object: any[], fname: string) {
 
     let questions: any[] = [];
 
@@ -150,6 +150,8 @@ export class FhirService {
         for (let element of complex.snapshot.element) {
           if (!element.hasOwnProperty('type')) {
             questions.push(element.id);
+
+            questions.push(`${fname}`);
             continue;
           } // Skip any field with no type i.e. the First
 
@@ -163,7 +165,7 @@ export class FhirService {
             this.transformPrimitiveType(questions, fieldName, code);
           } else if (this.complexTypeNames.indexOf(code) != -1) {
             // Field holds a complex type
-            this.buildComplexTypeObject(code, questions);
+            this.buildComplexTypeObject(code, questions, fieldName);
           } else {
             //console.log(`Unknown field type in complex datatype ${type}: ${fieldName}:${code}`);
           }
@@ -172,11 +174,8 @@ export class FhirService {
       }
     }
     // Add the complex type to the list of questions
-    object.push(questions.sort((a, b) => a.order - b.order));
+    object.push(questions);
   }
-
-
-
 
   public search(endpoint: string, type: string, searchby: string, value: string): Observable<any> {
     // Construct the search URL
@@ -251,7 +250,7 @@ export class FhirService {
       case "boolean": {
         //console.log("Primitive Type: boolean");
         let primitiveObject: FhirPrimitiveType<any> = new FhirBoolean({
-          key: fieldName,
+          key: `_${fieldName}`,
           label: fieldName,
           options: [
             { key: 'True', value: true },
@@ -265,7 +264,7 @@ export class FhirService {
       case "integer": {
         //console.log("Primitive Type: integer");
         let primitiveObject: FhirPrimitiveType<any> = new FhirInteger({
-          key: fieldName,
+          key: `_${fieldName}`,
           label: fieldName,
           order: 2
         });
@@ -275,7 +274,7 @@ export class FhirService {
       case "string": {
         //console.log("Primitive Type: string");
         let primitiveObject: FhirPrimitiveType<any> = new FhirString({
-          key: fieldName,
+          key: `_${fieldName}`,
           label: fieldName,
           order: 3
         });
@@ -285,7 +284,7 @@ export class FhirService {
       case "decimal": {
         //console.log("Primitive Type: decimal");
         let primitiveObject: FhirPrimitiveType<any> = new FhirDecimal({
-          key: fieldName,
+          key: `_${fieldName}`,
           label: fieldName,
           order: 4
         });
@@ -295,7 +294,7 @@ export class FhirService {
       case "uri": {
         //console.log("Primitive Type: uri");
         let primitiveObject: FhirPrimitiveType<any> = new FhirUri({
-          key: fieldName,
+          key: `_${fieldName}`,
           label: fieldName,
           order: 5
         });
@@ -305,7 +304,7 @@ export class FhirService {
       case "base64Binary": {
         //console.log("Primitive Type: base64Binary");
         let primitiveObject: FhirPrimitiveType<any> = new FhirBase64Binary({
-          key: fieldName,
+          key: `_${fieldName}`,
           label: fieldName,
           order: 6
         });
@@ -315,7 +314,7 @@ export class FhirService {
       case "instant": {
         //console.log("Primitive Type: instant");
         let primitiveObject: FhirPrimitiveType<any> = new FhirInstant({
-          key: fieldName,
+          key: `_${fieldName}`,
           label: fieldName,
           order: 7
         });
@@ -325,7 +324,7 @@ export class FhirService {
       case "date": {
         //console.log("Primitive Type: date");
         let primitiveObject: FhirPrimitiveType<any> = new FhirDate({
-          key: fieldName,
+          key: `_${fieldName}`,
           label: fieldName,
           order: 8
         });
@@ -335,7 +334,7 @@ export class FhirService {
       case "dateTime": {
         //console.log("Primitive Type: dateTime");
         let primitiveObject: FhirPrimitiveType<any> = new FhirDateTime({
-          key: fieldName,
+          key: `_${fieldName}`,
           label: fieldName,
           order: 9
         });
@@ -345,7 +344,7 @@ export class FhirService {
       case "time": {
         //console.log("Primitive Type: time");
         let primitiveObject: FhirPrimitiveType<any> = new FhirTime({
-          key: fieldName,
+          key: `_${fieldName}`,
           label: fieldName,
           order: 10
         });
@@ -355,7 +354,7 @@ export class FhirService {
       case "code": {
         //console.log("Primitive Type: code");
         let primitiveObject: FhirPrimitiveType<any> = new FhirCode({
-          key: fieldName,
+          key: `_${fieldName}`,
           label: fieldName,
           order: 11
         });
@@ -365,7 +364,7 @@ export class FhirService {
       case "oid": {
         //console.log("Primitive Type: oid");
         let primitiveObject: FhirPrimitiveType<any> = new FhirOid({
-          key: fieldName,
+          key: `_${fieldName}`,
           label: fieldName,
           order: 12
         });
@@ -375,7 +374,7 @@ export class FhirService {
       case "id": {
         //console.log("Primitive Type: id");
         let primitiveObject: FhirPrimitiveType<any> = new FhirId({
-          key: fieldName,
+          key: `_${fieldName}`,
           label: fieldName,
           order: 13
         });
@@ -385,7 +384,7 @@ export class FhirService {
       case "markdown": {
         //console.log("Primitive Type: markdown");
         let primitiveObject: FhirPrimitiveType<any> = new FhirMarkdown({
-          key: fieldName,
+          key: `_${fieldName}`,
           label: fieldName,
           order: 14
         });
@@ -395,7 +394,7 @@ export class FhirService {
       case "unsignedInt": {
         //console.log("Primitive Type: unsignedInt");
         let primitiveObject: FhirPrimitiveType<any> = new FhirUnsignedInt({
-          key: fieldName,
+          key: `_${fieldName}`,
           label: fieldName,
           order: 15
         });
@@ -405,7 +404,7 @@ export class FhirService {
       case "positiveInt": {
         //console.log("Primitive Type: positiveInt");
         let primitiveObject: FhirPrimitiveType<any> = new FhirPositiveInt({
-          key: fieldName,
+          key: `_${fieldName}`,
           label: fieldName,
           order: 16
         });

@@ -21,7 +21,7 @@ export class QuestionControlService {
       } else {
         // Primitive datatype, convert element to FormControl
         //console.log(`${question.label}`)
-        group[question.label] = question.required ? new FormControl(question.value || '', Validators.required)
+        group[`_${question.label}`] = question.required ? new FormControl(question.value || '', Validators.required)
           : new FormControl(question.value || '');
       }
 
@@ -43,7 +43,7 @@ export class QuestionControlService {
       } else {
         // Primitive datatype, convert element to FormControl
         //console.log(`Primitive datatype: ${question.label}`)
-        group[question.label] = question.required ? new FormControl(question.value || '', Validators.required)
+        group[`_${question.label}`] = question.required ? new FormControl(question.value || '', Validators.required)
           : new FormControl(question.value || '');
       }
 

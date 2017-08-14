@@ -156,11 +156,43 @@
 
 </div>
 
+<div *ngIf="complexdatatype[0]=='Meta'">
+  <h3>{{complexdatatype[1]}}:{{complexdatatype[0]}}</h3>
+
+  <!-- id, versionid, and last updated -->
+  <div class="row" *ngIf="fieldExists('id') || fieldExists('versionId') || fieldExists('lastUpdated')">
+    <div class="input-field col s12 m4" *ngIf="fieldExists('id')">
+      <input id="meta_id" type="text" class="validate">
+      <label>{{getField('id').label}}</label>
+    </div>
+
+    <div class="input-field col s12 m4" *ngIf="fieldExists('versionId')">
+      <input id="meta_versionId" type="text" class="validate">
+      <label>{{getField('versionId').label}}</label>
+    </div>
+
+    <div class="input-field col s12 m4" *ngIf="fieldExists('lastUpdated')">
+      <input id="meta_lastUpdated" type="text" class="validate">
+      <label>{{getField('lastUpdated').label}}</label>
+    </div>
+  </div>
+
+  <!-- Profile -->
+  <div class="row" *ngIf="fieldExists('profile')">
+    <div class="input-field col s12">
+      <input id="meta_profile" type="text" class="validate">
+      <label>{{getField('profile').label}}</label>
+    </div>
+  </div>
+
+</div>
+
 <div *ngIf="complexdatatype[0]!='HumanName'
             && complexdatatype[0]!='Period'
             && complexdatatype[0]!='Identifier'
             && complexdatatype[0]!='CodeableConcept'
-            && complexdatatype[0]!='Coding'">
+            && complexdatatype[0]!='Coding'
+            && complexdatatype[0]!='Meta'">
   <h3>{{complexdatatype[1]}}:{{complexdatatype[0]}}</h3>
   <div *ngFor="let question of complexdatatype | slice:2" class="form-row">
 

@@ -20,7 +20,7 @@ export class FormComplexDatatypeComponent implements OnInit {
 
   fieldExists(field: string): boolean {
     for (let item of this.complexdatatype) {
-      if (item.key == field) {
+      if (item.key == `_${field}`) {
         return true;
       }
     }
@@ -38,7 +38,7 @@ export class FormComplexDatatypeComponent implements OnInit {
 
   getField(field: string): any {
     for (let item of this.complexdatatype) {
-      if (item.key == field) {
+      if (item.key == `_${field}`) {
         return item;
       }
     }

@@ -187,12 +187,178 @@
 
 </div>
 
+<div *ngIf="complexdatatype[0]=='Address'">
+    <h3>{{complexdatatype[1]}}:{{complexdatatype[0]}}</h3>
+
+    <!-- use and type -->
+    <div class="row" *ngIf="fieldExists('use') || fieldExists('type')">
+      <div class="input-field col s12 m6" *ngIf="fieldExists('use')">
+        <input id="address_use" type="text" class="validate">
+        <label>{{getField('use').label}}</label>
+      </div>
+
+      <div class="input-field col s12 m6" *ngIf="fieldExists('type')">
+        <input id="address_type" type="text" class="validate">
+        <label>{{getField('type').label}}</label>
+      </div>
+    </div>
+
+    <!-- Text -->
+    <div class="row" *ngIf="fieldExists('text')">
+      <div class="input-field col s12">
+        <input id="address_text" type="text" class="validate">
+        <label>{{getField('text').label}}</label>
+      </div>
+    </div>
+
+    <!-- Line -->
+    <div class="row" *ngIf="fieldExists('line')">
+      <div class="input-field col s12">
+        <input id="address_line" type="text" class="validate">
+        <label>{{getField('line').label}}</label>
+      </div>
+    </div>
+
+    <!-- City and District -->
+    <div class="row" *ngIf="fieldExists('city') || fieldExists('district')">
+      <div class="input-field col s12 m6" *ngIf="fieldExists('city')">
+        <input id="address_city" type="text" class="validate">
+        <label>{{getField('city').label}}</label>
+      </div>
+
+      <div class="input-field col s12 m6" *ngIf="fieldExists('district')">
+        <input id="address_district" type="text" class="validate">
+        <label>{{getField('district').label}}</label>
+      </div>
+    </div>
+
+    <!-- state, postcode, and country -->
+    <div class="row" *ngIf="fieldExists('state') || fieldExists('postalCode')
+                            || fieldExists('country')">
+      <div class="input-field col s12 m4" *ngIf="fieldExists('state')">
+        <input id="meta_state" type="text" class="validate">
+        <label>{{getField('state').label}}</label>
+      </div>
+
+      <div class="input-field col s12 m4" *ngIf="fieldExists('postalCode')">
+        <input id="meta_postalCode" type="text" class="validate">
+        <label>{{getField('postalCode').label}}</label>
+      </div>
+
+      <div class="input-field col s12 m4" *ngIf="fieldExists('country')">
+        <input id="meta_country" type="text" class="validate">
+        <label>{{getField('country').label}}</label>
+      </div>
+    </div>
+
+    <!-- Handles Period Complex datatype -->
+    <df-complex *ngIf="complexFieldExists('period')" [complexdatatype]="getComplexField('period')" [form]="form.controls['period']"></df-complex>
+
+</div>
+
+<div *ngIf="complexdatatype[0]=='Attachment'">
+    <h3>{{complexdatatype[1]}}:{{complexdatatype[0]}}</h3>
+
+    <!-- contentType and Language -->
+    <div class="row" *ngIf="fieldExists('contentType') || fieldExists('language')">
+      <div class="input-field col s12 m6" *ngIf="fieldExists('contentType')">
+        <input id="attachment_contentType" type="text" class="validate">
+        <label>{{getField('contentType').label}}</label>
+      </div>
+
+      <div class="input-field col s12 m6" *ngIf="fieldExists('language')">
+        <input id="attachment_language" type="text" class="validate">
+        <label>{{getField('language').label}}</label>
+      </div>
+    </div>
+
+    <!-- Data -->
+    <div class="row" *ngIf="fieldExists('data')">
+      <div class="input-field col s12">
+        <input id="attachment_data" type="text" class="validate">
+        <label>{{getField('data').label}}</label>
+      </div>
+    </div>
+
+    <!-- URL -->
+    <div class="row" *ngIf="fieldExists('url')">
+      <div class="input-field col s12">
+        <input id="attachment_url" type="text" class="validate">
+        <label>{{getField('url').label}}</label>
+      </div>
+    </div>
+
+    <!-- size and hash -->
+    <div class="row" *ngIf="fieldExists('size') || fieldExists('hash')">
+      <div class="input-field col s12 m6" *ngIf="fieldExists('size')">
+        <input id="attachment_size" type="text" class="validate">
+        <label>{{getField('size').label}}</label>
+      </div>
+
+      <div class="input-field col s12 m6" *ngIf="fieldExists('hash')">
+        <input id="attachment_hash" type="text" class="validate">
+        <label>{{getField('hash').label}}</label>
+      </div>
+    </div>
+
+    <!-- title and creation -->
+    <div class="row" *ngIf="fieldExists('title') || fieldExists('creation')">
+      <div class="input-field col s12 m6" *ngIf="fieldExists('title')">
+        <input id="attachment_title" type="text" class="validate">
+        <label>{{getField('title').label}}</label>
+      </div>
+
+      <div class="input-field col s12 m6" *ngIf="fieldExists('creation')">
+        <input id="attachment_creation" type="text" class="validate">
+        <label>{{getField('creation').label}}</label>
+      </div>
+    </div>
+
+</div>
+
+<div *ngIf="complexdatatype[0]=='ContactPoint'">
+  <h3>{{complexdatatype[1]}}:{{complexdatatype[0]}}</h3>
+
+  <!-- use, system and rank -->
+  <div class="row" *ngIf="fieldExists('use') || fieldExists('system') || fieldExists('rank')">
+    <div class="input-field col s12 m4" *ngIf="fieldExists('use')">
+      <input id="contactpoint_use" type="text" class="validate">
+      <label>{{getField('use').label}}</label>
+    </div>
+
+    <div class="input-field col s12 m4" *ngIf="fieldExists('system')">
+      <input id="contactpoint_system" type="text" class="validate">
+      <label>{{getField('system').label}}</label>
+    </div>
+
+    <div class="input-field col s12 m4" *ngIf="fieldExists('rank')">
+      <input id="contactpoint_rank" type="text" class="validate">
+      <label>{{getField('rank').label}}</label>
+    </div>
+  </div>
+
+  <!-- value -->
+  <div class="row" *ngIf="fieldExists('value')">
+    <div class="input-field col s12">
+      <input id="contactpoint_value" type="text" class="validate">
+      <label>{{getField('value').label}}</label>
+    </div>
+  </div>
+
+  <!-- Handles Period Complex datatype -->
+  <df-complex *ngIf="complexFieldExists('period')" [complexdatatype]="getComplexField('period')" [form]="form.controls['period']"></df-complex>
+
+</div>
+
 <div *ngIf="complexdatatype[0]!='HumanName'
             && complexdatatype[0]!='Period'
             && complexdatatype[0]!='Identifier'
             && complexdatatype[0]!='CodeableConcept'
             && complexdatatype[0]!='Coding'
-            && complexdatatype[0]!='Meta'">
+            && complexdatatype[0]!='Meta'
+            && complexdatatype[0]!='Address'
+            && complexdatatype[0]!='Attachment'
+            && complexdatatype[0]!='ContactPoint'">
   <h3>{{complexdatatype[1]}}:{{complexdatatype[0]}}</h3>
   <div *ngFor="let question of complexdatatype | slice:2" class="form-row">
 

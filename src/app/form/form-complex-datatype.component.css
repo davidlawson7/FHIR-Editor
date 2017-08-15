@@ -1,0 +1,18 @@
+h3 {
+    color: #26a69a;
+    margin: 0;
+    padding: 0;
+    text-transform: capitalize;
+}
+h4 {
+    color: #26a69a;
+    margin: 0;
+    padding: 0;
+    text-transform: capitalize;
+}
+h5 {
+    color: #ababab;
+}
+.field-object-id {
+    color: #ababab;
+}

@@ -18,6 +18,10 @@ export class FormComplexDatatypeComponent implements OnInit {
     console.log(`Processinging complex: ${this.complexdatatype}`)
   }
 
+  addFieldArray() {
+      
+  }
+
   fieldExists(field: string): boolean {
     for (let item of this.complexdatatype) {
       if (item.key == `_${field}`) {

@@ -34,6 +34,7 @@ export class FormComponent implements OnInit {
   }
 
   ngOnChanges() {
+      console.log(this.questions);
     if (this.questions != null) {
       this.form = this.qcs.toFormGroup(this.questions);
       console.log(this.form);
@@ -41,6 +42,10 @@ export class FormComponent implements OnInit {
         console.log(question);
       }
     }
+  }
+
+  public getResourceFields() {
+      return this.fhirService.getResourceFields(this.questions[0]);
   }
 
   isArray(obj: any) {

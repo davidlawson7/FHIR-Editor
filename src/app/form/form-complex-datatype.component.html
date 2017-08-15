@@ -1,5 +1,6 @@
 <div *ngIf="complexdatatype[0]=='HumanName'">
-  <h3>{{complexdatatype[1]}}:{{complexdatatype[0]}}</h3>
+  <h3>{{complexdatatype[1]}}</h3>
+  <span class="field-object-id">{{complexdatatype[0]}}</span>
 
   <!-- Use -->
   <div class="row" *ngIf="fieldExists('use')">
@@ -49,7 +50,8 @@
 </div>
 
 <div *ngIf="complexdatatype[0]=='Period'">
-  <h5>{{complexdatatype[1]}}:{{complexdatatype[0]}}</h5>
+    <h4>{{complexdatatype[1]}}</h4>
+    <span class="field-object-id">{{complexdatatype[0]}}</span>
 
   <!-- Start and End Names -->
   <div class="row" *ngIf="fieldExists('start') || fieldExists('end')">
@@ -66,7 +68,8 @@
 </div>
 
 <div *ngIf="complexdatatype[0]=='Identifier'">
-  <h3>{{complexdatatype[1]}}:{{complexdatatype[0]}}</h3>
+    <h3>{{complexdatatype[1]}}</h3>
+    <span class="field-object-id">{{complexdatatype[0]}}</span>
 
   <!-- use and system -->
   <div class="row" *ngIf="fieldExists('use') || fieldExists('system')">
@@ -98,7 +101,8 @@
 </div>
 
 <div *ngIf="complexdatatype[0]=='CodeableConcept'">
-  <h5>{{complexdatatype[1]}}:{{complexdatatype[0]}}</h5>
+    <h3>{{complexdatatype[1]}}</h3>
+    <span class="field-object-id">{{complexdatatype[0]}}</span>
 
   <!-- Text field -->
   <div class="row" *ngIf="fieldExists('text')">
@@ -114,7 +118,8 @@
 </div>
 
 <div *ngIf="complexdatatype[0]=='Coding'">
-  <h5>{{complexdatatype[1]}}:{{complexdatatype[0]}}</h5>
+    <h4>{{complexdatatype[1]}}</h4>
+    <span class="field-object-id">{{complexdatatype[0]}}</span>
 
   <!-- version, system, and code -->
   <div class="row" *ngIf="fieldExists('version') || fieldExists('system') || fieldExists('code')">
@@ -157,7 +162,8 @@
 </div>
 
 <div *ngIf="complexdatatype[0]=='Meta'">
-  <h3>{{complexdatatype[1]}}:{{complexdatatype[0]}}</h3>
+    <h3>{{complexdatatype[1]}}</h3>
+    <span class="field-object-id">{{complexdatatype[0]}}</span>
 
   <!-- id, versionid, and last updated -->
   <div class="row" *ngIf="fieldExists('id') || fieldExists('versionId') || fieldExists('lastUpdated')">
@@ -188,7 +194,8 @@
 </div>
 
 <div *ngIf="complexdatatype[0]=='Address'">
-    <h3>{{complexdatatype[1]}}:{{complexdatatype[0]}}</h3>
+    <h3>{{complexdatatype[1]}}</h3>
+    <span class="field-object-id">{{complexdatatype[0]}}</span>
 
     <!-- use and type -->
     <div class="row" *ngIf="fieldExists('use') || fieldExists('type')">
@@ -257,7 +264,8 @@
 </div>
 
 <div *ngIf="complexdatatype[0]=='Attachment'">
-    <h3>{{complexdatatype[1]}}:{{complexdatatype[0]}}</h3>
+    <h3>{{complexdatatype[1]}}</h3>
+    <span class="field-object-id">{{complexdatatype[0]}}</span>
 
     <!-- contentType and Language -->
     <div class="row" *ngIf="fieldExists('contentType') || fieldExists('language')">
@@ -317,7 +325,8 @@
 </div>
 
 <div *ngIf="complexdatatype[0]=='ContactPoint'">
-  <h3>{{complexdatatype[1]}}:{{complexdatatype[0]}}</h3>
+    <h3>{{complexdatatype[1]}}</h3>
+    <span class="field-object-id">{{complexdatatype[0]}}</span>
 
   <!-- use, system and rank -->
   <div class="row" *ngIf="fieldExists('use') || fieldExists('system') || fieldExists('rank')">
@@ -350,6 +359,32 @@
 
 </div>
 
+<div *ngIf="complexdatatype[0]=='Narrative'">
+    <h3>{{complexdatatype[1]}}</h3>
+    <span class="field-object-id">{{complexdatatype[0]}}</span>
+
+  <!-- use and system -->
+  <div class="row" *ngIf="fieldExists('id') || fieldExists('status')">
+    <div class="input-field col s12 m6" *ngIf="fieldExists('id')">
+      <input id="narrative_id" type="text" class="validate">
+      <label>{{getField('id').label}}</label>
+    </div>
+
+    <div class="input-field col s12 m6" *ngIf="fieldExists('status')">
+      <input id="narrative_status" type="text" class="validate">
+      <label>{{getField('status').label}}</label>
+    </div>
+  </div>
+
+  <!-- Value field -->
+  <div class="row" *ngIf="fieldExists('div')">
+    <div class="input-field col s12">
+      <textarea id="textarea1" class="materialize-textarea"></textarea>
+      <label>{{getField('div').label}}</label>
+    </div>
+  </div>
+</div>
+
 <div *ngIf="complexdatatype[0]!='HumanName'
             && complexdatatype[0]!='Period'
             && complexdatatype[0]!='Identifier'
@@ -358,7 +393,8 @@
             && complexdatatype[0]!='Meta'
             && complexdatatype[0]!='Address'
             && complexdatatype[0]!='Attachment'
-            && complexdatatype[0]!='ContactPoint'">
+            && complexdatatype[0]!='ContactPoint'
+            && complexdatatype[0]!='Narrative'">
   <h3>{{complexdatatype[1]}}:{{complexdatatype[0]}}</h3>
   <div *ngFor="let question of complexdatatype | slice:2" class="form-row">
 

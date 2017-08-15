@@ -95,14 +95,38 @@ export class FhirService {
       );
   }
 
+  public getResourceFields(type: string): string[] {
+      let fields: string[] = [];
+      for (let resource of this.resourceTypes) {
+        if (resource.id == type) {
+          // Found the resource we are building
+          for (let element of resource.snapshot.element) {
+            if (!element.hasOwnProperty('type')) {
+              continue;
+            } // Skip any field with no type i.e. the First
+            // Get the current field name & its coded value
+            let fieldName = element.id.split(".", 2)[1]; // i.e. the 'id' in 'Patient.id'
+            fields.push(fieldName);
+          }
+          break;
+        }
+      }
+      return fields;
+  }
+
+  public createResource(type: string): any[] {
+      let questions: any[] = [];
+      questions.push('dog');//this.resourceTypes[0].snapshot.element.id);
+      return questions;
+  }
+
   /**
    * Grabs the resources structure definition. Then iterates through, building
    * each type and complex type recursively (structure for complex types
    * already known), and returns a FormGroup containing FormControls and other
    * ForGroups.
    */
-
-  public createResource(type: string): any[] {
+  public createFullResource(type: string): any[] {
 
     let questions: any[] = [];
 

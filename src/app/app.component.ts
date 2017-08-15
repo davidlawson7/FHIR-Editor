@@ -135,6 +135,7 @@ export class AppComponent {
   public generateFormGroupTest() {
     console.log("====== begin formgroup test ======");
     this.questions = this.fhirService.createResource(this.activeSession.createResourceType);
+    console.log(this.questions);
     this.activeSession.built = true;
   }
   /* used */

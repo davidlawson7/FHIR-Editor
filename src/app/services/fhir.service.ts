@@ -96,28 +96,71 @@ export class FhirService {
   }
 
   public getResourceFields(type: string): string[] {
-      let fields: string[] = [];
-      for (let resource of this.resourceTypes) {
-        if (resource.id == type) {
-          // Found the resource we are building
-          for (let element of resource.snapshot.element) {
-            if (!element.hasOwnProperty('type')) {
-              continue;
-            } // Skip any field with no type i.e. the First
-            // Get the current field name & its coded value
-            let fieldName = element.id.split(".", 2)[1]; // i.e. the 'id' in 'Patient.id'
+    let fields: string[] = [];
+    for (let resource of this.resourceTypes) {
+      if (resource.id == type) {
+        // Found the resource we are building
+        console.log(resource);
+        for (let element of resource.snapshot.element) {
+          if (!element.hasOwnProperty('type')) {
+            continue;
+          } // Skip any field with no type i.e. the First
+          // Get the current field name & its coded value
+          let names = element.id.split(".", 4);
+          if (names.length == 2) {
+            let fieldName = names[1]; // i.e. the 'id' in 'Patient.id'
             fields.push(fieldName);
           }
-          break;
+
+        }
+        break;
+      }
+    }
+    return fields;
+  }
+
+  public createResourceField(type: string, field: string): any {
+    let questions: any[] = [];
+    for (let resource of this.resourceTypes) {
+      if (resource.id == type) {
+        // Found the resource we are building
+        for (let element of resource.snapshot.element) {
+          if (element.hasOwnProperty('type')) {
+            let fieldName = element.id.split(".", 2)[1]; // i.e. the 'id' in 'Patient.id'
+            let code = element.type[0].code;
+            if (fieldName == field) {
+              // Found the field we are looking for
+              // Determine how best to process the field
+              if (this.primitiveTypeNames.indexOf(code) != -1) {
+                // Field holds a primitive type
+                this.transformPrimitiveType(questions, fieldName, code);
+              } else if (this.complexTypeNames.indexOf(code) != -1) {
+                // Field holds a complex type
+                this.buildComplexTypeObject(code, questions, fieldName);
+              }
+              return questions[0];
+            }
+
+          }
         }
       }
-      return fields;
+    }
   }
 
   public createResource(type: string): any[] {
-      let questions: any[] = [];
-      questions.push('dog');//this.resourceTypes[0].snapshot.element.id);
-      return questions;
+    let questions: any[] = [];
+    for (let resource of this.resourceTypes) {
+      if (resource.id == type) {
+        // Found the resource we are building
+        for (let element of resource.snapshot.element) {
+          if (!element.hasOwnProperty('type')) {
+            questions.push(element.id);
+            return questions;
+          } // Skip any field with no type i.e. the First
+        }
+      }
+    }
+    return null;
   }
 
   /**

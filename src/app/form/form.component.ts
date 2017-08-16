@@ -21,6 +21,7 @@ export class FormComponent implements OnInit {
   @Input() questions: any[] = [];
   form: FormGroup;
   payLoad = '';
+  currentFields: string[] = [];
 
   constructor(
     private fhirService: FhirService,
@@ -34,7 +35,22 @@ export class FormComponent implements OnInit {
   }
 
   ngOnChanges() {
-      console.log(this.questions);
+    console.log(this.questions);
+    if (this.questions != null) {
+      this.form = this.qcs.toFormGroup(this.questions);
+      console.log(this.form);
+      for (let question of this.questions) {
+        console.log(question);
+      }
+    }
+  }
+
+  addResourceField(field: string) {
+    // Tick this field of the list of possible fields
+    this.currentFields.push(field);
+    let obj = this.fhirService.createResourceField(this.questions[0], field);
+    this.questions.push(obj);
+    console.log(this.questions);
     if (this.questions != null) {
       this.form = this.qcs.toFormGroup(this.questions);
       console.log(this.form);
@@ -45,7 +61,7 @@ export class FormComponent implements OnInit {
   }
 
   public getResourceFields() {
-      return this.fhirService.getResourceFields(this.questions[0]);
+    return this.fhirService.getResourceFields(this.questions[0]);
   }
 
   isArray(obj: any) {

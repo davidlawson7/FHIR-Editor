@@ -1,6 +1,5 @@
-<div class="container">
-  <div class="row" *ngIf="activeSession.built">
-
+<div class="row" *ngIf="activeSession.built">
+  <div class="middle-box">
       <form class="col s12" (ngSubmit)="onSubmit()" [formGroup]="form">
         <h1>Resource: {{questions[0]}}</h1>
           <div class="row" *ngFor="let question of questions | slice:1" class="form-row">
@@ -15,10 +14,23 @@
           </div>
 
       </form>
-
       <div *ngIf="payLoad" class="form-row">
           <strong>Saved the following values</strong><br>{{payLoad}}
       </div>
+  </div>
 
+  <div class="right-box">
+    <h4>Options Menu</h4>
+    <div class="row">
+      <div class="row col s12">
+        <label for="add_field">Add Field</label>
+          <select id="add_field" class="browser-default tooltipped"data-position="right" data-delay="50" data-tooltip="Select a field within a Resource type to search on."
+                  (change)="addResourceField($event)"
+                  name="add_field">
+              <option value="" disabled selected>Choose your Field</option>
+              <option *ngFor="let field of getResourceFields()" [value]="field">{{field}}</option>
+          </select>
+      </div>
+    </div>
   </div>
 </div>

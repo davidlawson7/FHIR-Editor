@@ -22,6 +22,7 @@ export class FormComponent implements OnInit {
   form: FormGroup;
   payLoad = '';
   currentFields: string[] = [];
+  fieldToAdd: string = '';
 
   constructor(
     private fhirService: FhirService,
@@ -45,11 +46,14 @@ export class FormComponent implements OnInit {
     }
   }
 
-  addResourceField(field: string) {
+  addResourceField() {
     // Tick this field of the list of possible fields
-    this.currentFields.push(field);
-    let obj = this.fhirService.createResourceField(this.questions[0], field);
-    this.questions.push(obj);
+    this.currentFields.push(this.fieldToAdd);
+    console.log(`damn field`);
+    console.log(this.fieldToAdd);
+    let obj: any[] = this.fhirService.createResourceField(this.questions[0], this.fieldToAdd);
+    console.log(obj);
+    this.questions.push(obj[0]);
     console.log(this.questions);
     if (this.questions != null) {
       this.form = this.qcs.toFormGroup(this.questions);

@@ -30,7 +30,7 @@ import {
 export class FhirService {
 
   private testUrl = 'api';                                  // URL to test api
-  private fhirUrl = 'http://fhirtest.uhn.ca/baseDstu3';     // URL to fhir api
+  private fhirUrl: string;     // URL to fhir api
   private headers = new Headers({ "Accept": "application/fhir+json" });
   private primitiveTypeNames: string[] = [  // Known primitive types
     'boolean', 'integer', 'string', 'decimal', 'uri', 'base64Binary', 'instant',
@@ -59,6 +59,7 @@ export class FhirService {
    */
   public updateService(endpoint: string) {
     console.log("====== updating new endpoint via new function =======");
+    this.fhirUrl = endpoint;
     this.getCapabilityStatement(endpoint)
       .subscribe(
       capabilityStatement => {
@@ -119,26 +120,35 @@ export class FhirService {
     return fields;
   }
 
-  public createResourceField(type: string, field: string): any {
+  public createResourceField(type: string, field: string): any[] {
+    console.log("Creating a new field");
     let questions: any[] = [];
     for (let resource of this.resourceTypes) {
       if (resource.id == type) {
+        console.log("found the resource");
         // Found the resource we are building
         for (let element of resource.snapshot.element) {
           if (element.hasOwnProperty('type')) {
+
             let fieldName = element.id.split(".", 2)[1]; // i.e. the 'id' in 'Patient.id'
             let code = element.type[0].code;
+            console.log(`Fieldname deduced: ${fieldName}, fieldname given: ${field}`);
             if (fieldName == field) {
               // Found the field we are looking for
+              console.log("found the field inside the resource we are looking for");
               // Determine how best to process the field
               if (this.primitiveTypeNames.indexOf(code) != -1) {
                 // Field holds a primitive type
-                this.transformPrimitiveType(questions, fieldName, code);
+                console.log("IS PRIMITIVE");
+                this.transformPrimitiveType(questions, fieldName, code, element);
               } else if (this.complexTypeNames.indexOf(code) != -1) {
                 // Field holds a complex type
+                console.log("IS COMPLEX");
                 this.buildComplexTypeObject(code, questions, fieldName);
               }
-              return questions[0];
+              console.log("Inside the service");
+              console.log(questions);
+              return questions;
             }
 
           }
@@ -189,7 +199,7 @@ export class FhirService {
           // Determine how best to process the field
           if (this.primitiveTypeNames.indexOf(code) != -1) {
             // Field holds a primitive type
-            this.transformPrimitiveType(questions, fieldName, code);
+            this.transformPrimitiveType(questions, fieldName, code, element);
           } else if (this.complexTypeNames.indexOf(code) != -1) {
             // Field holds a complex type
             this.buildComplexTypeObject(code, questions, fieldName);
@@ -229,7 +239,7 @@ export class FhirService {
           // Determine how best to process the field
           if (this.primitiveTypeNames.indexOf(code) != -1) {
             // Field holds a primitive type
-            this.transformPrimitiveType(questions, fieldName, code);
+            this.transformPrimitiveType(questions, fieldName, code, element);
           } else if (this.complexTypeNames.indexOf(code) != -1) {
             // Field holds a complex type
             this.buildComplexTypeObject(code, questions, fieldName);
@@ -307,10 +317,26 @@ export class FhirService {
     return Observable.throw(errMsg);
   }
 
+  private getValueSet(endpoint: string, system: any) {
+    // The URL that will be used to ping the StructureDefinition
+    const url = `${system.binding.valueSetReference.reference}`;
+    return this.http.get(url, { headers: this.headers })
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  private getCodeSystem(system: any) {
+    // The URL that will be used to ping the StructureDefinition
+    const url = `${system.compose.include[0].system}`;
+    return this.http.get(url, { headers: this.headers })
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
   /**
    *
    */
-  private transformPrimitiveType(formGroup: any[], fieldName: string, code: string) {
+  private transformPrimitiveType(formGroup: any[], fieldName: string, code: string, element: any) {
     //primitiveObject[fieldName] = {};
     switch (code) {
       // Primitive Types
@@ -420,9 +446,34 @@ export class FhirService {
       }
       case "code": {
         //console.log("Primitive Type: code");
+        let theOptions = [{ key: 'a', value: 'A' },
+          { key: 'b', value: "B" }];
+        // Get all options
+        /*this.getValueSet(this.fhirUrl, element)
+          .subscribe(
+          valueSet => {
+            /* Grab and store the new capability statement
+            this.getCodeSystem(valueSet)
+              .subscribe(
+              codeSystem => {
+                for (let thecode of codeSystem.concept) {
+                  theOptions.push({ key: thecode.display, value: thecode.code });
+                }
+                let primitiveObject: FhirPrimitiveType<any> = new FhirCode({
+                  key: `_${fieldName}`,
+                  label: fieldName,
+                  options: theOptions,
+                  order: 11
+                });
+                formGroup.push(primitiveObject);
+              }
+              )
+          });*/
+
         let primitiveObject: FhirPrimitiveType<any> = new FhirCode({
           key: `_${fieldName}`,
           label: fieldName,
+          options: theOptions,
           order: 11
         });
         formGroup.push(primitiveObject);

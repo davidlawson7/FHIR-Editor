@@ -42,7 +42,7 @@ export class FhirPrimitiveType<T> {
  */
 export class FhirBoolean extends FhirPrimitiveType<boolean> {
   controlType = 'dropdown';
-  options: {key: string, value: string}[] = [];
+  options: { key: string, value: string }[] = [];
 
   constructor(options: {} = {}) {
     super(options);
@@ -202,12 +202,12 @@ export class FhirTime extends FhirPrimitiveType<string> {
  * Regex: [^\s]+([\s]?[^\s]+)*
  */
 export class FhirCode extends FhirPrimitiveType<string> {
-  controlType = 'input';
-  type: string;
+  controlType = 'dropdown';
+  options: { key: string, value: string }[] = [];
 
   constructor(options: {} = {}) {
     super(options);
-    this.type = options['type'] || '';
+    this.options = options['options'] || [];
   }
 }
 /**

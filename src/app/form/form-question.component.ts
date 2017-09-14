@@ -10,6 +10,10 @@ import { FhirPrimitiveType }          from '../datatypes/primitive-datatypes'
 export class FormQuestionComponent implements OnInit {
   @Input() question: FhirPrimitiveType<any>;
   @Input() form: FormGroup;
+
+  constructor() {
+  }
+
   get isValid() {
     //return this.form.controls[this.question.key].valid;
     return true;

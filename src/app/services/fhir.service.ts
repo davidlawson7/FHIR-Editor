@@ -120,7 +120,7 @@ export class FhirService {
     return fields;
   }
 
-  public createResourceField(type: string, field: string): any[] {
+  public createResourceField(type: string, field: string, currentFields: string[]): any[] {
     console.log("Creating a new field");
     let questions: any[] = [];
     for (let resource of this.resourceTypes) {
@@ -136,6 +136,12 @@ export class FhirService {
             if (fieldName == field) {
               // Found the field we are looking for
               console.log("found the field inside the resource we are looking for");
+              if (element.max == "1") {
+                console.log("ADDING FIELD");
+                console.log(field);
+                currentFields.push(field);
+              }
+
               // Determine how best to process the field
               if (this.primitiveTypeNames.indexOf(code) != -1) {
                 // Field holds a primitive type
@@ -446,29 +452,21 @@ export class FhirService {
       }
       case "code": {
         //console.log("Primitive Type: code");
-        let theOptions = [{ key: 'a', value: 'A' },
-          { key: 'b', value: "B" }];
+        let theOptions = [];
         // Get all options
-        /*this.getValueSet(this.fhirUrl, element)
+        this.getValueSet(this.fhirUrl, element)
           .subscribe(
           valueSet => {
-            /* Grab and store the new capability statement
+            /* Grab and store the new capability statement */
             this.getCodeSystem(valueSet)
               .subscribe(
               codeSystem => {
                 for (let thecode of codeSystem.concept) {
                   theOptions.push({ key: thecode.display, value: thecode.code });
                 }
-                let primitiveObject: FhirPrimitiveType<any> = new FhirCode({
-                  key: `_${fieldName}`,
-                  label: fieldName,
-                  options: theOptions,
-                  order: 11
-                });
-                formGroup.push(primitiveObject);
-              }
-              )
-          });*/
+
+              })
+          });
 
         let primitiveObject: FhirPrimitiveType<any> = new FhirCode({
           key: `_${fieldName}`,

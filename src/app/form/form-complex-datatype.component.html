@@ -6,42 +6,48 @@
   <!-- Use -->
   <div class="row" *ngIf="fieldExists('use')">
     <div class="input-field col s4">
-      <input id="humanname_use" type="text" class="validate">
-      <label>{{getField('use').label}}</label>
+      <df-question [question]="getField('use')" [form]="form"></df-question>
+      <!--<input id="humanname_use" type="text" class="validate">
+      <label>{{getField('use').label}}</label>-->
     </div>
   </div>
 
   <!-- Family and Given Names -->
   <div class="row" *ngIf="fieldExists('family') || fieldExists('given')">
     <div class="input-field col s12 m6" *ngIf="fieldExists('family')">
-      <input id="humanname_family" type="text" class="validate">
-      <label>{{getField('family').label}}</label>
+      <df-question [question]="getField('family')" [form]="form"></df-question>
+      <!--<input id="humanname_family" type="text" class="validate">
+      <label>{{getField('family').label}}</label>-->
     </div>
 
     <div class="input-field col s12 m6" *ngIf="fieldExists('given')">
-      <input id="humanname_given" type="text" class="validate">
-      <label>{{getField('given').label}}</label>
+      <df-question [question]="getField('given')" [form]="form"></df-question>
+      <!--<input id="humanname_given" type="text" class="validate">
+      <label>{{getField('given').label}}</label>-->
     </div>
   </div>
 
   <!-- Text version of name -->
   <div class="row" *ngIf="fieldExists('text')">
     <div class="input-field col s12">
-      <input id="humanname_text" type="text" class="validate">
-      <label>{{getField('text').label}}</label>
+      <df-question [question]="getField('text')" [form]="form"></df-question>
+      <!--<input id="humanname_text" type="text" class="validate">
+      <label>{{getField('text').label}}</label>-->
     </div>
   </div>
 
   <!-- Prefix and Suffix of name -->
   <div class="row" *ngIf="fieldExists('prefix') || fieldExists('suffix')">
     <div class="input-field col s12 m6" *ngIf="fieldExists('prefix')">
-      <input id="humanname_prefix" type="text" class="validate">
-      <label>{{getField('prefix').label}}</label>
+      <df-question [question]="getField('prefix')" [form]="form"></df-question>
+      <!--<input id="humanname_prefix" type="text" class="validate">
+      <label>{{getField('prefix').label}}</label>-->
     </div>
 
     <div class="input-field col s12 m6" *ngIf="fieldExists('suffix')">
-      <input id="humanname_suffix" type="text" class="validate">
-      <label>{{getField('suffix').label}}</label>
+      <df-question [question]="getField('suffix')" [form]="form"></df-question>
+      <!--<input id="humanname_suffix" type="text" class="validate">
+      <label>{{getField('suffix').label}}</label>-->
     </div>
   </div>
 

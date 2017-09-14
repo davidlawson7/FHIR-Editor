@@ -48,10 +48,10 @@ export class FormComponent implements OnInit {
 
   addResourceField() {
     // Tick this field of the list of possible fields
-    this.currentFields.push(this.fieldToAdd);
+    //this.currentFields.push(this.fieldToAdd);
     console.log(`damn field`);
     console.log(this.fieldToAdd);
-    let obj: any[] = this.fhirService.createResourceField(this.questions[0], this.fieldToAdd);
+    let obj: any[] = this.fhirService.createResourceField(this.questions[0], this.fieldToAdd, this.currentFields);
     console.log(obj);
     this.questions.push(obj[0]);
     console.log(this.questions);
@@ -65,7 +65,18 @@ export class FormComponent implements OnInit {
   }
 
   public getResourceFields() {
-    return this.fhirService.getResourceFields(this.questions[0]);
+    let fields = this.fhirService.getResourceFields(this.questions[0]);
+    // Iterates through list of already existing fields
+    for (let field in this.currentFields) {
+      console.log(`WORKING ON FIELD: ${field}`);
+      let index = fields.indexOf(field, 0);
+      if (index > -1) {
+        // Removes field from list if it exists already and is maxed
+        fields.splice(index, 1);
+        console.log(`Removing the field: ${field}`);
+      }
+    }
+    return fields;
   }
 
   isArray(obj: any) {

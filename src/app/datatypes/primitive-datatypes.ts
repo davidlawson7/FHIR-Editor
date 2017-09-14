@@ -41,7 +41,7 @@ export class FhirPrimitiveType<T> {
  * true | false
  */
 export class FhirBoolean extends FhirPrimitiveType<boolean> {
-  controlType = 'dropdown';
+  controlType = 'boolean';
   options: { key: string, value: string }[] = [];
 
   constructor(options: {} = {}) {
@@ -164,7 +164,7 @@ export class FhirDate extends FhirPrimitiveType<string> {
  * ((0[0-9]|1[0-3]):[0-5][0-9]|14:00)))?)?)?
  */
 export class FhirDateTime extends FhirPrimitiveType<string> {
-  controlType = 'input';
+  controlType = 'dateTime';
   type: string;
 
   constructor(options: {} = {}) {

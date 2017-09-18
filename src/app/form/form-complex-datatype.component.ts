@@ -16,10 +16,12 @@ export class FormComplexDatatypeComponent implements OnInit {
 
   ngOnInit() {
     console.log(`Processinging complex: ${this.complexdatatype}`)
+    console.log(this.form);
+    console.log("TADA");
   }
 
   addFieldArray() {
-      
+
   }
 
   fieldExists(field: string): boolean {

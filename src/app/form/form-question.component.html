@@ -5,12 +5,12 @@
           <div class="input-field col s12">
 
               <!-- input -->
-              <input *ngSwitchCase="'input'" id="email" type="text" class="validate tooltipped" >
+              <input *ngSwitchCase="'input'" [formControlName]="question.key" value="''" id="email" type="text" class="validate tooltipped" >
 
               <!-- Boolean -->
               <input *ngSwitchCase="'boolean'" type="checkbox" id="question.key" />
 
-              <input *ngSwitchCase="'dateTime'" type="text" class="datepicker">
+              <input *ngSwitchCase="'dateTime'" [formControlName]="question.key" type="text" class="datepicker">
 
               <label class="active" for="question.key">{{question.label}}</label>
 

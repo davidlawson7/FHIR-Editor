@@ -56,10 +56,10 @@ export class AppComponent {
     ];
     // All the possible servers to start with
     this.availableEndpoints = [
-      new FhirEndpoint('University Health Network - STU3', 'http://fhirtest.uhn.ca/baseDstu3'),
-      new FhirEndpoint('University Health Network - DSTU2', 'http://fhirtest.uhn.ca/baseDstu2'),
-      new FhirEndpoint('CSIRO ontoserver - STU3', 'http://ontoserver.csiro.au/stu3-latest'),
-      new FhirEndpoint('Furore Spark - DSTU2/1?', 'http://spark.furore.com/fhir'),
+      //new FhirEndpoint('University Health Network - STU3', 'http://fhirtest.uhn.ca/baseDstu3'),
+      //new FhirEndpoint('University Health Network - DSTU2', 'http://fhirtest.uhn.ca/baseDstu2'),
+      //new FhirEndpoint('CSIRO ontoserver - STU3', 'http://ontoserver.csiro.au/stu3-latest'),
+      //new FhirEndpoint('Furore Spark - DSTU2/1?', 'http://spark.furore.com/fhir'),
       new FhirEndpoint('Furore Vonk - STU3', 'http://vonk.furore.com')
     ];
   }
@@ -177,10 +177,21 @@ export class AppComponent {
 
   public pullResourceCreateForm() {
     console.log("====== begin pulling data test ======");
-    this.questions = this.fhirService.createResource(this.activeSession.createResourceType);
+    console.log(`Create resource type: ${this.activeSession.selectedResourceType}`);
+    console.log(`The item: ${this.selectedSearchItem.fullURL}`);
+    this.questions = this.fhirService.createResource(this.activeSession.selectedResourceType);
     console.log(this.questions);
-    this.resourceData = this.fhirService.getExistingResourceFromSearch(this.selectedSearchItem.fullURL);
-    this.activeSession.built = true;
+    this.fhirService.getExistingResourceFromSearch(this.selectedSearchItem.fullURL)
+      .subscribe(
+      any => {
+        this.resourceData = any;
+        console.log("====== aaaaaaaa ======");
+        console.log(this.resourceData);
+        console.log(this.questions);
+        this.activeSession.built = true;
+      }
+      );
+
   }
 
   public searchForResource() {

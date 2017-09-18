@@ -19,6 +19,7 @@ export class FormComponent implements OnInit {
 
   @Input() activeSession: Session;
   @Input() questions: any[] = [];
+  @Input() existingData: {};
   form: FormGroup;
   payLoad = '';
   currentFields: string[] = [];
@@ -37,6 +38,7 @@ export class FormComponent implements OnInit {
 
   ngOnChanges() {
     console.log(this.questions);
+    console.log(this.existingData);
     if (this.questions != null) {
       this.form = this.qcs.toFormGroup(this.questions);
       console.log(this.form);

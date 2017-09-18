@@ -71,12 +71,14 @@ export class FhirService {
         for (let rest of this.capabilityStatement.rest) {
           for (let resource of rest.resource) {
             // Found a resource, grabs its definition
-            this.getStructureDefinition(resource.type, endpoint)
-              .subscribe(
-              resourceDefinition => {
-                this.resourceTypes.push(resourceDefinition);
-              }
-              );
+            if (resource.type != "Account") {
+              this.getStructureDefinition(resource.type, endpoint)
+                .subscribe(
+                resourceDefinition => {
+                  this.resourceTypes.push(resourceDefinition);
+                }
+                );
+            }
           }
         }
 
@@ -265,6 +267,12 @@ export class FhirService {
     const url = `${endpoint}/${type}?${searchby}:contains=${value}`;
     // Perform the search
     return this.http.get(url, { headers: this.headers })
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  public getExistingResourceFromSearch(fullUrl: string): Observable<any> {
+    return this.http.get(fullUrl, { headers: this.headers })
       .map(this.extractData)
       .catch(this.handleError);
   }

@@ -19,7 +19,7 @@
         <!--<app-form [questions]="questions"></app-form>-->
         <!--<router-outlet></router-outlet>-->
         <!--<a (click)="logActiveObject()" class="btn"></a>-->
-        <app-form [activeSession]="activeSession" [questions]="questions"></app-form>
+        <app-form [activeSession]="activeSession" [questions]="questions" [existingData]="resourceData"></app-form>
       </div>
     </div>
   <div class="container">
@@ -49,12 +49,13 @@ End! Editor Footer -->
     <div *ngIf="activeSession.searchResult.length != 0">
 
       <div class="row">
-        <ul class="collection">
-          <li *ngFor="let result of activeSession.searchResult" class="collection-item">
-            <strong>{{result.resourceType}}</strong> {{result.id}}<br>
-            <span *ngFor="let name of result.name">
-              Name: {{name}}<br>
-            </span>
+        <ul class="collection" >
+          <li *ngFor="let result of activeSession.searchResult" (click)="onSelectedSearchResult(result)" class="collection-item">
+            <strong>Resource: </strong>{{result.resourceType}}<br>
+            <strong>id: </strong>{{result.id}}<br>
+            <strong>Last Updated: </strong> {{result.lastUpdated}}<br>
+            <strong>Full URL: </strong> {{result.fullURL}}<br>
+            <strong>Identifying Factor: </strong>{{result.uniqueFactorValue}}
           </li>
         </ul>
       </div>
@@ -75,7 +76,7 @@ End! Editor Footer -->
 
   </div>
   <div class="modal-footer">
-    <a href="#!" class="modal-action modal-close waves-effect waves-green btn ">Select Resource</a>
+    <a href="#!" (click)="pullResourceCreateForm()" class="modal-action modal-close waves-effect waves-green btn ">Select Resource</a>
   </div>
 </div>
 <!-- End! Resource selection box - Materializecss Modal -->

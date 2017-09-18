@@ -35,6 +35,8 @@ export class AppComponent {
   sessions: Session[];
   savedResources: SavedResource[];
   availableEndpoints: FhirEndpoint[];
+  selectedSearchItem: any;
+  resourceData: any;
 
   // Dynamic form variables
   questions: any[];
@@ -61,16 +63,6 @@ export class AppComponent {
       new FhirEndpoint('Furore Vonk - STU3', 'http://vonk.furore.com')
     ];
   }
-
-  // Form functions
-
-
-  // Menu functions
-
-  // General functions
-
-
-
 
   /* used */
   updateSessionCapabilityStatement(endpoint: string) {
@@ -176,6 +168,19 @@ export class AppComponent {
         break;
       }
     }
+  }
+
+  public onSelectedSearchResult(object: {}): void {
+    this.selectedSearchItem = object;
+    console.log(this.selectedSearchItem);
+  }
+
+  public pullResourceCreateForm() {
+    console.log("====== begin pulling data test ======");
+    this.questions = this.fhirService.createResource(this.activeSession.createResourceType);
+    console.log(this.questions);
+    this.resourceData = this.fhirService.getExistingResourceFromSearch(this.selectedSearchItem.fullURL);
+    this.activeSession.built = true;
   }
 
   public searchForResource() {

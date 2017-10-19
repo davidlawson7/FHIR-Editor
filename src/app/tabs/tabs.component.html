@@ -1,0 +1,6 @@
+<ul class="nav nav-tabs custom-tab">
+  <li *ngFor="let tab of tabs" (click)="selectTab(tab)" [class.active]="tab.active">
+    <a class="tab-title" href="#">{{tab.tabTitle}}</a>
+  </li>
+</ul>
+<ng-content></ng-content>

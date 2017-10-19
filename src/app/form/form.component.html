@@ -1,40 +1,27 @@
-<div class="row" *ngIf="activeSession.built">
-  <div class="middle-box">
-    <div class="container">
-      <form class="col s12" (ngSubmit)="onSubmit()" [formGroup]="form">
-        <h1>Resource: {{questions[0]}}</h1>
-          <div class="row" *ngFor="let question of questions | slice:1" class="form-row">
+<hr/>
+<form class="col s12" (ngSubmit)="onSubmit()" [formGroup]="form">
 
-            <df-question *ngIf="question.hasOwnProperty('key')" [question]="question" [form]="form"></df-question>
-            <df-complex *ngIf="isArray(question)" [complexdatatype]="question" [form]="form.controls[question[1]]"></df-complex>
+  <div *ngIf="availableFields.length > 0" class="form-group">
+    <label class="searchLabel" for="fieldAdder">Add Field</label>
+    <ng-select id="fieldAdder"
+                [allowClear]="true"
+                [items]="availableFields"
+                [disabled]="disabled"
+                (data)="dataFormComponent($event)"
+                (selected)="selectedFormComponent($event)"
+                (removed)="removedFormComponent($event)"
+                placeholder="Select a field to add">
+    </ng-select>
+  </div>
 
-          </div>
+  <div *ngFor="let element of resourceElements | slice:1" class="">
+    <primitive-element *ngIf="element != undefined && element?.key" [resourceElement]="element" [form]="form" [tooltip]="test"></primitive-element>
+    <complex-element *ngIf="isArray(element)" [complexDatatype]="element" [form]="form.controls[element[1]]"></complex-element>
+  </div>
        
-          <div class="form-row">
-            <button type="submit" [disabled]="!form.valid">Save</button>
-          </div>
-
-      </form>
-    </div>
-    <div *ngIf="payLoad" class="form-row">
-        <strong>Saved the following values</strong><br>{{payLoad}}
-    </div>
+  <div>
+    <button type="button" class="btn btn-orange">Send</button>
+    <!--<button type="submit" [disabled]="!form.valid">Save</button>-->
   </div>
 
-  <div class="right-box">
-    <h4>Options Menu</h4>
-    <div class="row">
-      <div class="row col s12">
-        <label for="add_field">Add Field</label>
-          <select id="add_field" class="browser-default tooltipped"data-position="right" data-delay="50" data-tooltip=""
-                  [(ngModel)]="fieldToAdd"
-                  (change)="addResourceField()"
-                  name="add_field"
-                  #fhir_server="ngModel">
-              <option value="" disabled selected>Choose your Field</option>
-              <option *ngFor="let field of getResourceFields()" [value]="field">{{field}}</option>
-          </select>
-      </div>
-    </div>
-  </div>
-</div>
+</form>

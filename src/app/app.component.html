@@ -1,262 +1,191 @@
-<!-- Editor Navigation -->
-<header>
-  <app-top-nav [title]="title" [activeSession]="activeSession"></app-top-nav>
-  <app-side-nav [activeSession]="activeSession" [savedResources]="savedResources"></app-side-nav>
-</header>
-<!-- End! Editor Navigation -->
+<div class="container-fluid rm-space">
+  <div class="row-fluid">
+    <div class="side-nav">
+        <!--Sidebar content-->
+        <h1 class="app-title">{{title}}</h1>
+        <tabs>
+          <!-- Search Tab -->
+          <tab tabTitle="Search">
+            <!-- The endpoint to search on -->
+            <div class="form-group">
+              <label class="searchLabel" for="fhirEndpoint">FHIR Endpoint
+                <span class="glyphicon glyphicon-plus-sign pointer-style" aria-hidden="true" data-toggle="modal" data-target="#myModal"></span>
+              </label>
+              <select id="fhirEndpoint" class="form-control" name="fhirEndpoint" (ngModelChange)="updateEndpoint($event)"
+                        [(ngModel)]="activeEndpoint" required #fhir_server="ngModel">
+                <option value="" disabled selected>Choose a endpoint</option>
+                <option *ngFor="let endpoint of endpoints" [value]="endpoint">{{endpoint}}</option>
+              </select>
+            </div>
+            <!-- The resource to search for -->
+            <div *ngIf="availableTypes.length > 0" class="form-group">
+              <label class="searchLabel" for="searchResourceType">Resource Type</label>
+              <ng-select id="searchResourceType"
+                          [allowClear]="true"
+                          [items]="availableTypes"
+                          [disabled]="disabled"
+                          (data)="refreshSearchResourceTypeValue($event)"
+                          (selected)="updateSearchParam($event)"
+                          (removed)="removeSearchResourceTypeValue($event)"
+                          placeholder="No Resource selected">
+              </ng-select>
+            </div>
+            <!-- The field to search for -->
+            <div *ngIf="availablefields.length > 0" class="form-group">
+              <label class="searchLabel" for="searchResourceBy">Search On</label>
+              <ng-select id="searchResourceBy"
+                          [allowClear]="true"
+                          [items]="availablefields"
+                          [disabled]="disabled"
+                          (data)="refreshSearchFieldValue($event)"
+                          placeholder="No Field Selected">
+              </ng-select>
+            </div>
+            <!-- The value to search for -->
+            <div class="form-group">
+              <label class="searchLabel" for="searchValue">Value</label>
+              <input id="searchValue" class="form-control" name="searchValue" type="text" [(ngModel)]="searchValue" placeholder="i.e. John Doe">
+            </div>
+            <!-- Search for resource -->
+            <button (click)="searchForResources()" type="button" class="btn btn-orange" data-toggle="modal" data-target="#searchBox">Search</button>
+          </tab>
+          <!-- Create Tab -->
+          <tab tabTitle="Create">
+            <!-- The endpoint to search on -->
+            <div class="form-group">
+              <label class="searchLabel" for="fhirEndpoint">FHIR Endpoint
+                <span class="glyphicon glyphicon-plus-sign pointer-style" aria-hidden="true" data-toggle="modal" data-target="#myModal"></span>
+              </label>
+              <select id="fhirEndpoint" class="form-control" name="fhirEndpoint" (ngModelChange)="updateEndpoint($event)"
+                        [(ngModel)]="activeEndpoint" required #fhir_server="ngModel">
+                <option value="" disabled selected>Choose a endpoint</option>
+                <option *ngFor="let endpoint of endpoints" [value]="endpoint">{{endpoint}}</option>
+              </select>
+            </div>
+            <!-- The resource to search for -->
+            <div *ngIf="availableTypes.length > 0" class="form-group">
+              <label class="searchLabel" for="createResourceType">Resource Type</label>
+              <ng-select id="createResourceType"
+                          [allowClear]="true"
+                          [items]="availableTypes"
+                          [disabled]="disabled"
+                          (data)="refreshCreateResourceTypeValue($event)"
+                          placeholder="No Resource Selected">
+              </ng-select>
+            </div>
+            <!-- Create the resource -->
+            <button (click)="createResource()" type="button" class="btn btn-orange">Create</button>
 
-<!-- Editor Content -->
-<main>
-    <div class="row">
-      <!-- Page tabs -->
-      <div class="">
-        <ul class="tabs">
-          <li *ngFor="let sesh of sessions" class="tab col"><a href="">{{sesh.name}}</a></li>
-        </ul>
-      </div>
-      <!-- Page output zone -->
-      <div id="page1" class="">
-        <!--<app-form [questions]="questions"></app-form>-->
-        <!--<router-outlet></router-outlet>-->
-        <!--<a (click)="logActiveObject()" class="btn"></a>-->
-        <app-form [activeSession]="activeSession" [questions]="questions" [existingData]="resourceData"></app-form>
+          </tab>
+        </tabs>
+        <button (click)="clearSession()" type="button" class="btn btn-warning clear-settings-button">Clear Settings</button>
+    </div>
+    <div class="form-area">
+      <!--Body content-->
+      <div class="container-fluid">
+        <div *ngIf="resourceBuilt" class="row">
+          <div class="col-sm-10">
+            <h1>{{resourceElements[0]}}</h1>
+          </div>
+          <div class="col-sm-2 form-close-button">
+            <button (click)="closeResource()" type="button" class="btn btn-orange">Close</button>
+          </div>
+        </div>
+        <app-form *ngIf="resourceBuilt" [resourceElements]="resourceElements" [existingResourceData]="existingResourceData" [resourceBuilt]="resourceBuilt"></app-form>
       </div>
     </div>
-  <div class="container">
-
-  </div>
-</main>
-<!-- End! Editor Content -->
-
-<!-- Editor Footer
-<footer id="footer" class="page-footer white black-text">
-  <app-footer [activeSession]="activeSession"></app-footer>
-</footer>
-End! Editor Footer -->
-
-<!-- Begining of popup models -------------------------------------->
-
-<!-- Resource selection box - Materializecss Modal -->
-<div id="search-modal" class="modal modal-fixed-footer">
-  <div class="modal-content">
-    <div class="row">
-      <h4>Search Results</h4>
-      <div class="divider"></div>
-      <p>Please select a Resource from the list click 'Select Resource'.</p>
-    </div>
-
-    <!-- Only display if there are search results to show -->
-    <div *ngIf="activeSession.searchResult.length != 0">
-
-      <div class="row">
-        <ul class="collection" >
-          <li *ngFor="let result of activeSession.searchResult" (click)="onSelectedSearchResult(result)" class="collection-item">
-            <strong>Resource: </strong>{{result.resourceType}}<br>
-            <strong>id: </strong>{{result.id}}<br>
-            <strong>Last Updated: </strong> {{result.lastUpdated}}<br>
-            <strong>Full URL: </strong> {{result.fullURL}}<br>
-            <strong>Identifying Factor: </strong>{{result.uniqueFactorValue}}
-          </li>
-        </ul>
-      </div>
-
-      <div class="row">
-        <ul class="pagination">
-         <li class="disabled"><a href="#!"></a></li>
-         <li class="active"><a href="#!">1</a></li>
-         <li class="waves-effect"><a href="#!">2</a></li>
-         <li class="waves-effect"><a href="#!">3</a></li>
-         <li class="waves-effect"><a href="#!">4</a></li>
-         <li class="waves-effect"><a href="#!">5</a></li>
-         <li class="waves-effect"><a href="#!"></a></li>
-       </ul>
-     </div>
-    </div>
-
-
-  </div>
-  <div class="modal-footer">
-    <a href="#!" (click)="pullResourceCreateForm()" class="modal-action modal-close waves-effect waves-green btn ">Select Resource</a>
   </div>
 </div>
-<!-- End! Resource selection box - Materializecss Modal -->
 
-<!-- Settings box - Materializecss Modal -->
-<div id="server-selection-modal" class="modal modal-fixed-footer">
-  <div class="modal-content">
-    <!-- Settings header -->
-    <div class="section">
-      <h4>Settings</h4>
-      <div class="divider"></div>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Add a FHIR Endpoint</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="newEndpoint">New Endpoint</label>
+          <input type="string" class="form-control" id="newEndpoint" [(ngModel)]="newEndpointVariable" placeholder="http://endpoint.com/fhir..">
+        </div>
+        <button (click)="verifyEndpoint()" type="button" class="btn btn-default">Verify</button>
+        <p>
+          {{newEndpointTestResult}}
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button  type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button (click)="addEndpoint()" type="button" class="btn btn-orange" data-dismiss="modal">Add</button>
+      </div>
     </div>
-    <!-- FHIR Endpoint -->
-    <div class="section">
-      <h5>Select FHIR Endpoint</h5>
+  </div>
+</div>
 
-      <div class="row">
-        <!-- FHIR Endpoint dropdown -->
-          <label for="fhir_server">Choose a FHIR Server:</label>
-          <select class="browser-default" (ngModelChange)="updateEndpoint($event)"
-                  name="fhir_server"
-                  [(ngModel)]="activeSession.connectedServer" required
-                  #fhir_server="ngModel">
-            <option value="" disabled selected>Choose your option</option>
-            <option *ngFor="let endpoint of availableEndpoints" [value]="endpoint.url">{{endpoint.name}}</option>
-          </select>
+<!-- Modal -->
+<div class="modal fade" id="searchBox" tabindex="-1" role="dialog" aria-labelledby="searchBoxLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Select a Resource</h4>
+      </div>
+      <div class="modal-body">
 
-          <!-- FHIR Endpoint output -->
-          <ul class="collapsible" data-collapsible="accordion">
-            <!-- Server connection tab -->
-            <li>
-              <div class="collapsible-header">Connection Details</div>
-              <div *ngIf="activeSession.capabilityStatement != null" class="collapsible-body">
-                <span>
-                  Server: Connected<br>
-                  <strong>FHIR Version</strong>: {{activeSession.capabilityStatement.fhirVersion}}<br>
-                  <strong>Software</strong>: {{activeSession.capabilityStatement.software.name}}<br>
-                  <strong>Publisher</strong>: {{activeSession.capabilityStatement.publisher}}<br>
-                </span>
-              </div>
-            </li>
-            <!-- Server Structures tab -->
-            <li>
-              <div class="collapsible-header">Endpoint Resource Availablity</div>
-              <div class="collapsible-body">
-                <!-- Server available resource types & their structures -->
-                <label for="resource_type">Resource Types</label>
-                <select class="browser-default" id="resource_type"
-                        name="type"
-                        [(ngModel)]="activeSession.settingsResourceType" required
-                        #fhir_server="ngModel">
-                    <option value="" disabled selected>Choose your Resource</option>
-                    <option *ngFor="let type of activeSession.availableTypes" [value]="type.value">{{type.label}}</option>
-                </select>
-                <a class="btn btn-success" (click)="getStructureDefinition(activeSession.settingsResourceType, activeSession.connectedServer)">Check</a>
-                <div *ngIf="activeSession.settingsResourceStructure != null">
-                  <h6>The Resource</h6>
-                  <div class="row" *ngIf="activeSession.settingsResourceStructure.hasOwnProperty('resourceType')">
-                    <p>
-                      <span>Type: {{activeSession.settingsResourceStructure.resourceType}}, For: {{activeSession.settingsResourceStructure.id}}<br></span>
-                      <span *ngFor="let element of activeSession.settingsResourceStructure.snapshot.element">
-                        <div *ngIf="element.hasOwnProperty('type')">
-                          {{element.id}} : {{element.type[0].code}}<br>
-                        </div>
-                      </span>
-                    </p>
-                  </div>
+        <!-- Only display if there are search results to show -->
+      <div *ngIf="searchResults.length != 0" class="panel panel-default">
+        <div class="panel-heading">Search Results</div>
+          <div class="panel-body">
+            <p>Please select one resource from the list below, and then press 'select'.</p>
+            <button  type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button (click)="pullResourceCreateForm()" type="button" class="btn btn-orange" data-dismiss="modal">Select</button>
+          </div>
+
+          <div class="list-group" >
+            <a *ngFor="let result of searchResults" (click)="grabSearchResult(result)" class="list-group-item" href="#">
+              <!-- Resource ID and Update time -->
+              <div class="row">
+                <div *ngIf="result.resource?.id" class="col-sm-6">
+                  <strong>ID: </strong><br>
+                  {{result.resource.id}}
+                </div>
+                <div *ngIf="result.resource.meta?.lastUpdated" class="col-sm-6">
+                  <strong>Last Updated: </strong><br>
+                  {{result.resource.meta.lastUpdated}}
                 </div>
               </div>
-            </li>
-          </ul>
-      </div>
-    </div>
-    <!-- End! FHIR Endpoint -->
-  </div>
-  <div class="modal-footer">
-    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Exit Settings</a>
-  </div>
-</div>
-<!-- End! Settings box - Materializecss Modal -->
 
-<!-- Debug box - Materializecss Modal -->
-<div id="debug-modal" class="modal modal-fixed-footer">
-  <div class="modal-content">
-    <!-- Title row -->
-    <div class="row">
-      <h4>The Debug Box</h4>
-      <p>This box contains the output of typescript variables for debuggin purposes.</p>
-      <div class="divider"></div>
-    </div>
-    <!-- Debug output row -->
-    <div class="row">
-      <div class="section">
-        <h5>Current Sessions Variables</h5>
-        <p>
-          Tab ID: <strong>{{activeSession.id}}</strong><br>
-          Tab Name: <strong>{{activeSession.name}}</strong><br>
-          Search Value: <strong>{{activeSession.searchValue}}</strong><br>
-          Selected Field: <strong>{{activeSession.selectedSearchField}}</strong><br>
-          Selected Type: <strong>{{activeSession.selectedResourceType}}</strong><br>
-          Selected Server: <strong>{{activeSession.connectedServer}}</strong>
-        </p>
-      </div>
-      <div class="section">
-        <h5>Selected FHIR Endpoint Availablity Details</h5>
-        <p>
-          Available Types: <strong *ngFor="let type of activeSession.availableTypes">{{type.value}},</strong>
-        </p>
-        <p>
-          Available Search Fields: <strong *ngFor="let field of activeSession.availablefields">{{field.value}},</strong>
-        </p>
-      </div>
-      <div class="section">
-        <h5>Active Object</h5>
+              <!-- Full link to resource -->
+              <div *ngIf="result?.fullUrl" class="row">
+                <div class="col-sm-12">
+                  <strong>Full URL: </strong><br>
+                  {{result.fullUrl}}
+                </div>
+              </div>
+
+              <!-- Resource name element if exists -->
+              <div *ngIf="result.resource?.name" class="row">
+                <div *ngFor="let name of result.resource.name" class="col-sm-6">
+                  <strong>Name<span *ngIf="name?.use">-{{name.use}}</span>:</strong><br>
+                  <span *ngIf="name?.family">{{name.family}}, </span>
+                  <span *ngIf="name?.given">
+                    <span *ngFor="let givenName of name.given">
+                      <span> {{givenName}} </span>
+                    </span>
+                  </span>
+                  <br>
+                </div>
+              </div>
+            </a>
+          </div>
 
       </div>
-      <div class="section">
-        <h5>Saved Resources</h5>
-        <p *ngFor="let saved of savedResources">
-          Resource Name: <strong>{{saved.name}}</strong>, Type: <strong>{{saved.type}}</strong>, ID: <strong>{{saved.id}}</strong>, Endpoint: <strong>{{saved.server}}</strong><br>
-        </p>
-      </div>
-      <div class="section">
-        <h5>Editor Settings</h5>
-        <p>
-          Editor Title: <strong>{{title}}</strong><br>
-          Version: <strong>{{version}}</strong> - {{versionNumber}}<br>
-        </p>
-        <p>
-          <strong>Available Endpoints:</strong><br>
-          <span *ngFor="let endpoint of availableEndpoints">Name: {{endpoint.name}}, URL: {{endpoint.url}}<br></span>
-        </p>
-      </div>
-    </div>
-  </div>
-  <div class="modal-footer">
-    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Exit</a>
-  </div>
-</div>
-<!-- End! Debug box - Materializecss Modal -->
 
-<!-- Resource creation box - Materializecss Modal -->
-<div id="create-modal" class="modal modal-fixed-footer">
-  <div class="modal-content">
-    <div class="row">
-      <h4>Create Resource</h4>
-      <div class="divider"></div>
-      <p>Please select a server before creating a Resource. If no server appears below, please go into settings and select one.</p>
-      <p><strong>Server:</strong> {{activeSession.connectedServer}}</p>
+      <div class="modal-footer">
+        <button  type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button (click)="pullResourceCreateForm()" type="button" class="btn btn-orange" data-dismiss="modal">Select</button>
+      </div>
     </div>
-    <div class="row">
-      <!--<form>-->
-        <label for="fhir_server">FHIR Endpoint</label>
-        <select class="browser-default" (ngModelChange)="updateEndpoint($event)"
-                name="fhir_server"
-                [(ngModel)]="activeSession.connectedServer" required
-                #fhir_server="ngModel">
-          <option value="" disabled selected>Choose your option</option>
-          <option *ngFor="let endpoint of availableEndpoints" [value]="endpoint.url">{{endpoint.name}}</option>
-        </select>
-        <label for="resource_type">Resource Type</label>
-        <select class="browser-default" id="resource_type" (ngModelChange)="getStructureDefinition($event, activeSession.connectedServer)"
-                name="type"
-                [(ngModel)]="activeSession.createResourceType" required
-                #fhir_server="ngModel">
-          <option value="" disabled selected>Choose your Resource</option>
-          <option *ngFor="let type of activeSession.general.availableTypes" [value]="type.value">{{type.label}}</option>
-        </select>
-      <!--</form>-->
-   </div>
-   <div *ngIf="activeSession.settingsResourceStructure != null && activeSession.settingsResourceStructure != 'error'" class="card-panel green lighten-3">
-     <strong>Definition Available!</strong> Feel free to create away!
-   </div>
-   <div *ngIf="activeSession.settingsResourceStructure == 'error'" class="card-panel red lighten-3">
-     <strong>Definition Unavailable!</strong> We cannot create a form for this Resource type on this server. Sorry.
-   </div>
-  </div>
-  <div class="modal-footer">
-    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
-    <a (click)="generateFormGroupTest()" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Create</a>
   </div>
 </div>
-<!-- End! Resource creation box - Materializecss Modal -->

@@ -1,153 +1,179 @@
-import 'rxjs/add/operator/switchMap';
-import { Component, Input, OnInit }   from '@angular/core';
-import { ActivatedRoute, Params }     from '@angular/router';
-import { Location }                   from '@angular/common';
-import { FormGroup }                  from '@angular/forms';
-import { Session } from '../editor-objects/session';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { Location } from '@angular/common';
+import { SelectModule  } from 'ng2-select';
 
-import { FhirService }                from '../services/fhir.service';
-import { QuestionControlService }    from '../services/question-control.service';
-import { FhirPrimitiveType }          from '../datatypes/primitive-datatypes';
+import { FhirPrimitiveType } from '../primitive-datatypes';
+import { FhirService } from '../fhir.service';
+import { ResourceControlService }    from '../resource-control.service';
 
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.css'],
-  providers: [QuestionControlService]
+  providers: [ResourceControlService]
 })
 export class FormComponent implements OnInit {
 
-  @Input() activeSession: Session;
-  @Input() questions: any[] = [];
-  @Input() existingData: {};
-  form: FormGroup;
-  payLoad = '';
+  @Input() resourceElements: any[];
+  @Input() existingResourceData: {};
+  @Input() resourceBuilt: boolean;
+
+  public form: FormGroup;
+  public availableFields = [];
   currentFields: string[] = [];
-  fieldToAdd: string = '';
 
   constructor(
     private fhirService: FhirService,
-    private qcs: QuestionControlService,
-    private route: ActivatedRoute,
-    private location: Location
+    private rcs: ResourceControlService,
   ) { }
 
   ngOnInit() {
-    //this.form = this.qcs.toFormGroup(this.questions);
+    console.log(`INITALIZE FORM: ${this.resourceElements[0]}`);
+    console.log(this.resourceElements);
+    console.log(this.existingResourceData);
+    console.log(this.form);
+    console.log("End of initializing process");
+    this.availableFields = this.fhirService.getResourceFields(this.resourceElements[0]);
   }
 
   ngOnChanges() {
-
-    if (this.questions != null) {
-      if (this.existingData != null) {
+    if (this.resourceElements != null) {
+      if (this.existingResourceData != null) {
         //this.questions = this.existingData;
         this.transformResource();
       }
-      this.form = this.qcs.toFormGroup(this.questions);
+      this.form = this.rcs.toFormGroup(this.resourceElements);
       console.log(this.form);
-      for (let question of this.questions) {
-        console.log(question);
+      for (let element of this.resourceElements) {
+        console.log(element);
       }
     }
   }
 
   transformResource() {
-    let field = this.questions[0];
-    Object.keys(this.existingData).forEach(key => {
+    let field = this.resourceElements[0];
+    Object.keys(this.existingResourceData).forEach(key => {
       // Create form elements
-      if (key != 'meta' && key != 'identifier' && key != 'resourceType') {
-        console.log(`Key: ${key}`);
-        console.log(`Creating field: ${key}, value: ${this.existingData[key]}`)
+      if (key != 'resourceType') {
         let obj: any[] = this.fhirService.createResourceField(field, key, this.currentFields);
-        console.log("The object");
-        console.log(obj);
-        console.log(this.existingData[key]);
-        console.log(key);
+
         // add value to obj
         if (obj instanceof Array) {
           if (obj[0] instanceof FhirPrimitiveType) {
             // Primitive datatype
-            obj[0].value = this.existingData[key];
+            obj[0].value = this.existingResourceData[key];
           } else if (obj[0] instanceof Array) {
             // Complex type
-            this.transformComplex(obj[0], this.existingData[key]);
+            this.transformComplex(obj[0], this.existingResourceData[key]);
           } else if (obj instanceof String) {
             // ignore
 
           }
         }
-        this.questions.push(obj[0]);
+        this.resourceElements.push(obj[0]);
 
       }
     });
-    if (this.questions != null) {
+    if (this.resourceElements != null) {
       // Convert into formgroup
-      this.form = this.qcs.toFormGroup(this.questions);
+      this.form = this.rcs.toFormGroup(this.resourceElements);
       console.log(this.form);
       // Add values to question
     }
 
   }
 
-  transformComplex(questions: any[], data: any[]) {
+  transformComplex(resourceElements: any[], data: any) {
+    console.log("================== transofmring complex ====================");
+    console.log("data");
+    console.log(data);
+    if (data instanceof Array) {
+      for (let item in data) {
+        Object.keys(item).forEach(key => {
+          console.log(key);
+          for (let i = 2; i < resourceElements.length; i++) {
+            if (resourceElements[i] instanceof FhirPrimitiveType) {
+              if (resourceElements[i].label == key) {
+                resourceElements[i].value = item[key];
+              }
+            } else if (resourceElements[i] instanceof Array) {
+              if (resourceElements[0] == key) {
+                this.transformComplex(resourceElements, item[key]);
+              }
+            }
+          }
+        });
+      }
+    } else {
+      Object.keys(data).forEach(key => {
+        console.log(key);
+        for (let i = 2; i < resourceElements.length; i++) {
+          if (resourceElements[i] instanceof FhirPrimitiveType) {
+            if (resourceElements[i].label == key) {
+              resourceElements[i].value = data[key];
+            }
+          } else if (resourceElements[i] instanceof Array) {
+            if (resourceElements[0] == key) {
+              this.transformComplex(resourceElements, data[key]);
+            }
+          }
+        }
+      });
+    }
 
-    for (let question of questions) {
-      if (question[0] instanceof FhirPrimitiveType) {
+    console.log("resourceElements");
+    console.log(resourceElements);
+
+    /*for (let element of resourceElements) {
+      if (element instanceof FhirPrimitiveType) {
         // Primitive datatype
-        //question[0].value = this.existingData[key];
-      } else if (question[0] instanceof Array) {
+
+        if (element.label == key) {
+          console.log(`label: ${element.label}, key: ${key}`);
+          element.value = this.data[key];
+          console.log(`data: ${this.data}`);
+          console.log(`data: ${this.existingResourceData[key]}`);
+          console.log(`form label: ${element.label}`);
+
+        }
+      } else if (element instanceof Array) {
         // Complex type
-        //this.transformComplex(question[0], this.existingData[key]);
-      } else if (question instanceof String) {
+
+        if (element[0] == key) {
+          console.log(`label: ${element[0]}, key: ${key}`);
+          this.transformComplex(element, this.existingResourceData[key]);
+        }
+      } else if (element instanceof String) {
         // ignore
 
       }
-    }
+    }*/
   }
 
-  addResourceField() {
-    // Tick this field of the list of possible fields
-    //this.currentFields.push(this.fieldToAdd);
-    console.log(`damn field`);
-    console.log(this.fieldToAdd);
-    let obj: any[] = this.fhirService.createResourceField(this.questions[0], this.fieldToAdd, this.currentFields);
-    console.log(obj);
-    this.questions.push(obj[0]);
-    console.log(this.questions);
-    if (this.questions != null) {
-      this.form = this.qcs.toFormGroup(this.questions);
-      console.log(this.form);
-      for (let question of this.questions) {
-        console.log(question);
-      }
-    }
-  }
-
-  public getResourceFields() {
-    let fields = this.fhirService.getResourceFields(this.questions[0]);
-    // Iterates through list of already existing fields
-    for (let field in this.currentFields) {
-      console.log(`WORKING ON FIELD: ${field}`);
-      let index = fields.indexOf(field, 0);
-      if (index > -1) {
-        // Removes field from list if it exists already and is maxed
-        fields.splice(index, 1);
-        console.log(`Removing the field: ${field}`);
-      }
-    }
-    return fields;
-  }
 
   isArray(obj: any) {
     return Array.isArray(obj)
   }
 
-  onSubmit() {
-    this.payLoad = JSON.stringify(this.form.value);
+  dataFormComponent(value: any): void { }
+
+  selectedFormComponent(value: any): void {
+
+    let obj: any[] = this.fhirService.createResourceField(this.resourceElements[0], value.text, this.currentFields);
+
+    this.resourceElements.push(obj[0]);
+
+    if (this.resourceElements != null) {
+      this.form = this.rcs.toFormGroup(this.resourceElements);
+    }
   }
 
-  goBack(): void {
-    this.location.back();
+  removedFormComponent(value: any): void { }
+
+  public getTooltip(): string {
+
+    return 'none';
   }
 
 }

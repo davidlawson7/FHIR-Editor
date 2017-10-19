@@ -1,33 +1,30 @@
 import { FormGroup }                  from '@angular/forms';
 
-import { Log } from './log';
-
 /**
  * Represents a session/tab in the application. Holds all required information
  * to operate the editor with that information. Doesn't require to be initiated
  * with anything as blank sessions can be created.
  */
 export class Session {
-    // General infomoration about session
-    general: General;
-    // Search related information in session
-    search: Search;
-    // For information about creating a resource
-    create: {
-        type: String
-    }
-    // Settings related information
-    settings: {
-        settingsResourceType: String
-    }
-    // Active tab information
-    active: {
-        activeObject: any,
-        form: FormGroup
-    }
+  // General infomoration about session
+  general: General;
+  // Search related information in session
+  search: Search;
+  // For information about creating a resource
+  create: {
+    type: String
+  }
+  // Settings related information
+  settings: {
+    settingsResourceType: String
+  }
+  // Active tab information
+  active: {
+    activeObject: any,
+    form: FormGroup
+  }
 
   capabilityStatement: any;
-  log: Log;
   availableTypes: Array<any>;
   availablefields: Array<any>;
   // Search criteria variables
@@ -57,7 +54,6 @@ export class Session {
       this.name = "untitled";
     }
 
-    this.log = new Log;
     this.general = new General();
     this.search = new Search();
     this.availableTypes = [];
@@ -65,10 +61,10 @@ export class Session {
       label: "Name",
       value: "name"
     }, {
-      label: "ID",
-      value: "id"
-    }
-  ];
+        label: "ID",
+        value: "id"
+      }
+    ];
     this.searchResult = [];
     this.activeObject = null;
     this.activeObjectArray = [];
@@ -79,39 +75,39 @@ export class Session {
 }
 
 class General {
-    endpoint: string;
-    capabilityStatement: any;
-    availableTypes: Array<any>;
-    availablefields: Array<any>;
-    resourceDefinitions: Array<any>;
-    complexDatatypeDefinitions: Array<any>;
+  endpoint: string;
+  capabilityStatement: any;
+  availableTypes: Array<any>;
+  availablefields: Array<any>;
+  resourceDefinitions: Array<any>;
+  complexDatatypeDefinitions: Array<any>;
 
-    constructor() {
-        this.endpoint = '';
-        this.capabilityStatement = null;
-        this.availableTypes = [];
-        this.availablefields = [{
-            label: "Name",
-            value: "name"
-        }, {
-            label: "ID",
-            value: "id"
-        }];
-        this.resourceDefinitions = [];
-        this.complexDatatypeDefinitions = [];
-    }
+  constructor() {
+    this.endpoint = '';
+    this.capabilityStatement = null;
+    this.availableTypes = [];
+    this.availablefields = [{
+      label: "Name",
+      value: "name"
+    }, {
+        label: "ID",
+        value: "id"
+      }];
+    this.resourceDefinitions = [];
+    this.complexDatatypeDefinitions = [];
+  }
 }
 
 class Search {
-    name: string;
-    type: string;
-    field: string;
-    value: string;
+  name: string;
+  type: string;
+  field: string;
+  value: string;
 
-    constructor() {
-        this.name = '';
-        this.type = '';
-        this.field = '';
-        this.value = '';
-    }
+  constructor() {
+    this.name = '';
+    this.type = '';
+    this.field = '';
+    this.value = '';
+  }
 }

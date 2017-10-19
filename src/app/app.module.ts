@@ -1,40 +1,34 @@
-import { BrowserModule }                    from '@angular/platform-browser';
-import { ReactiveFormsModule }              from '@angular/forms';
-import { NgModule }                         from '@angular/core';
-import { FormsModule }                      from '@angular/forms';
-import { HttpModule }                       from '@angular/http';
-import { BrowserAnimationsModule }          from '@angular/platform-browser/animations';
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
+import { HttpModule } from '@angular/http';
+import { SelectModule } from 'ng2-select';
 
-import { AppComponent }                     from './app.component';
-import { FormComponent }                    from './form/form.component';
-import { FormQuestionComponent }            from './form/form-question.component';
-import { FhirService }                      from './services/fhir.service';
-
-import { AppRoutingModule }                 from './app-routing/app-routing.module';
-import { SideNavComponent }                 from './nav/side-nav.component';
-import { TopNavComponent }                  from './nav/top-nav.component';
-import { FooterComponent }                  from './footer/footer.component';
-import { FormComplexDatatypeComponent } from './form/form-complex-datatype.component';
+import { AppComponent } from './app.component';
+import { Tabs } from './tabs/tabs.component';
+import { Tab } from './tab/tab.component';
+import { FormComponent } from './form/form.component';
+import { PrimitiveElementComponent } from './primitive-element/primitive-element.component';
+import { ComplexElementComponent } from './complex-element/complex-element.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    Tabs,
+    Tab,
     FormComponent,
-    FormQuestionComponent,
-    SideNavComponent,
-    TopNavComponent,
-    FooterComponent,
-    FormComplexDatatypeComponent,
+    PrimitiveElementComponent,
+    ComplexElementComponent
   ],
   imports: [
     BrowserModule,
-    FormsModule,
     ReactiveFormsModule,
+    FormsModule,
     HttpModule,
-    BrowserAnimationsModule,
-    AppRoutingModule
+    SelectModule
   ],
-  providers: [FhirService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

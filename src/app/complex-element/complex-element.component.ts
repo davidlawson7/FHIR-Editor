@@ -1,31 +1,28 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FhirPrimitiveType }          from '../datatypes/primitive-datatypes';
-import { FormGroup }                  from '@angular/forms';
-
+import { FormGroup } from '@angular/forms';
+import { FhirPrimitiveType } from '../primitive-datatypes';
 
 @Component({
-  selector: 'df-complex',
-  templateUrl: './form-complex-datatype.component.html',
-  styleUrls: ['./form-complex-datatype.component.css']
+  selector: 'complex-element',
+  templateUrl: './complex-element.component.html',
+  styleUrls: ['./complex-element.component.css']
 })
-export class FormComplexDatatypeComponent implements OnInit {
+export class ComplexElementComponent implements OnInit {
 
-  @Input() complexdatatype: any[] = [];
+  @Input() complexDatatype: any[] = [];
   @Input() form: FormGroup;
+
   constructor() { }
 
   ngOnInit() {
-    console.log(`Processinging complex: ${this.complexdatatype}`)
+    console.log(`INITALIZE COMPLEX: ${this.complexDatatype[0]}`);
+    console.log(this.complexDatatype);
     console.log(this.form);
-    console.log("TADA");
-  }
-
-  addFieldArray() {
-
+    console.log("End of initializing process");
   }
 
   fieldExists(field: string): boolean {
-    for (let item of this.complexdatatype) {
+    for (let item of this.complexDatatype) {
       if (item.key == `_${field}`) {
         return true;
       }
@@ -34,7 +31,7 @@ export class FormComplexDatatypeComponent implements OnInit {
   }
 
   complexFieldExists(field: string): boolean {
-    for (let item of this.complexdatatype) {
+    for (let item of this.complexDatatype) {
       if (Array.isArray(item) && item[1] == field) {
         return true;
       }
@@ -43,7 +40,7 @@ export class FormComplexDatatypeComponent implements OnInit {
   }
 
   getField(field: string): any {
-    for (let item of this.complexdatatype) {
+    for (let item of this.complexDatatype) {
       if (item.key == `_${field}`) {
         return item;
       }
@@ -51,7 +48,7 @@ export class FormComplexDatatypeComponent implements OnInit {
   }
 
   getComplexField(field: string): any[] {
-    for (let item of this.complexdatatype) {
+    for (let item of this.complexDatatype) {
       if (Array.isArray(item) && item[1] == field) {
         return item;
       }
@@ -61,4 +58,5 @@ export class FormComplexDatatypeComponent implements OnInit {
   isArray(obj: any) {
     return Array.isArray(obj);
   }
+
 }

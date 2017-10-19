@@ -1,25 +1,51 @@
-/* Custom colours for the navigation and footer */
-.search-wrapper input {
-  border: none;
+.rm-space {
   padding: 0;
   margin: 0;
 }
-#footer {
-   position:fixed;
-   left:0px;
-   bottom:0px;
-   height: 200px;
-   width:100%;
+.side-nav {
+  background: #141414;
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 300px;
+  margin: 0;
+  padding: 5px 10px;
+  border-right: 5px solid #a71100;
 }
+.form-area {
+  position: absolute;
 
-/* IE 6 */
-* html #footer {
-   position:absolute;
-   top:expression((0-(footer.offsetHeight)+(document.documentElement.clientHeight ? document.documentElement.clientHeight : document.body.clientHeight)+(ignoreMe = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop))+'px');
+  left: 300px;
+  right: 0;
 }
-select.browser-default {
-  border: 1px solid #ddd;
+.btn-orange {
+  background: #a71100;
+  color: white;
 }
-.tabs .tab a {
-  color: #26a69a;
+.btn-orange:hover {
+  background: #e21700;
+}
+.form-close-button .btn-orange {
+  margin-top: 25px;
+}
+.app-title {
+  color: white;
+  font-family: 'Roboto';
+}
+.searchLabel {
+  color: white;
+}
+.pointer-style {
+  cursor: pointer;
+}
+.pointer-style:hover {
+  color: #a71100;
+}
+.clear-settings-button {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  margin-bottom: 10px;
+  margin-left: 10px;
 }

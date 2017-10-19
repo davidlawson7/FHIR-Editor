@@ -1,0 +1,26 @@
+<div [formGroup]="form">
+
+  <div [ngSwitch]="resourceElement.controlType">
+      <div class="form-group">
+
+          <label class="active" for="resourceElement.key">{{resourceElement.label}}</label>
+          <span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="right" title="{{tooltip}}" aria-hidden="true"></span>
+          <!-- input -->
+          <input class="form-control" *ngSwitchCase="'input'" [formControlName]="resourceElement.key" value="''" id="email" type="text">
+
+          <!-- Boolean -->
+          <input class="form-control" *ngSwitchCase="'boolean'" type="checkbox" id="resourceElement.key" />
+
+          <input class="form-control" *ngSwitchCase="'dateTime'" [formControlName]="resourceElement.key" type="text" />
+
+          <!-- Dropdown -->
+          <select class="form-control" [id]="resourceElement.key" *ngSwitchCase="'dropdown'" [formControlName]="resourceElement.key">
+            <option *ngFor="let opt of resourceElement.options" [value]="opt.key">{{opt.value}}</option>
+          </select>
+
+      </div>
+  </div>
+
+  <div class="errorMessage" *ngIf="!isValid">{{resourceElement.label}} is required</div>
+
+</div>

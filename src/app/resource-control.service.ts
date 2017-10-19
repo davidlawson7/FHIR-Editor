@@ -1,14 +1,16 @@
 import { Injectable }   from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { FhirPrimitiveType } from '../datatypes/primitive-datatypes';
+import { FhirPrimitiveType } from './primitive-datatypes';
 
 @Injectable()
-export class QuestionControlService {
+export class ResourceControlService {
+
   constructor() { }
 
   public toFormGroup(questions: any[]) {
-
+    console.log("======================================================");
+    console.log(questions);
     let group: any = {};
     questions.forEach((question, index) => {
 
@@ -21,8 +23,13 @@ export class QuestionControlService {
       } else {
         // Primitive datatype, convert element to FormControl
         //console.log(`${question.label}`)
-        group[`_${question.label}`] = question.required ? new FormControl(question.value || '', Validators.required)
-          : new FormControl(question.value || '');
+        if (question != undefined) {
+          group[`_${question.label}`] = question.required ? new FormControl(question.value || '', Validators.required)
+            : new FormControl(question.value || '');
+        } else {
+          console.log(`Wadda dupa dup dup!!!!`);
+          console.log(question);
+        }
       }
 
     });
@@ -42,13 +49,19 @@ export class QuestionControlService {
         this.complexDatatypeFormGroup(question, group);
       } else {
         // Primitive datatype, convert element to FormControl
-        //console.log(`Primitive datatype: ${question.label}`)
-        group[`_${question.label}`] = question.required ? new FormControl(question.value || '', Validators.required)
-          : new FormControl(question.value || '');
+        if (question != undefined) {
+          //console.log(`Primitive datatype: ${question.label}`)
+          group[`_${question.label}`] = question.required ? new FormControl(question.value || '', Validators.required)
+            : new FormControl(question.value || '');
+        } else {
+          console.log(`CHECK OUT THIS ISSUES DAVID`);
+          console.log(question);
+        }
       }
 
     });
     // Create a new formgroup for the complex type and store it in the parent
     parentGroup[complexDatatype[1]] = new FormGroup(group);
   }
+
 }

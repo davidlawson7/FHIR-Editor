@@ -1,0 +1,452 @@
+<div [formGroup]="form">
+  <div *ngIf="complexDatatype[0]=='HumanName'" class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title text-capitalize custom-title">
+        {{complexDatatype[1]}}
+        <a data-toggle="collapse" href="#{{complexDatatype[0]}}" class="close" ><span aria-hidden="true">&#x268A;</span></a>
+      </h3>
+      <span><strong>Type:</strong> {{complexDatatype[0]}}</span>
+    </div>
+    <div id="{{complexDatatype[0]}}" class="panel-collapse collapse in">
+      <div class="panel-body">
+        <!-- Use -->
+        <div class="row" *ngIf="fieldExists('use')">
+          <div class="col-sm-12 col-md-4">
+            <primitive-element [resourceElement]="getField('use')" [form]="form"></primitive-element>
+          </div>
+        </div>
+
+        <!-- Family and Given Names -->
+        <div class="row" *ngIf="fieldExists('family') || fieldExists('given')">
+          <div class="col-sm-12 col-md-6" *ngIf="fieldExists('family')">
+            <primitive-element [resourceElement]="getField('family')" [form]="form"></primitive-element>
+          </div>
+
+          <div class="col-sm-12 col-md-6" *ngIf="fieldExists('given')">
+            <primitive-element [resourceElement]="getField('given')" [form]="form"></primitive-element>
+          </div>
+        </div>
+
+        <!-- Text version of name -->
+        <div class="row" *ngIf="fieldExists('text')">
+          <div class="col-sm-12">
+            <primitive-element [resourceElement]="getField('text')" [form]="form"></primitive-element>
+          </div>
+        </div>
+
+        <!-- Prefix and Suffix of name -->
+        <div class="row" *ngIf="fieldExists('prefix') || fieldExists('suffix')">
+          <div class="col-sm-12 col-md-6" *ngIf="fieldExists('prefix')">
+            <primitive-element [resourceElement]="getField('prefix')" [form]="form"></primitive-element>
+          </div>
+
+          <div class="col-sm-12 col-md-6" *ngIf="fieldExists('suffix')">
+            <primitive-element [resourceElement]="getField('suffix')" [form]="form"></primitive-element>
+          </div>
+        </div>
+
+        <!-- Handles Period Complex datatype -->
+        <complex-element *ngIf="complexFieldExists('period')" [complexDatatype]="getComplexField('period')" [form]="form.controls['period']"></complex-element>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="complexDatatype[0]=='Period'" class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title text-capitalize custom-title">
+        {{complexDatatype[1]}}
+        <a data-toggle="collapse" href="#{{complexDatatype[0]}}" class="close" ><span aria-hidden="true">&#x268A;</span></a>
+      </h3>
+      <span><strong>Type:</strong> {{complexDatatype[0]}}</span>
+    </div>
+    <div id="{{complexDatatype[0]}}" class="panel-collapse collapse in">
+      <div class="panel-body">
+        <!-- Start and End Names -->
+        <div class="row" *ngIf="fieldExists('start') || fieldExists('end')">
+          <div class="col-sm-12 col-md-6" *ngIf="fieldExists('start')">
+            <primitive-element [resourceElement]="getField('start')" [form]="form"></primitive-element>
+          </div>
+
+          <div class="col-sm-12 col-md-6" *ngIf="fieldExists('end')">
+            <primitive-element [resourceElement]="getField('end')" [form]="form"></primitive-element>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="complexDatatype[0]=='Identifier'" class="panel panel-default">
+
+    <div class="panel-heading">
+      <h3 class="panel-title text-capitalize custom-title">
+        {{complexDatatype[1]}}
+        <a data-toggle="collapse" href="#{{complexDatatype[0]}}" class="close" ><span aria-hidden="true">&#x268A;</span></a>
+      </h3>
+      <span><strong>Type:</strong> {{complexDatatype[0]}}</span>
+    </div>
+
+    <div id="{{complexDatatype[0]}}" class="panel-collapse collapse in">
+      <div class="panel-body">
+        <!-- use and system -->
+        <div class="row" *ngIf="fieldExists('use') || fieldExists('system')">
+          <div class="col-sm-12 col-md-6" *ngIf="fieldExists('use')">
+            <primitive-element [resourceElement]="getField('use')" [form]="form"></primitive-element>
+          </div>
+
+          <div class="col-sm-12 col-md-6" *ngIf="fieldExists('system')">
+            <primitive-element [resourceElement]="getField('system')" [form]="form"></primitive-element>
+          </div>
+        </div>
+        <!-- Value field -->
+        <div class="row" *ngIf="fieldExists('value')">
+          <div class="col-sm-12">
+            <primitive-element [resourceElement]="getField('value')" [form]="form"></primitive-element>
+          </div>
+        </div>
+
+        <!-- Handles Period Complex datatype -->
+        <complex-element *ngIf="complexFieldExists('period')" [complexDatatype]="getComplexField('period')" [form]="form.controls['period']"></complex-element>
+
+        <!-- Handles CodeableConcept Complex datatype -->
+        <complex-element *ngIf="complexFieldExists('type')" [complexDatatype]="getComplexField('type')" [form]="form.controls['type']"></complex-element>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="complexDatatype[0]=='CodeableConcept'" class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title text-capitalize custom-title">
+        {{complexDatatype[1]}}
+        <a data-toggle="collapse" href="#{{complexDatatype[0]}}" class="close" ><span aria-hidden="true">&#x268A;</span></a>
+      </h3>
+      <span><strong>Type:</strong> {{complexDatatype[0]}}</span>
+    </div>
+
+    <div id="{{complexDatatype[0]}}" class="panel-collapse collapse in">
+      <div class="panel-body">
+        <!-- Text field -->
+        <div class="row" *ngIf="fieldExists('text')">
+          <div class="col-sm-12">
+            <primitive-element [resourceElement]="getField('text')" [form]="form"></primitive-element>
+          </div>
+        </div>
+
+        <!-- Handles Coding Complex datatype -->
+        <complex-element *ngIf="complexFieldExists('coding')" [complexDatatype]="getComplexField('coding')" [form]="form.controls['coding']"></complex-element>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="complexDatatype[0]=='Coding'" class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title text-capitalize custom-title">
+        {{complexDatatype[1]}}
+        <a data-toggle="collapse" href="#{{complexDatatype[0]}}" class="close" ><span aria-hidden="true">&#x268A;</span></a>
+      </h3>
+      <span><strong>Type:</strong> {{complexDatatype[0]}}</span>
+    </div>
+    <div id="{{complexDatatype[0]}}" class="panel-collapse collapse in">
+      <div class="panel-body">
+        <!-- version, system, and code -->
+        <div class="row" *ngIf="fieldExists('version') || fieldExists('system') || fieldExists('code')">
+          <div class="col-sm-12 col-md-4" *ngIf="fieldExists('version')">
+            <primitive-element [resourceElement]="getField('version')" [form]="form"></primitive-element>
+          </div>
+
+          <div class="col-sm-12 col-md-4" *ngIf="fieldExists('system')">
+            <primitive-element [resourceElement]="getField('system')" [form]="form"></primitive-element>
+          </div>
+
+          <div class="col-sm-12 col-md-4" *ngIf="fieldExists('code')">
+            <primitive-element [resourceElement]="getField('code')" [form]="form"></primitive-element>
+          </div>
+        </div>
+
+        <!-- display and userSelected -->
+        <div class="" *ngIf="fieldExists('display') || fieldExists('userSelected')">
+          <div class="col-md-6 col-sm-12" *ngIf="fieldExists('display')">
+            <primitive-element [resourceElement]="getField('display')" [form]="form"></primitive-element>
+            <!--<label>{{getField('display').label}}</label>
+            <input id="code_display" type="text" class="validate">-->
+          </div>
+
+          <div class="col-md-6 col-sm-12" *ngIf="fieldExists('userSelected')">
+            <primitive-element [resourceElement]="getField('userSelected')" [form]="form"></primitive-element>
+            <!--<label class="active">{{getField('userSelected').label}}</label>
+            <div class="switch">
+              <label>
+                no
+                <input type="checkbox">
+                <span class="lever"></span>
+                yes
+              </label>
+            </div>-->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="complexDatatype[0]=='Meta'" class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title text-capitalize custom-title">
+        {{complexDatatype[1]}}
+        <a data-toggle="collapse" href="#{{complexDatatype[0]}}" class="close" ><span aria-hidden="true">&#x268A;</span></a>
+      </h3>
+      <span><strong>Type:</strong> {{complexDatatype[0]}}</span>
+    </div>
+    <div id="{{complexDatatype[0]}}" class="panel-collapse collapse in">
+      <div class="panel-body">
+        <!-- id, versionid, and last updated -->
+        <div class="row" *ngIf="fieldExists('id') || fieldExists('versionId') || fieldExists('lastUpdated')">
+          <div class="col-sm-12 col-md-4" *ngIf="fieldExists('id')">
+            <primitive-element [resourceElement]="getField('id')" [form]="form"></primitive-element>
+          </div>
+
+          <div class="col-sm-12 col-md-4" *ngIf="fieldExists('versionId')">
+            <primitive-element [resourceElement]="getField('versionId')" [form]="form"></primitive-element>
+          </div>
+
+          <div class="col-sm-12 col-md-4" *ngIf="fieldExists('lastUpdated')">
+            <primitive-element [resourceElement]="getField('lastUpdated')" [form]="form"></primitive-element>
+          </div>
+        </div>
+
+        <!-- Profile -->
+        <div class="row" *ngIf="fieldExists('profile')">
+          <div class="col-sm-12">
+            <primitive-element [resourceElement]="getField('profile')" [form]="form"></primitive-element>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="complexDatatype[0]=='Address'" class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title text-capitalize custom-title">
+        {{complexDatatype[1]}}
+        <a data-toggle="collapse" href="#{{complexDatatype[0]}}" class="close" ><span aria-hidden="true">&#x268A;</span></a>
+      </h3>
+      <span><strong>Type:</strong> {{complexDatatype[0]}}</span>
+    </div>
+    <div id="{{complexDatatype[0]}}" class="panel-collapse collapse in">
+      <div class="panel-body">
+        <!-- use and type -->
+        <div class="row" *ngIf="fieldExists('use') || fieldExists('type')">
+          <div class="col-sm-12 col-md-6" *ngIf="fieldExists('use')">
+            <primitive-element [resourceElement]="getField('use')" [form]="form"></primitive-element>
+          </div>
+
+          <div class="col-sm-12 col-md-6" *ngIf="fieldExists('type')">
+            <primitive-element [resourceElement]="getField('type')" [form]="form"></primitive-element>
+          </div>
+        </div>
+
+        <!-- Text -->
+        <div class="row" *ngIf="fieldExists('text')">
+          <div class="col-sm-12">
+            <primitive-element [resourceElement]="getField('text')" [form]="form"></primitive-element>
+          </div>
+        </div>
+
+        <!-- Line -->
+        <div class="row" *ngIf="fieldExists('line')">
+          <div class="col-sm-12">
+            <primitive-element [resourceElement]="getField('line')" [form]="form"></primitive-element>
+          </div>
+        </div>
+
+        <!-- City and District -->
+        <div class="row" *ngIf="fieldExists('city') || fieldExists('district')">
+          <div class="col-sm-12 col-md-6" *ngIf="fieldExists('city')">
+            <primitive-element [resourceElement]="getField('city')" [form]="form"></primitive-element>
+          </div>
+
+          <div class="col-sm-12 col-md-6" *ngIf="fieldExists('district')">
+            <primitive-element [resourceElement]="getField('district')" [form]="form"></primitive-element>
+          </div>
+        </div>
+
+        <!-- state, postcode, and country -->
+        <div class="row" *ngIf="fieldExists('state') || fieldExists('postalCode')
+                                || fieldExists('country')">
+          <div class="col-sm-12 col-md-4" *ngIf="fieldExists('state')">
+            <primitive-element [resourceElement]="getField('state')" [form]="form"></primitive-element>
+          </div>
+
+          <div class="col-sm-12 col-md-4" *ngIf="fieldExists('postalCode')">
+            <primitive-element [resourceElement]="getField('postalCode')" [form]="form"></primitive-element>
+          </div>
+
+          <div class="col-sm-12 col-md-4" *ngIf="fieldExists('country')">
+            <primitive-element [resourceElement]="getField('country')" [form]="form"></primitive-element>
+          </div>
+        </div>
+
+        <!-- Handles Period Complex datatype -->
+        <complex-element *ngIf="complexFieldExists('period')" [complexDatatype]="getComplexField('period')" [form]="form.controls['period']"></complex-element>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="complexDatatype[0]=='Attachment'" class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title text-capitalize custom-title">
+        {{complexDatatype[1]}}
+        <a data-toggle="collapse" href="#{{complexDatatype[0]}}" class="close" ><span aria-hidden="true">&#x268A;</span></a>
+      </h3>
+      <span><strong>Type:</strong> {{complexDatatype[0]}}</span>
+    </div>
+    <div id="{{complexDatatype[0]}}" class="panel-collapse collapse in">
+      <div class="panel-body">
+        <!-- contentType and Language -->
+        <div class="row" *ngIf="fieldExists('contentType') || fieldExists('language')">
+          <div class="col-sm-12 col-md-6" *ngIf="fieldExists('contentType')">
+            <primitive-element [resourceElement]="getField('contentType')" [form]="form"></primitive-element>
+          </div>
+
+          <div class="col-sm-12 col-md-6" *ngIf="fieldExists('language')">
+            <primitive-element [resourceElement]="getField('language')" [form]="form"></primitive-element>
+          </div>
+        </div>
+
+        <!-- Data -->
+        <div class="row" *ngIf="fieldExists('data')">
+          <div class="col-sm-12">
+            <primitive-element [resourceElement]="getField('data')" [form]="form"></primitive-element>
+          </div>
+        </div>
+
+        <!-- URL -->
+        <div class="row" *ngIf="fieldExists('url')">
+          <div class="col-sm-12">
+            <primitive-element [resourceElement]="getField('url')" [form]="form"></primitive-element>
+          </div>
+        </div>
+
+        <!-- size and hash -->
+        <div class="row" *ngIf="fieldExists('size') || fieldExists('hash')">
+          <div class="col-sm-12 col-md-6" *ngIf="fieldExists('size')">
+            <primitive-element [resourceElement]="getField('size')" [form]="form"></primitive-element>
+          </div>
+
+          <div class="col-sm-12 col-md-6" *ngIf="fieldExists('hash')">
+            <primitive-element [resourceElement]="getField('hash')" [form]="form"></primitive-element>
+          </div>
+        </div>
+
+        <!-- title and creation -->
+        <div class="row" *ngIf="fieldExists('title') || fieldExists('creation')">
+          <div class="col-sm-12 col-md-6" *ngIf="fieldExists('title')">
+            <primitive-element [resourceElement]="getField('title')" [form]="form"></primitive-element>
+          </div>
+
+          <div class="col-sm-12 col-md-6" *ngIf="fieldExists('creation')">
+            <primitive-element [resourceElement]="getField('creation')" [form]="form"></primitive-element>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="complexDatatype[0]=='ContactPoint'" class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title text-capitalize custom-title">
+        {{complexDatatype[1]}}
+        <a data-toggle="collapse" href="#{{complexDatatype[0]}}" class="close" ><span aria-hidden="true">&#x268A;</span></a>
+      </h3>
+      <span><strong>Type:</strong> {{complexDatatype[0]}}</span>
+    </div>
+    <div id="{{complexDatatype[0]}}" class="panel-collapse collapse in">
+      <div class="panel-body">
+        <!-- use, system and rank -->
+        <div class="row" *ngIf="fieldExists('use') || fieldExists('system') || fieldExists('rank')">
+          <div class="col-sm-12 col-md-4" *ngIf="fieldExists('use')">
+            <primitive-element [resourceElement]="getField('use')" [form]="form"></primitive-element>
+          </div>
+
+          <div class="col-sm-12 col-md-4" *ngIf="fieldExists('system')">
+            <primitive-element [resourceElement]="getField('system')" [form]="form"></primitive-element>
+          </div>
+
+          <div class="col-sm-12 col-md-4" *ngIf="fieldExists('rank')">
+            <primitive-element [resourceElement]="getField('rank')" [form]="form"></primitive-element>
+          </div>
+        </div>
+
+        <!-- value -->
+        <div class="row" *ngIf="fieldExists('value')">
+          <div class="col-sm-12">
+            <primitive-element [resourceElement]="getField('value')" [form]="form"></primitive-element>
+          </div>
+        </div>
+
+        <!-- Handles Period Complex datatype -->
+        <complex-element *ngIf="complexFieldExists('period')" [complexDatatype]="getComplexField('period')" [form]="form.controls['period']"></complex-element>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="complexDatatype[0]=='Narrative'" class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title text-capitalize custom-title">
+        {{complexDatatype[1]}}
+        <a data-toggle="collapse" href="#{{complexDatatype[0]}}" class="close" ><span aria-hidden="true">&#x268A;</span></a>
+      </h3>
+      <span><strong>Type:</strong> {{complexDatatype[0]}}</span>
+    </div>
+    <div id="{{complexDatatype[0]}}" class="panel-collapse collapse in">
+      <div class="panel-body">
+        <!-- use and system -->
+        <div class="row" *ngIf="fieldExists('id') || fieldExists('status')">
+          <div class="col-sm-12 col-md-6" *ngIf="fieldExists('id')">
+            <primitive-element [resourceElement]="getField('id')" [form]="form"></primitive-element>
+          </div>
+
+          <div class="col-sm-12 col-md-6" *ngIf="fieldExists('status')">
+            <primitive-element [resourceElement]="getField('status')" [form]="form"></primitive-element>
+          </div>
+        </div>
+
+        <!-- Value field -->
+        <div class="row" *ngIf="fieldExists('div')">
+          <div class="col-sm-12">
+            <primitive-element [resourceElement]="getField('div')" [form]="form"></primitive-element>
+            <!--<label>{{getField('div').label}}</label>
+            <textarea id="textarea1" class="materialize-textarea"></textarea>-->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="complexDatatype[0]!='HumanName'
+              && complexDatatype[0]!='Period'
+              && complexDatatype[0]!='Identifier'
+              && complexDatatype[0]!='CodeableConcept'
+              && complexDatatype[0]!='Coding'
+              && complexDatatype[0]!='Meta'
+              && complexDatatype[0]!='Address'
+              && complexDatatype[0]!='Attachment'
+              && complexDatatype[0]!='ContactPoint'
+              && complexDatatype[0]!='Narrative'" class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title text-capitalize custom-title">
+        {{complexDatatype[1]}}
+        <a data-toggle="collapse" href="#{{complexDatatype[0]}}" class="close" ><span aria-hidden="true">&#x268A;</span></a>
+      </h3>
+      <span><strong>Type:</strong> {{complexDatatype[0]}}</span>
+    </div>
+    <div id="{{complexDatatype[0]}}" class="panel-collapse collapse in">
+      <div class="panel-body">
+        <div *ngFor="let element of complexDatatype | slice:2" class="form-row">
+
+          <primitive-element *ngIf="element.hasOwnProperty('key')" [resourceElement]="element" [form]="form"></primitive-element>
+          <complex-element *ngIf="isArray(element)" [complexDatatype]="element" [form]="form.controls[element[1]]"></complex-element>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

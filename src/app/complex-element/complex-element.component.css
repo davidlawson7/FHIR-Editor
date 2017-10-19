@@ -1,0 +1,11 @@
+.custom-title {
+  font-size: 20px;
+}
+.panel-primary > .panel-heading {
+  background: #141414;
+  border-color: #141414;
+}
+
+.panel-primary {
+    border-color: #141414;
+}
